@@ -6,6 +6,12 @@
       "dom.iterable",
       "esnext"
     ],
+    // Added 
+    "declaration": true,
+    "declarationDir": "types",
+    "sourceMap": true,
+    "outDir": "dist",
+    "emitDeclarationOnly": true,
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,

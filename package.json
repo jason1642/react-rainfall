@@ -1,7 +1,14 @@
 {
   "name": "react-rainfall",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.1.1",
+  "description": "Simple and customizable rainfall animation background for a parent element.",
+  "author": {
+    "name": "Jason Cruz"
+},
+"repository": {
+  "type": "git",
+  "url": "https://github.com/jason1642/react-rainfall.git"
+},
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -10,7 +17,7 @@
     "@types/node": "^16.18.23",
     "@types/react": "^18.0.33",
     "@types/react-dom": "^18.0.11",
-    "react": "^18.2.0",
+    "react": ">=16",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
     "typescript": "^4.9.5",
@@ -21,8 +28,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
     "test": "react-scripts test",
+    "rollup": "rollup -c",
+    "build": "react-scripts build",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -42,5 +50,15 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.21.0",
+    "@babel/core": "^7.21.4",
+    "@babel/preset-env": "^7.21.4",
+    "@rollup/plugin-commonjs": "^24.0.1",
+    "@rollup/plugin-node-resolve": "^15.0.2",
+    "@rollup/plugin-typescript": "^11.1.0",
+    "rollup": "^3.20.2",
+    "rollup-plugin-dts": "^5.3.0"
   }
 }

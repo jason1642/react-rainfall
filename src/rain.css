@@ -17,7 +17,6 @@
     display: flex;
     overflow-y: hidden;
     overflow-x: hidden;
-    /* overflow: hidden; */
     border-radius: inherit;
     z-index: 0;
     width: 100%;
