@@ -2,21 +2,21 @@ import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import typescript from "@rollup/plugin-typescript";
 import dts from "rollup-plugin-dts";
-import packageJson from './package.json' assert { type: "json" };
+// import packageJson from './package.json' assert { type: "json" };
 
 import postcss from "rollup-plugin-postcss";
 
-const globals = { react: 'React' };
+// const globals = { react: 'React' };
 
-const defaults = {
-	input: 'src/index.ts',
-	external: [
-		...Object.keys(packageJson.devDependencies || {})
-	],
-	plugins: [
-		typescript()
-	]
-}
+// const defaults = {
+// 	input: 'src/index.ts',
+// 	external: [
+// 		...Object.keys(packageJson.devDependencies || {})
+// 	],
+// 	plugins: [
+// 		typescript()
+// 	]
+// }
 
 const config =  [
   {
@@ -24,12 +24,12 @@ const config =  [
     output: 
     [
       {
-        dir: "dist",
+        file: "dist/cjs/index.js",
         format: "cjs",
         sourcemap: true,
       },
       {
-        dir: "dist",
+        file: "dist/esm/index.js",
         format: "esm",
         sourcemap: true,
       }, 
@@ -37,7 +37,9 @@ const config =  [
     plugins: [
       resolve(),
       commonjs(),
-      typescript({ declaration: true, declarationDir: 'dist', tsconfig: "./tsconfig.json" }),
+      typescript({ 
+        tsconfig: "./tsconfig.json"
+      }),
       postcss(), 
     ],
   },

@@ -12,7 +12,6 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
     "module": "ESNext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
@@ -23,8 +22,5 @@
       "dom.iterable",
       "esnext"
     ]
-    },
-  "include": [
-    "src"
-  ]
+    }
 }
