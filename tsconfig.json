@@ -1,12 +1,6 @@
 {
   "compilerOptions": {
     "target": "es5",
-    // "lib": [
-    //   "dom",
-    //   "dom.iterable",
-    //   "esnext"
-    // ],
-    // Added 
     "declaration": true,
     "declarationDir": "types",
     "sourceMap": true,
