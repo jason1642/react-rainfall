@@ -3,7 +3,10 @@ import './rain.css'
 
 interface IRainProps {
     numDrops: number;
-    // Add other option props such as styles for rain container and droplets
+    // Add other option props such as:
+    // - styles for rain container and droplets
+    // - Rain direction, speed, fall length
+
 }
 const randRange = (minNum: number, maxNum:number) =>{
     return (Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum);
