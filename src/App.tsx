@@ -1,6 +1,11 @@
-import Rain from './Rain'
+import Rain from './components/Rain/Rain'
 
-function App({numDrops = 12}: {numDrops: number}) {
+interface AppProps {
+  numDrops?: number;
+}
+
+const App: React.FunctionComponent<AppProps> = ({numDrops = 60})=>{
+
   return (
     <Rain 
       numDrops={numDrops}

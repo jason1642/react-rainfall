@@ -1,7 +1,10 @@
 {
-  "name": "react-rainfall",
-  "version": "0.1.1",
-  "description": "Simple and customizable rainfall animation background for a parent element.",
+  "name": "@jason1642/react-rainfall",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/react-rainfall"
+  },
+  "version": "0.1.2",
+  "description": "Simple and customizable rainfall animation background for a parent element",
   "author": {
     "name": "Jason Cruz"
   },
@@ -10,23 +13,7 @@
     "type": "git",
     "url": "https://github.com/jason1642/react-rainfall.git"
   },
-  "dependencies": {
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.5.2",
-    "@types/node": "^16.18.23",
-    "@types/react": "^18.0.33",
-    "@types/react-dom": "^18.0.11",
-    "react": ">=16",
-    "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
-    "typescript": "^4.9.5",
-    "web-vitals": "^2.1.4"
-  },
-  "peerDependencies": {
-    "react": ">=16"
-  },
+
   "scripts": {
     "start": "react-scripts start",
     "test": "react-scripts test",
@@ -53,6 +40,18 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/jest": "^27.5.2",
+    "@types/node": "^16.18.23",
+    "@types/react": "^18.0.33",
+    "@types/react-dom": "^18.0.11",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1",
+    "typescript": "^5.0.5",
+    "web-vitals": "^2.1.4",
     "@babel/cli": "^7.21.0",
     "@babel/core": "^7.21.4",
     "@babel/preset-env": "^7.21.4",
@@ -63,9 +62,9 @@
     "rollup-plugin-dts": "^5.3.0",
     "rollup-plugin-postcss": "^4.0.2"
   },
-  "main": "dist/cjs/index.js",
+  "main": "dist/cjs/index.ts",
   "type": "module",
-  "module": "dist/esm/index.js",
+  "module": "dist/esm/index.ts",
   "files": [
     "dist"
   ],
