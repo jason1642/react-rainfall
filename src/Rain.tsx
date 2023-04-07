@@ -1,4 +1,6 @@
 import {useEffect, useState, useRef} from 'react'
+import './rain.css'
+
 interface IRainProps {
     numDrops: number;
     // Add other option props such as styles for rain container and droplets
@@ -61,7 +63,9 @@ const Rain: React.FunctionComponent<IRainProps> = ({numDrops = 0}) => {
     <div 
         id='Rain'
         ref={rainRef}
-    />
+    > 
+    {dropletArray}
+</div>
   );
 };
 
