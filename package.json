@@ -4,11 +4,12 @@
   "description": "Simple and customizable rainfall animation background for a parent element.",
   "author": {
     "name": "Jason Cruz"
-},
-"repository": {
-  "type": "git",
-  "url": "https://github.com/jason1642/react-rainfall.git"
-},
+  },
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jason1642/react-rainfall.git"
+  },
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -59,6 +60,14 @@
     "@rollup/plugin-node-resolve": "^15.0.2",
     "@rollup/plugin-typescript": "^11.1.0",
     "rollup": "^3.20.2",
-    "rollup-plugin-dts": "^5.3.0"
-  }
+    "rollup-plugin-dts": "^5.3.0",
+    "rollup-plugin-postcss": "^4.0.2"
+  },
+  "main": "dist/cjs/index.js",
+  "type": "module",
+  "module": "dist/esm/index.js",
+  "files": [
+    "dist"
+  ],
+  "types": "dist/index.d.ts"
 }

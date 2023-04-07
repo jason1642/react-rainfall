@@ -1,5 +1,5 @@
 import {useEffect, useState, useRef} from 'react'
-import './rain.css'
+import './Rain.css'
 
 interface IRainProps {
     numDrops: number;
