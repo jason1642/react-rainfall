@@ -3,7 +3,7 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/react-rainfall"
   },
-  "version": "0.1.34",
+  "version": "0.1.35",
   "description": "Simple and customizable rainfall animation background for a parent element",
   "author": {
     "name": "Jason Cruz"
@@ -39,15 +39,14 @@
     ]
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "21.0.1",
-    "@rollup/plugin-node-resolve": "13.0.6",
-    "@rollup/plugin-typescript": "8.3.3",
-    "@types/node": "^16.18.23",
-    "@types/react": "^17.0.34",
-    "react": "^17.0.2",
-    "rollup": "2.60.0",
-    "rollup-plugin-dts": "4.0.1",
-    "rollup-plugin-postcss": "4.0.1",
+    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-node-resolve": "^13.0.6",
+    "@rollup/plugin-typescript": "^8.3.3",
+    "@types/react": "^18.0.15",
+    "react": "^18.2.0",
+    "rollup": "^2.60.0",
+    "rollup-plugin-dts": "^4.0.1",
+    "rollup-plugin-postcss": "^4.0.1",
     "rollup-plugin-terser": "^7.0.2",
     "typescript": "^4.7.4",
     "tslib": "^2.5.0"
