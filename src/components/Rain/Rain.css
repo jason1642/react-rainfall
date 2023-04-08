@@ -1,39 +1,64 @@
 .droplet {
   /* Constants */
   position: absolute;
-    background-color: rgb(183, 212, 255);
+
+
+
 
   /* Customizable */
+    /* background = color of each droplet; Look into webkit/moz 
+       potentially a rainbow rain effect can be achieved by assign each droplet a different color for a set of 
+       colors that complement each other.
+       Background transparency adds an effect that makes the rain lighter than 1px and seem more far away
+    */
     /* background:-webkit-gradient(linear,0% 0%,0% 100%, from(rgba(13,52,58,1) ), to(rgba(255,255,255,0.5))  );
     background: -moz-linear-gradient(top, rgba(13,52,58,1) 0%, rgba(255,255,255,.5) 100%); */
     /* background-color: rgb(183, 212, 255); */
-    /* background-color: black; */
+    background-color: rgba(183, 212, 255, 0.752);
 
-    width:2px;
+    /* Width and height should have a max value as they cease to look like droplets after a certain point */
+    width:1px;
     height:80px;
     
     /* bottom:200px; */
     /* z-index: 10; */
-    color: white;
-  
+
+    
+    /* Preset values for the drop speed (seconds) should be provided; slow = 2s default = .73 fast = .40s */
     -webkit-animation: fall .73s linear infinite;
     -moz-animation: fall .73s linear infinite;
 
 
   }
 
+
+  /* drop animation styles */
+  /* @-webkit-keyframes fall {
+      to {margin-top:100px;}
+  }
+  @-moz-keyframes fall {
+      to {margin-top:900px;}
+  } */
+  
+  
+  @keyframes fall {
+    to {margin-top:1100px;}
+  }
+  /* This is the container where the droplets live. It requires a parent element to inherit the height and width
+     so h/w should never be customized.
+    
+  */
   #Rain {
     /* Constants */
     position: absolute;
     display: flex;
-    /* background-color: transparent; */
     overflow-y: hidden;
     overflow-x: hidden;
     border-radius: inherit;
     width: 100%;
     height: 100%;
     
-
+    
 
     /* Customizable */
     /* z-index: 10; */
@@ -72,14 +97,3 @@
 
 
   
-  /* drop animation styles */
-  /* @-webkit-keyframes fall {
-      to {margin-top:100px;}
-  }
-  @-moz-keyframes fall {
-      to {margin-top:900px;}
-  } */
-  
-  @keyframes fall {
-    to {margin-top:1100px;}
-  }

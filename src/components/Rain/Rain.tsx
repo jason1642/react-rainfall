@@ -24,19 +24,38 @@ interface IRainProps {
 // will automatically assign the number of drops depending on width, which the user can still change if more 
 // or less is desired.
 
+// Currently the rendering looks like a video that is being looped back from the same position. It doesn't look natural
+// and looks a bit choppy. More understanding of the animation and lifecycle of the droplet fall should be looked into.
+
+// For customization, I need to pass props that the user input into the stylesheet. This could be done multiple ways, 
+// SCSS seems to be perfect for this very small component.
+
+// This function will simply chose a number in between the min and max numbers provided. This could
+// stay the same if another function is used to identify the ranges based on the elements length.
 const randRange = (minNum: number, maxNum:number) =>{
     return (Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum);
   }
 
+  // Create an array of HTML div elements to be rendered. These have animation styled attached to them, which can all 
+  // be changed at the same time. They have their own unique positions which cannot be changed and must be rerendered
+  // to get a new set of droplets.
 const mapDroplets = (numDrops: number, rainRef: React.MutableRefObject<any>): Array<JSX.Element> =>{
   const array = []
+  // The max width here is important; we will need to make sure droplets are spread evenly(but still look natural with randomness).
+  // 
   const {clientWidth: maxWidth, clientHeight: maxHeight} = rainRef.current
+
+  // Personally I don't like using forloops and pushing (could possibly be better or worse), but this works. Simply returning a
+  // map could potentially be much better for optimization. The issue is Object.map must be called upon an array with that length,
+  // I should look into other ways to map and return without having a populated array already.
   for(let i = 0; i < numDrops; i++){
     array.push(
       <div 
         key={`drop${i}`}
         className='droplet'
+        // The ID used here is not used anywhere including the css file.
          id={`drop${i}`} 
+        //  Customization doesn't need to be made here as each droplet alone is insignificant to be styled individually instead of using the css class query
          style={{
             left: randRange(0, maxWidth),
             top: randRange(-1000, maxHeight)
