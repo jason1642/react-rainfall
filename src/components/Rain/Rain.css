@@ -1,28 +1,43 @@
 .droplet {
-    background:-webkit-gradient(linear,0% 0%,0% 100%, from(rgba(13,52,58,1) ), to(rgba(255,255,255,0.5))  );
-    background: -moz-linear-gradient(top, rgba(13,52,58,1) 0%, rgba(255,255,255,.5) 100%);
-    width:1px;
-    height:80px;
-    position: absolute;
-    /* bottom:200px; */
-    z-index: 10;
-    color: white;
+  /* Constants */
+  position: absolute;
     background-color: rgb(183, 212, 255);
+
+  /* Customizable */
+    /* background:-webkit-gradient(linear,0% 0%,0% 100%, from(rgba(13,52,58,1) ), to(rgba(255,255,255,0.5))  );
+    background: -moz-linear-gradient(top, rgba(13,52,58,1) 0%, rgba(255,255,255,.5) 100%); */
+    /* background-color: rgb(183, 212, 255); */
     /* background-color: black; */
+
+    width:2px;
+    height:80px;
+    
+    /* bottom:200px; */
+    /* z-index: 10; */
+    color: white;
+  
     -webkit-animation: fall .73s linear infinite;
     -moz-animation: fall .73s linear infinite;
+
+
   }
 
   #Rain {
+    /* Constants */
+    position: absolute;
     display: flex;
+    /* background-color: transparent; */
     overflow-y: hidden;
     overflow-x: hidden;
     border-radius: inherit;
-    z-index: 0;
     width: 100%;
     height: 100%;
-    position: absolute;
-    /* background-color: purple; */
+    
+
+
+    /* Customizable */
+    /* z-index: 10; */
+
   }
 
   body {
@@ -36,18 +51,18 @@
   
   }
   
-  #root{
+
+  /*  */
+  /* #root{
     position: relative;
     height: 600px;
     width: 600px;
     margin: 0 auto;
-    /* overflow-y: hidden; */
     margin-top: 80px;
     border-radius: 35px;
     background-color: rgb(14, 14, 47);
-    /* border: 1px solid grey; */
   
-  }
+  } */
   
   code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',

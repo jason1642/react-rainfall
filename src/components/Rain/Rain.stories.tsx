@@ -8,7 +8,15 @@ const meta: Meta<typeof Rain> = {
   component: Rain,
   decorators: [
     (Story) => (
-        <div style={{backgroundColor: 'black', position: 'relative', height: '500px', width: '500px'}} >
+        <div 
+          style={
+            {
+              backgroundColor: 'black',
+               position: 'relative',
+                height: '500px',
+                 width: '500px'
+                 }
+                 } >
             <Story />
         </div>
     )

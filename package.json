@@ -1,7 +1,8 @@
 {
-  "name": "@jason1642/react-rainfall",
+  "name": "react-rainfall",
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/react-rainfall"
+    "registry": "https://npm.pkg.github.com/react-rainfall",
+    "access": "public"
   },
   "version": "0.1.37",
   "description": "Simple and customizable rainfall animation background for a parent element",
