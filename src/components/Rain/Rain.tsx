@@ -2,7 +2,7 @@ import React, {useEffect, useState, useRef, RefObject} from 'react'
 import './Rain.css'
 
 interface IRainProps {
-    numDrops: number;
+    numDrops?: number;
     // Add other option props such as:
     // - styles for rain container and droplets
     // - Rain direction, speed, fall length
@@ -19,7 +19,7 @@ const mapDroplets = (numDrops: number, rainRef: React.MutableRefObject<any>): Ar
     array.push(
       <div 
         key={`drop${i}`}
-        className='drop'
+        className='droplet'
          id={`drop${i}`} 
          style={{
             left: randRange(0, maxWidth),
@@ -32,16 +32,18 @@ const mapDroplets = (numDrops: number, rainRef: React.MutableRefObject<any>): Ar
 } 
 
 
-const Rain: React.FunctionComponent<IRainProps> = ({numDrops = 0}) => {
+const Rain: React.FunctionComponent<IRainProps> = ({numDrops = 50}) => {
     
   
   // Attach this ref to container to get max height and width
   // Container width and height are 100% of the parents w/h so droplets are'nt positioned beyond boundaries
-  const rainRef = useRef<any>(null)
+  const rainRef: React.MutableRefObject<HTMLDivElement | null> = useRef(null)
   const [dropletArray, setDropletArray ] = useState<Array<any>>()
 
   useEffect(() => {
-    rainRef && setDropletArray(mapDroplets(numDrops, rainRef))
+    setDropletArray(mapDroplets(numDrops, rainRef))
+    console.log('Number of drops: ', rainRef.current?.childElementCount)
+    console.log(dropletArray)
   }, [numDrops, rainRef]);
   // Issues - positions are possibly greater than the width or height of the screen size, overflowing
   // the element making a scroll bar appear and disappear rapidly. 
@@ -69,7 +71,7 @@ const Rain: React.FunctionComponent<IRainProps> = ({numDrops = 0}) => {
     > 
     {dropletArray}
 </div>
-  );
-};
+  )
+}
 
 export default Rain;

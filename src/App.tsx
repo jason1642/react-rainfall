@@ -1,16 +1,18 @@
-import Rain from './components/Rain/Rain'
+// import Rain from './components/Rain/Rain'
 
-interface AppProps {
-  numDrops?: number;
-}
+// interface AppProps {
+//   numDrops?: number;
+// }
 
-const App: React.FunctionComponent<AppProps> = ({numDrops = 60})=>{
+// const App: React.FunctionComponent<AppProps> = ({numDrops = 60})=>{
 
-  return (
-    <Rain 
-      numDrops={numDrops}
-    />
-  );  
-}
+//   return (
+//     <Rain 
+//       numDrops={numDrops}
+//     />
+//   );  
+// }
 
-export default App;
+// export default App;
+
+export default <div>App</div>
