@@ -26,6 +26,11 @@ interface IRainProps {
 
 // Currently the rendering looks like a video that is being looped back from the same position. It doesn't look natural
 // and looks a bit choppy. More understanding of the animation and lifecycle of the droplet fall should be looked into.
+// Current range for vertical droplet position is -1000 <-> maxHeight, to make droplets look more natural, it could always start 
+// at a negative top position and end keyframe animation position at (top: set number greater than maxheight). 
+// CSS {animation-delay: -2s}(Using a negative number will cause the animation to appear to have been already playing for x seconds)
+// can be used to have the rain already start falling within the element since they initally would need some 
+// time to appear in the main element because they all start above the boundries of the element. 
 
 // For customization, I need to pass props that the user input into the stylesheet. This could be done multiple ways, 
 // SCSS seems to be perfect for this very small component.
@@ -39,6 +44,7 @@ const randRange = (minNum: number, maxNum:number) =>{
   // Create an array of HTML div elements to be rendered. These have animation styled attached to them, which can all 
   // be changed at the same time. They have their own unique positions which cannot be changed and must be rerendered
   // to get a new set of droplets.
+  // numDrops could be null to allow for a smart position function to determine number of drops based on width
 const mapDroplets = (numDrops: number, rainRef: React.MutableRefObject<any>): Array<JSX.Element> =>{
   const array = []
   // The max width here is important; we will need to make sure droplets are spread evenly(but still look natural with randomness).
@@ -57,8 +63,11 @@ const mapDroplets = (numDrops: number, rainRef: React.MutableRefObject<any>): Ar
          id={`drop${i}`} 
         //  Customization doesn't need to be made here as each droplet alone is insignificant to be styled individually instead of using the css class query
          style={{
-            left: randRange(0, maxWidth),
-            top: randRange(-1000, maxHeight)
+            animationDelay: `.${(Math.floor(Math.random() * (98 - 1 + 1) + 1))}s`,
+            // left: randRange(0, maxWidth),
+            // Come up with way to evenly split left position based on amount of drops
+            left: `${i}%`,
+            top: randRange(-1500, 250)
          }}
          />
       )

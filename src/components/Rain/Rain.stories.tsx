@@ -13,8 +13,8 @@ const meta: Meta<typeof Rain> = {
             {
               backgroundColor: 'black',
                position: 'relative',
-                height: '500px',
-                 width: '500px'
+                height: '650px',
+                 width: '1000px'
                  }
                  } >
             <Story />
