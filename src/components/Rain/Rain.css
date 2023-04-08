@@ -5,7 +5,7 @@
     height:80px;
     position: absolute;
     /* bottom:200px; */
-    /* z-index: 10; */
+    z-index: 10;
     color: white;
     background-color: rgb(183, 212, 255);
     /* background-color: black; */
