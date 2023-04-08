@@ -1,10 +1,13 @@
+
+/* Notes
+  Figure out how to change angle of the droplet so then can fall diagonally. rotate: 30deg changes angle of droplet
+  but does not change what direction they fall. It just falls straight down. 
+*/
+
 .droplet {
   /* Constants */
   position: absolute;
-
-
-
-
+  
   /* Customizable */
     /* background = color of each droplet; Look into webkit/moz 
        potentially a rainbow rain effect can be achieved by assign each droplet a different color for a set of 
@@ -20,6 +23,7 @@
     width:1px;
     height:80px;
     
+    rotate: 30deg;
     /* bottom:200px; */
     /* z-index: 10; */
 
@@ -28,7 +32,22 @@
     -webkit-animation: fall .73s linear infinite;
     -moz-animation: fall .73s linear infinite;
 
+    /* 
+    ~ Can be used to individually change duration while keeping others static
+      animation-duration: .73s;
+      
+    ~ Can be used to delay the animation using a positive value for #s (seconds). Not useful unless there is a specific 
+    reason to delay only the inital start of animation. If a negative value is provided then it will act as if the animation
+    has been playing for x seconds.
+      animation-delay: 2s;
 
+    ~ Can be used to set how many times the animation should run. Useful just to simply stop animation after specified amount 
+      of times or used in other transitions. Inifinte value would just continute to play animation forever.   
+      animation-iteration-count: 3;
+
+    ~
+      */
+      
   }
 
 
@@ -41,9 +60,43 @@
   } */
   
   
+
+  /* KEYFRAMES from droplet animation
+     requires to but not from as it will take existing values and gradually change to the 'to' values
+
+  */
   @keyframes fall {
-    to {margin-top:1100px;}
+    /* margin-top is used here because individual position is not known, and to pass on relative to current one
+       would probably hinder performance/memory.
+       To have droplets reach the bottom of element no matter what, i guess height 0 could be used with no
+       issues besides having to account for the speed based on vertical position
+    */
+    to {
+      margin-top:1100px;
+      margin-right: 1100px;
+    }
   }
+/*  This can be used to have all the colors be the same and change to different ones during the lifespan of the 
+    fall
+  @keyframes fall {
+    0%   {background-color: red;}
+    25%  {background-color: yellow;}
+    50%  {background-color: blue;}
+    100% {background-color: green;}
+     to {
+      margin-top:1100px;
+    }
+  } */
+
+
+
+
+
+
+
+
+
+
   /* This is the container where the droplets live. It requires a parent element to inherit the height and width
      so h/w should never be customized.
     
@@ -65,6 +118,12 @@
 
   }
 
+
+
+  
+
+
+
   body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -77,23 +136,6 @@
   }
   
 
-  /*  */
-  /* #root{
-    position: relative;
-    height: 600px;
-    width: 600px;
-    margin: 0 auto;
-    margin-top: 80px;
-    border-radius: 35px;
-    background-color: rgb(14, 14, 47);
   
-  } */
-  
-  code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-      monospace;
-  }
-  
-
 
   
