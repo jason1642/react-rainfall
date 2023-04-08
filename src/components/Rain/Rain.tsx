@@ -1,4 +1,4 @@
-import {useEffect, useState, useRef} from 'react'
+import React, {useEffect, useState, useRef, RefObject} from 'react'
 import './Rain.css'
 
 interface IRainProps {
@@ -41,7 +41,7 @@ const Rain: React.FunctionComponent<IRainProps> = ({numDrops = 0}) => {
   const [dropletArray, setDropletArray ] = useState<Array<any>>()
 
   useEffect(() => {
-    setDropletArray(mapDroplets(numDrops, rainRef))
+    rainRef && setDropletArray(mapDroplets(numDrops, rainRef))
   }, [numDrops, rainRef]);
   // Issues - positions are possibly greater than the width or height of the screen size, overflowing
   // the element making a scroll bar appear and disappear rapidly. 
