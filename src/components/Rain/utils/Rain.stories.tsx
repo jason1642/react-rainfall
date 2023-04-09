@@ -2,6 +2,8 @@ import React from "react";
 import { StoryObj, Meta } from "@storybook/react";
 import Rain from "../Rain";
 
+// View component with this story, changes saved in the code editor automatically show on storybook
+
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof Rain> = {
   title: "ReactComponentLibrary/Rain",
@@ -60,18 +62,19 @@ const meta: Meta<typeof Rain> = {
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 type Template = StoryObj<typeof Rain>;
 
-// export const HelloWorld = Template.bind({});
+
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
+// Change initial values here, leave them undefined to test default cases. Undefined turns the control value 
+// input into set object and won't work until its not undefined
 export const Primary: Template = {
   args: {
-    numDrops: 50
+    numDrops: undefined,
+    impact: true,
+    size: 'short',
+    dropletColor: 'rgb(30, 154, 255)',
+
+
   },
 };
-
-// export const ClickMe = Template.bind({});
-// ClickMe.args = {
-//   label: "Click me!",
-// };
-
 
 export default meta

@@ -1,11 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react'
 import './Rain.css'
 import mapDroplets from './utils/map-droplets';
-import type {numDrops, dropletColor} from './types'
+import type {dropletOptions} from './types'
 
-interface IRainProps {
-    numDrops?: numDrops;
-    dropletColor?: dropletColor;
+interface IRainProps extends dropletOptions {
     // Important - Limit amount of drain droplets to prevent a crash or performance 
     // Add other option props such as:
     // - styles for rain container and droplets
@@ -18,7 +16,7 @@ interface IRainProps {
 
 
 
-const Rain: React.FunctionComponent<IRainProps> = ({numDrops = 50, dropletColor, }) => {
+const Rain: React.FunctionComponent<IRainProps> = ({numDrops, dropletColor, size, impact,}) => {
     
   
   // Attach this ref to container to get max height and width
@@ -27,7 +25,15 @@ const Rain: React.FunctionComponent<IRainProps> = ({numDrops = 50, dropletColor,
   const [dropletArray, setDropletArray ] = useState<Array<React.ReactElement>>()
 
   useEffect(() => {
-    setDropletArray(mapDroplets(rainRef, {numDrops, dropletColor}))
+    setDropletArray(mapDroplets(rainRef,
+       {
+        numDrops,
+        dropletColor,
+        size,
+        impact
+        }))
+
+
     console.log('Number of drops: ', rainRef.current?.childElementCount)
     console.log(dropletArray)
   }, [numDrops, rainRef]);

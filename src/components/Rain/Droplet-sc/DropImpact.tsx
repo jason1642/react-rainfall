@@ -17,7 +17,7 @@ const DropImpact = styled.div<DropImpactProps>`
   transform: scale(0);
   animation: droplet-impact 0.5s linear infinite;
   /* Toggle display to remove effect */
-  display: block;
+  /* display: block; */
 
 
 @keyframes droplet-impact {

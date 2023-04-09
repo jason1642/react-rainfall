@@ -9,7 +9,7 @@ export type size = 'short' | 'default' | 'long' | undefined;
 export type impact = boolean | undefined;
 
 // This is used to pass into mapObjects as an object
-export type dropletOptions = {
+export interface dropletOptions {
     numDrops?: numDrops,
     dropletColor?: dropletColor,
     size?: size,
