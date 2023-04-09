@@ -23,7 +23,7 @@ const config =  [
         sourcemap: true,
       }, 
     ],
-    external: ['react-dom'],
+    external: ['react', 'react-dom'],
 
     plugins: [
       peerDepsExternal(),
