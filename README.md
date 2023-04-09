@@ -1,12 +1,35 @@
  # React Rainfall
   A simple to use React package that provides a rainfall animation effect to the background to a parent element.
+  NPM - https://www.npmjs.com/package/react-rainfall
+  
+  
+ ## Installation 
+ ```
+    npm i react-rainfall
+ ```
+ 
+ 
+ ## Usage 
+ ```tsx
+    import Rain from 'react-rainfall'
+
+    <div style={{
+       position: 'relative',
+       height: '600px',
+       width: '1000px'
+     }}> 
+       <Rain />
+    </div>
+ ```
 
  ## API
  
- Name | Is Required? | Default | Description 
---- | --- | --- | --- 
-numDrops | false | 100 | The number of rain drops that is animated
-dropletColor | false | white | Color of droplets, which will use a linear gradient effect
+ Name | Is Required? | type | Default | options | Description 
+--- | -- | --- | --- | --- | ----
+numDrops | false | number | 100 | number | The number of rain drops that is animated
+dropletColor | false | color in rbg() format | white | 'rgb(200, 200, 200) | Color of droplets, which will use a linear gradient effect. Must be in rgb format
+size | false | string | 'default' | 'short' (20px) <br /> 'default' (120px) <br /> 'long' (200px) | Change the length of the rain drops. 
+showImpact | false | boolean | true| boolean | Show the impact animation when the rain drop reachs the bottom
 
 
 
