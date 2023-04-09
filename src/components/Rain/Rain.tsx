@@ -55,14 +55,14 @@ const mapDroplets = (numDrops: number, rainRef: React.MutableRefObject<any>): Ar
   // map could potentially be much better for optimization. The issue is Object.map must be called upon an array with that length,
   // I should look into other ways to map and return without having a populated array already.
   for(let i = 0; i < numDrops; i++){
-    const randomUnder1Hundred = (Math.floor(Math.random() * (98 - 1 + 1) + 1));
+    const randomUnder1Hundred = (Math.floor(Math.random() * (98 - 1 + 1) + 1))
      //random number between 5 and 2
-     var randoFiver = (Math.floor(Math.random() * (5 - 2 + 1) + 2));
+    const randoFiver = (Math.floor(Math.random() * (5 - 2 + 1) + 2))
 
     array.push(
       <div 
         key={`drop${i}`}
-        className='droplet'
+        className='drop-container'
         // The ID used here is not used anywhere including the css file.
          id={`drop${i}`} 
         //  Customization doesn't need to be made here as each droplet alone is insignificant to be styled individually instead of using the css class query
@@ -71,16 +71,23 @@ const mapDroplets = (numDrops: number, rainRef: React.MutableRefObject<any>): Ar
             animationDelay: `.${randomUnder1Hundred}s`,
             bottom: `${(randoFiver + randoFiver - 1 + 100)}%`,
             // left: randRange(0, maxWidth),
-            // Come up with way to evenly split left position based on amount of drops
+            // Come up with way to evenly split left position number based on amount of drops and width
             left: `${i}%`,
             // top: randRange(-1500, 250)
          }}
          >
           <div
+            className='droplet'
+            style={{
+              animationDuration: `.5${randomUnder1Hundred}s`,
+              animationDelay: `.${randomUnder1Hundred}s`,
+            }}
+          />
+          <div
            className="droplet-impact" 
            style={{
-            animationDelay: `.5${randomUnder1Hundred}s`,
-             animationDuration: `.5${randomUnder1Hundred}s`,
+            animationDuration: `.5${randomUnder1Hundred}s`,
+            animationDelay: `.${randomUnder1Hundred}s`,
             }}
              />
             

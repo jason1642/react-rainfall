@@ -11,7 +11,8 @@ const meta: Meta<typeof Rain> = {
         <div 
           style={
             {
-              backgroundColor: 'linear-gradient(to bottom, #202020, #111119)',
+              // backgroundColor: 'linear-gradient(to bottom, #131313, #000000)',
+              backgroundColor: 'black',
                position: 'relative',
                border: '1px solid grey',
                borderRadius: '15px',
