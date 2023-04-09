@@ -26,7 +26,7 @@ const randRange = (minNum: number, maxNum:number) =>{
       const randoFiver = (Math.floor(Math.random() * (5 - 1) + 2))
   
       // Static gap between droplets
-      const gapLength = Math.floor(maxWidth / numDrops)
+      const gapLength = maxWidth / numDrops
       array.push(
         <div 
           key={`drop${i}`}
@@ -41,6 +41,7 @@ const randRange = (minNum: number, maxNum:number) =>{
               // Come up with way to evenly split left position number based on amount of drops and width.
               // If numDrops is provided/known, just divide maxWidth by number of droplets and multiply the index 
               // by the result. 
+              // 
               left: `${gapLength * i}px`,
 
 
