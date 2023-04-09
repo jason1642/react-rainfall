@@ -10,7 +10,7 @@
  
  
  ## Usage 
- ```tsx
+ ```jsx
     import Rain from 'react-rainfall'
 
     <div style={{
