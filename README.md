@@ -9,6 +9,12 @@ numDrops | false | 100 | The number of rain drops that is animated
 dropletColor | false | white | Color of droplets, which will use a linear gradient effect
 
 
+
+![](https://github.com/jason1642/react-rainfall/blob/main/rainfall-gif-04-09-23.gif)
+
+
+
+
 ### Developer notes
 
 ## Issues / potential problems 
