@@ -8,6 +8,7 @@ const selectDropletColor = (dropletColor: dropletColor, rainEffect: rainEffect):
 
     if(rainEffect === 'rainbow') {
         // console.log(`linear-gradient(to bottom, rgba(${rainbowColors[randomColor].split('(')[1].split(')')[0]}, 0), rgba(${rainbowColors[randomColor].split('(')[1].split(')')[0]}, .4))`)
+        // console.log(rainbowColors[(Math.floor(Math.random() * 7))])
         return rainbowColors[(Math.floor(Math.random() * 7))]
     }
 
