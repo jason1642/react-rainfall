@@ -12,13 +12,18 @@ export type rainEffect = 'rainbow' | undefined;
 
 export type fallSpeed = 'slow' | 'normal' | 'fast' | undefined;
 
+export type duration = 'slow' | 'normal' | 'fast' | undefined;
+
+export type dropletOpacity = number | undefined;
+
 // This is used to pass into mapObjects as an object
 export interface dropletOptions {
-    numDrops?: numDrops,
-    dropletColor?: dropletColor,
-    size?: size,
-    showImpact?: showImpact,
-    rainEffect?: rainEffect,
+   readonly numDrops?: numDrops,
+   readonly dropletColor?: dropletColor,
+   readonly size?: size,
+   readonly showImpact?: showImpact,
+   readonly rainEffect?: rainEffect,
+   readonly dropletOpacity?: dropletOpacity,
 
 }
 

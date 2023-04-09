@@ -87,7 +87,7 @@ const DropletContainer = styled.div<DropContainerProps>`
         previous number was 90vh for 75% and 100vh for 100%
         */
     100% {
-      transform: translateY(${({maxHeight, size})=> maxHeight + dropletSizes(size) + 45}px);
+      transform: translateY(${({maxHeight, size})=> maxHeight + dropletSizes(size) + 20}px);
     }
 
   }

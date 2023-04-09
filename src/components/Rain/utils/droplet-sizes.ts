@@ -3,11 +3,11 @@ import type { size } from "../types"
 const dropletSizes = (size: size)=> {
     switch(size){ 
         case 'default': 
-            return 120
+            return 100
         case 'short':
-            return 20;
+            return 25;
         case 'long': 
-            return  200;
+            return  180;
         default: 
             return 120;
     }

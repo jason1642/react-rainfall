@@ -14,7 +14,7 @@ import selectDropletColor from './select-droplet-color';
   // 
 
   const mapDroplets = (rainRef: React.MutableRefObject<any>, dropletOptions: dropletOptions): Array<React.ReactElement> =>{
-    const { dropletColor, numDrops, showImpact, size, rainEffect} = dropletOptions
+    const { dropletColor, numDrops, showImpact, size, rainEffect, dropletOpacity = .5} = dropletOptions
     const array = []
     // The max width here is important; we will need to make sure droplets are spread evenly(but still look natural with randomness).
     const {clientWidth: maxWidth, clientHeight: maxHeight} = rainRef.current
@@ -26,7 +26,7 @@ import selectDropletColor from './select-droplet-color';
        //random number between 5 and 2
       const randoFiver = (Math.floor(Math.random() * (5 - 1) + 2))
       const dropColor = selectDropletColor(dropletColor, rainEffect)
-      console.log(size)
+      console.log(showImpact)
       array.push(
         <DropletContainer
           maxHeight={maxHeight}
@@ -39,7 +39,7 @@ import selectDropletColor from './select-droplet-color';
           size={size}
      
            style={{
-              animationDuration: `.5${randomUnder1Hundred}s`,
+              animationDuration: `.6${randomUnder1Hundred}s`,
               animationDelay: `.${randomUnder1Hundred}s`,
               // Random % between 103 and 109 to vary the drops starting point, and have a more natural look
               bottom: `${(randoFiver + randoFiver - 1 + 100)}%`,
@@ -53,17 +53,18 @@ import selectDropletColor from './select-droplet-color';
               dropletColor={dropletColor}
               
               style={{
-                animationDuration: `.5${randomUnder1Hundred}s`,
+                animationDuration: `.6${randomUnder1Hundred}s`,
                 animationDelay: `.${randomUnder1Hundred}s`,
-
-                background: `linear-gradient(to bottom, rgba(${dropColor.split('(')[1].split(')')[0]}, 0), rgba(${dropColor?.split('(')[1].split(')')[0]}, .8))`
+                // Give option to change rain opacity
+                background: 
+                  `linear-gradient(to bottom, rgba(${dropColor.split('(')[1].split(')')[0]}, 0), rgba(${dropColor?.split('(')[1].split(')')[0]}, ${dropletOpacity}))`
               }}
             />
             <DropImpact
               dropletColor={dropletColor}
               style={{
-                display: showImpact ? 'block !important' : 'none !important',
-                animationDuration: `.5${randomUnder1Hundred}s`,
+                display: showImpact ? 'block' : 'none',
+                animationDuration: `.6${randomUnder1Hundred}s`,
                 animationDelay: `.${randomUnder1Hundred}s`,
                 borderTop: `2px dotted ${dropColor}`
               }}

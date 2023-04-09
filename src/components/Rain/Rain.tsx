@@ -11,7 +11,7 @@ interface IRainProps extends dropletOptions {
 
 }
 
-const Rain: React.FunctionComponent<IRainProps> = ({numDrops, dropletColor, size, showImpact, rainEffect}) => {
+const Rain: React.FunctionComponent<IRainProps> = ({numDrops, dropletColor, size, showImpact, rainEffect, dropletOpacity}) => {
     
   
   // Attach this ref to container to get max height and width
@@ -26,13 +26,14 @@ const Rain: React.FunctionComponent<IRainProps> = ({numDrops, dropletColor, size
         dropletColor,
         size,
         showImpact,
-        rainEffect
+        rainEffect,
+        dropletOpacity
         }))
 
 
     console.log('Number of drops: ', rainRef.current?.childElementCount)
-    console.log(dropletArray)
-  }, [numDrops, rainRef]);
+    // console.log(dropletArray)
+  }, [numDrops, rainRef, rainEffect, showImpact, dropletColor, size, dropletOpacity]);
   // Issues - positions are possibly greater than the width or height of the screen size, overflowing
   // the element making a scroll bar appear and disappear rapidly. 
 
