@@ -1,18 +1,18 @@
 import Droplet from '../Droplet-sc/Droplet'
 import DropImpact from '../Droplet-sc/DropImpact';
 import DropletContainer from '../Droplet-sc/DropContainer';
-import type {numDrops, dropletColor, dropletOptions} from '../types'
+import type {numDrops, dropletOptions} from '../types'
 
 
   // Create an array of HTML div elements to be rendered. These have animation styled attached to them, which can all 
   // be changed at the same time. They have their own unique positions which cannot be changed and must be rerendered
   // to get a new set of droplets.
   // numDrops could be null to allow for a smart position function to determine number of drops based on width
-  const mapDroplets = (numDrops: numDrops = 100, rainRef: React.MutableRefObject<any>, dropletOptions: dropletOptions): Array<React.ReactElement> =>{
+  const mapDroplets = (rainRef: React.MutableRefObject<any>, dropletOptions: dropletOptions): Array<React.ReactElement> =>{
+    const {dropletColor = 'rgb(255, 135, 235)', numDrops = 100} = dropletOptions
     const array = []
     // The max width here is important; we will need to make sure droplets are spread evenly(but still look natural with randomness).
-    // 
-    const myDropletColor = 'rgb(255, 135, 235)'
+    
     const {clientWidth: maxWidth, clientHeight: maxHeight} = rainRef.current
     
     // If I am calculating the number of drops according to width px and drops per x%, check/set numDrops before moving on
@@ -51,14 +51,14 @@ import type {numDrops, dropletColor, dropletOptions} from '../types'
             {/* animation timing for proceeding two divs don't need much customization */}
             <Droplet
               // className='droplet'
-              dropletColor={myDropletColor}
+              dropletColor={dropletColor}
               style={{
                 animationDuration: `.5${randomUnder1Hundred}s`,
                 animationDelay: `.${randomUnder1Hundred}s`,
               }}
             />
             <DropImpact
-              dropletColor={myDropletColor}
+              dropletColor={dropletColor}
               style={{
                 animationDuration: `.5${randomUnder1Hundred}s`,
                 animationDelay: `.${randomUnder1Hundred}s`,
