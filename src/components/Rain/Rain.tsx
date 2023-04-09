@@ -55,6 +55,7 @@ const Rain: React.FunctionComponent<IRainProps> = ({numDrops, dropletColor, size
 
   // Last version checks if number of drops changes, if so stop then start the rain again with new value
 
+  
     return ( 
       <div id='Rain' ref={rainRef}> 
         {dropletArray}
