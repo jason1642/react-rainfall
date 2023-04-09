@@ -9,7 +9,7 @@ const meta: Meta<typeof Rain> = {
   decorators: [
     (Story) => (
       <>
-      <div 
+      {/* <div 
           style={
             {
               backgroundColor: 'black',
@@ -19,7 +19,7 @@ const meta: Meta<typeof Rain> = {
                 height: '1000px',
                  width: '800px'
                  }
-                 } ></div>
+                 } ></div> */}
         <div 
           style={
             {

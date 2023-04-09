@@ -4,7 +4,7 @@
   but does not change what direction they fall. It just falls straight down. 
 */
 
-.drop-container{
+.drop-container-old{
   position: absolute;
   bottom: 100%;
   width: 15px;
@@ -80,7 +80,7 @@
 
 
 
-.droplet {
+.droplet-old {
   /* Constants */
   position: absolute;
   /* margin-left: 7px; */
@@ -130,7 +130,7 @@
 
 
 
-.droplet-impact{
+.droplet-impact-old{
   width: 15px;
   height: 10px;
   border-top: 2px dotted rgb(255, 255, 255);

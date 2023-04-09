@@ -1,8 +1,21 @@
 import styled from 'styled-components';
 
+interface DropContainerProps {
+    gapLength: number;
+}
+
+const DropletContainer = styled.div<DropContainerProps>`
+  /* Constants */
 
 
-const DropletContainer = styled.div`
+  /* Customizable */
+    left: ${(({gapLength})=>gapLength)}px;
+
+
+
+
+
+
     position: absolute;
     bottom: 100%;
     width: 15px;

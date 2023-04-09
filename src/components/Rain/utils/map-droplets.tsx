@@ -1,12 +1,6 @@
-// This function will simply chose a number in between the min and max numbers provided. This could
-// stay the same if another function is used to identify the ranges based on the elements length.
-const randRange = (minNum: number, maxNum:number) =>{
-  return (Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum);
-}
-
-
-
-
+import Droplet from '../Droplet-sc/Droplet'
+import DropImpact from '../Droplet-sc/DropImpact';
+import DropletContainer from '../Droplet-sc/DropContainer';
 
 
   // Create an array of HTML div elements to be rendered. These have animation styled attached to them, which can all 
@@ -25,14 +19,15 @@ const randRange = (minNum: number, maxNum:number) =>{
        //random number between 5 and 2
       const randoFiver = (Math.floor(Math.random() * (5 - 1) + 2))
   
-      // Static gap between droplets
-      const gapLength = maxWidth / numDrops
+      console.log(randomUnder1Hundred)
+      console.log(randoFiver)
       array.push(
-        <div 
+        <DropletContainer
           key={`drop${i}`}
-          className='drop-container'
-           id={`drop${i}`} 
-  
+          // className='drop-container'
+          id={`drop${i}`}
+          // Static gap between droplets
+          gapLength={(maxWidth / numDrops) * i}
            style={{
               animationDuration: `.5${randomUnder1Hundred}s`,
               animationDelay: `.${randomUnder1Hundred}s`,
@@ -42,15 +37,8 @@ const randRange = (minNum: number, maxNum:number) =>{
               // If numDrops is provided/known, just divide maxWidth by number of droplets and multiply the index 
               // by the result. 
               // 
-              left: `${gapLength * i}px`,
-
-
-
-
-              //   If user puts in numDrops = 60, how do we calculate left: x in styles for each droplet
-              // 
-              // 
-              // 
+                // If user puts in numDrops = 60, how do we calculate left: x in styles for each droplet
+              //  - (maxWidth / numDrops) * i  to get evenly spread out drops. Do not round this number.
               // 
               // 
               // 
@@ -59,22 +47,23 @@ const randRange = (minNum: number, maxNum:number) =>{
            >
   
             {/* animation timing for proceeding two divs don't need much customization */}
-            <div
-              className='droplet'
+            <Droplet
+              // className='droplet'
+              dropletColor={'rgb(183, 212, 255)'}
               style={{
                 animationDuration: `.5${randomUnder1Hundred}s`,
                 animationDelay: `.${randomUnder1Hundred}s`,
               }}
             />
-            <div
-             className="droplet-impact" 
+            <DropImpact
+            //  className="droplet-impact" 
              style={{
-              animationDuration: `.5${randomUnder1Hundred}s`,
-              animationDelay: `.${randomUnder1Hundred}s`,
+                animationDuration: `.5${randomUnder1Hundred}s`,
+                animationDelay: `.${randomUnder1Hundred}s`,
               }}
                />
               
-           </div>
+           </DropletContainer>
         )
     }
     return array
