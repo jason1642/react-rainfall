@@ -32,7 +32,7 @@ const meta: Meta<typeof Rain> = {
                 height: '650px',
                 marginTop: '150px',
                 marginLeft: '150px',
-                 width: '800px'
+                 width: '1200px'
                  }
                  } >
             <Story />

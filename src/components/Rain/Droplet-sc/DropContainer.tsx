@@ -10,6 +10,13 @@ const DropletContainer = styled.div<DropContainerProps>`
 
     position: absolute;
     bottom: 100%;
+       // Come up with way to evenly split left position number based on amount of drops and width.
+        // If numDrops is provided/known, just divide maxWidth by number of droplets and multiply the index 
+        // by the result. 
+        // 
+        // If user puts in numDrops = 60, how do we calculate left: x in styles for each droplet
+        //  - (maxWidth / numDrops) * i  to get evenly spread out drops. Do not round this number.
+        // 
   left: ${(({gapLength})=>gapLength)}px;
 
   /* Customizable */
@@ -67,7 +74,6 @@ const DropletContainer = styled.div<DropContainerProps>`
        
        height of parent container + height of droplet
        */
-
     75% {
         transform: translateY(${({maxHeight})=> maxHeight + 120}px);
     }

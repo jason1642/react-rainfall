@@ -6,8 +6,9 @@ import type { dropletOptions } from '../types'
 
   // Create an array of HTML div elements to be rendered. These have animation styled attached to them, which can all 
   // be changed at the same time. They have their own unique positions which cannot be changed and must be rerendered
-  // to get a new set of droplets.
-  // numDrops could be null to allow for a smart position function to determine number of drops based on width
+  // to get a new set of droplets. 
+  // numDrops could be undefined to allow for a smart position function to determine number of drops based on width
+
   const mapDroplets = (rainRef: React.MutableRefObject<any>, dropletOptions: dropletOptions): Array<React.ReactElement> =>{
     const {dropletColor = 'rgb(102, 122, 255)', numDrops = 100} = dropletOptions
     const array = []
@@ -21,8 +22,8 @@ import type { dropletOptions } from '../types'
        //random number between 5 and 2
       const randoFiver = (Math.floor(Math.random() * (5 - 1) + 2))
   
-      console.log(randomUnder1Hundred)
-      console.log(randoFiver)
+      // console.log(randomUnder1Hundred)
+      // console.log(randoFiver)
       array.push(
         <DropletContainer
           maxHeight={maxHeight}
@@ -30,22 +31,12 @@ import type { dropletOptions } from '../types'
           // className='drop-container'
           id={`drop${i}`}
           // Static gap between droplets
-          gapLength={(maxWidth / numDrops) * i}
+          gapLength={numDrops ? ((maxWidth / numDrops) * i) : Math.floor(maxWidth / 25)}
            style={{
               animationDuration: `.5${randomUnder1Hundred}s`,
               animationDelay: `.${randomUnder1Hundred}s`,
               // Random % between 103 and 109 to vary the drops starting point, and have a more natural look
               bottom: `${(randoFiver + randoFiver - 1 + 100)}%`,
-              // Come up with way to evenly split left position number based on amount of drops and width.
-              // If numDrops is provided/known, just divide maxWidth by number of droplets and multiply the index 
-              // by the result. 
-              // 
-                // If user puts in numDrops = 60, how do we calculate left: x in styles for each droplet
-              //  - (maxWidth / numDrops) * i  to get evenly spread out drops. Do not round this number.
-              // 
-              // 
-              // 
-
            }}
            >
   
