@@ -9,14 +9,18 @@ import type { dropletOptions } from '../types'
   // to get a new set of droplets. 
   // numDrops could be undefined to allow for a smart position function to determine number of drops based on width
 
+  // Read certain input values before moving on with the mapping - rainEffect, 
+  // Choosing certain effects might negate certain other options chosen depending on the effect. ex: choosing rainbow will negate any color options given
+  // 
+
   const mapDroplets = (rainRef: React.MutableRefObject<any>, dropletOptions: dropletOptions): Array<React.ReactElement> =>{
-    const { dropletColor = 'rgb(102, 122, 255)', numDrops, showImpact, size, } = dropletOptions
+    const { dropletColor = 'rgb(102, 122, 255)', numDrops, showImpact, size, rainEffect} = dropletOptions
     const array = []
     // The max width here is important; we will need to make sure droplets are spread evenly(but still look natural with randomness).
-    
     const {clientWidth: maxWidth, clientHeight: maxHeight} = rainRef.current
-    const numDropsCount = numDrops ? Math.floor(numDrops) : Math.floor(maxWidth / 25)
     // If I am calculating the number of drops according to width px and drops per x%, check/set numDrops before moving on
+    const numDropsCount = numDrops ? Math.floor(numDrops) : Math.floor(maxWidth / 25)
+    
     for(let i = 0; i < numDropsCount; i++){
       const randomUnder1Hundred = (Math.floor(Math.random() * (98 - 1 + 1) + 1))
        //random number between 5 and 2
