@@ -1,5 +1,6 @@
 import React, {useEffect, useState, useRef, RefObject} from 'react'
 import './Rain.css'
+import mapDroplets from './map-droplets';
 
 interface IRainProps {
     numDrops?: number;
@@ -35,67 +36,7 @@ interface IRainProps {
 // For customization, I need to pass props that the user input into the stylesheet. This could be done multiple ways, 
 // SCSS seems to be perfect for this very small component.
 
-// This function will simply chose a number in between the min and max numbers provided. This could
-// stay the same if another function is used to identify the ranges based on the elements length.
-const randRange = (minNum: number, maxNum:number) =>{
-    return (Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum);
-  }
 
-  // Create an array of HTML div elements to be rendered. These have animation styled attached to them, which can all 
-  // be changed at the same time. They have their own unique positions which cannot be changed and must be rerendered
-  // to get a new set of droplets.
-  // numDrops could be null to allow for a smart position function to determine number of drops based on width
-const mapDroplets = (numDrops: number, rainRef: React.MutableRefObject<any>): Array<JSX.Element> =>{
-  const array = []
-  // The max width here is important; we will need to make sure droplets are spread evenly(but still look natural with randomness).
-  // 
-  const {clientWidth: maxWidth, clientHeight: maxHeight} = rainRef.current
-  
-  // Personally I don't like using forloops and pushing (could possibly be better or worse), but this works. Simply returning a
-  // map could potentially be much better for optimization. The issue is Object.map must be called upon an array with that length,
-  // I should look into other ways to map and return without having a populated array already.
-  for(let i = 0; i < numDrops; i++){
-    const randomUnder1Hundred = (Math.floor(Math.random() * (98 - 1 + 1) + 1))
-     //random number between 5 and 2
-    const randoFiver = (Math.floor(Math.random() * (5 - 2 + 1) + 2))
-
-    array.push(
-      <div 
-        key={`drop${i}`}
-        className='drop-container'
-        // The ID used here is not used anywhere including the css file.
-         id={`drop${i}`} 
-        //  Customization doesn't need to be made here as each droplet alone is insignificant to be styled individually instead of using the css class query
-         style={{
-            animationDuration: `.5${randomUnder1Hundred}s`,
-            animationDelay: `.${randomUnder1Hundred}s`,
-            bottom: `${(randoFiver + randoFiver - 1 + 100)}%`,
-            // left: randRange(0, maxWidth),
-            // Come up with way to evenly split left position number based on amount of drops and width
-            left: `${i}%`,
-            // top: randRange(-1500, 250)
-         }}
-         >
-          <div
-            className='droplet'
-            style={{
-              animationDuration: `.5${randomUnder1Hundred}s`,
-              animationDelay: `.${randomUnder1Hundred}s`,
-            }}
-          />
-          <div
-           className="droplet-impact" 
-           style={{
-            animationDuration: `.5${randomUnder1Hundred}s`,
-            animationDelay: `.${randomUnder1Hundred}s`,
-            }}
-             />
-            
-         </div>
-      )
-  }
-  return array
-} 
 
 
 const Rain: React.FunctionComponent<IRainProps> = ({numDrops = 50}) => {
@@ -129,15 +70,11 @@ const Rain: React.FunctionComponent<IRainProps> = ({numDrops = 50}) => {
 
   // Last version checks if number of drops changes, if so stop then start the rain again with new value
 
-  
-    return (
-    <div 
-        id='Rain'
-        ref={rainRef}
-    > 
-    {dropletArray}
-</div>
-  )
+    return ( 
+      <div id='Rain' ref={rainRef}> 
+        {dropletArray}
+      </div>
+    )
 }
 
 export default Rain;
