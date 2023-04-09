@@ -70,7 +70,7 @@ export const Primary: Template = {
   args: {
     numDrops: 10,
     showImpact: true,
-    size: 'default',
+    size: 'long',
     dropletColor: 'rgb(255, 255,255)',
     rainEffect: 'rainbow',
     dropletOpacity: .5,

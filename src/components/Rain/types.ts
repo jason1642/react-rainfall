@@ -15,6 +15,8 @@ export type duration = 'slow' | 'normal' | 'fast' | undefined;
 
 export type dropletOpacity = number | undefined;
 
+// Drop distance (from bottom) Should have support for rem, em, px, etc
+export type dropDistance = number | undefined;
 
 // This is used to pass into mapObjects as an object
 export interface dropletOptions {

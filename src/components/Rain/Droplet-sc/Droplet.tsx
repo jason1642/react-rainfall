@@ -50,6 +50,10 @@ const Droplet = styled.div<DropletProps>`
     0% {
       opacity: 1;
     }
+
+    50% {
+      /* opacity: .6; */
+    }
     65% {
       opacity: 1;
     }
