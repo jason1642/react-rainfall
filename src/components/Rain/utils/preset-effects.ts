@@ -1,4 +1,4 @@
-const rainbowColors = [
+export const rainbowColors = [
     // red
     'rgb(255, 0, 0)',
     // orange
@@ -25,5 +25,5 @@ const rainbowColors = [
 
 
 export const rainbow = {
-    
+
 }

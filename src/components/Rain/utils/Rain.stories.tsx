@@ -71,8 +71,8 @@ export const Primary: Template = {
     numDrops: undefined,
     showImpact: true,
     size: 'short',
-    dropletColor: 'rgb(30, 154, 255)',
-
+    dropletColor: undefined,
+    rainEffect: 'rainbow',
 
   },
 };

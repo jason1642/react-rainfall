@@ -11,11 +11,6 @@ interface IRainProps extends dropletOptions {
 
 }
 
-
-
-
-
-
 const Rain: React.FunctionComponent<IRainProps> = ({numDrops, dropletColor, size, showImpact, rainEffect}) => {
     
   
