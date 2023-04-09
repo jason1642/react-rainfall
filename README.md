@@ -12,7 +12,7 @@
  ## Usage 
  ```jsx
     import Rain from 'react-rainfall'
-   // IMPORTANT - Parent element must have position relative or else rain will be positions based on viewport 
+   // IMPORTANT - Parent element must have position relative or else rain will be positioned based on viewport 
     <div style={{
        position: 'relative',
        height: '600px',
