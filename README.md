@@ -1,47 +1,35 @@
-# Getting Started with Create React App
+ # React Rainfall
+  A simple to use React package that provides a rainfall animation effect to the background to a parent element.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+ ## API
+ 
+ Name | Is Required? | Default | Description 
+--- | --- | --- | --- 
+numDrops | false | 100 | The number of rain drops that is animated
+dropletColor | false | white | Color of droplets, which will use a linear gradient effect
 
-## Available Scripts
 
-In the project directory, you can run:
+### Developer notes
 
-### `npm start`
+## Issues / potential problems 
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- (April 7th, 2023 ) Droplets are positions at random from start of end of height/width lengths. This means that
+it is possible to have most droplets at one half of an element (with bad luck). This can be addressed
+by making sure there is atleast 1 droplet for every 10 pixels (or something similar)
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+-  (April 7th, 2023 ) The default amount of droplets is 50 (currently), this means elements with a wide length will have droplets with 
+too much space in between them (positions being random from 0 - maxwidth makes this a bigger problem).
+To prevent having the user figure out what is the correct amount for their element (depending on its 
+length and responsiveness), an algorithm should be created to assign positions for droplets for x amount 
+of pixels. Then move on to the next interval until there is no more space to continue adding more. This 
+will automatically assign the number of drops depending on width, which the user can still change if more 
+or less is desired.
 
-### `npm test`
+-  (April 8th, 2023 ) Currently the rendering looks like a video that is being looped back from the same position. It doesn't look natural
+and looks a bit choppy. More understanding of the animation and lifecycle of the droplet fall should be looked into.
+Current range for vertical droplet position is -1000 <-> maxHeight, to make droplets look more natural, it could always start 
+at a negative top position and end keyframe animation position at (top: set number greater than maxheight). 
+CSS {animation-delay: -2s}(Using a negative number will cause the animation to appear to have been already playing for x seconds)
+can be used to have the rain already start falling within the element since they initally would need some 
+time to appear in the main element because they all start above the boundries of the element. 
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-# react-rainfall
