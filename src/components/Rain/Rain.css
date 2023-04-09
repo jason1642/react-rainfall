@@ -6,7 +6,7 @@
 .droplet {
   /* Constants */
   position: absolute;
-  
+  margin-left: 7px;
   /* Customizable */
     /* background = color of each droplet; Look into webkit/moz 
        potentially a rainbow rain effect can be achieved by assign each droplet a different color for a set of 
@@ -16,7 +16,7 @@
     /* background:-webkit-gradient(linear,0% 0%,0% 100%, from(rgba(13,52,58,1) ), to(rgba(255,255,255,0.5))  );
     background: -moz-linear-gradient(top, rgba(13,52,58,1) 0%, rgba(255,255,255,.5) 100%); */
     /* background-color: rgb(183, 212, 255); */
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.25));
+    background: linear-gradient(to bottom, rgba(174, 137, 137, 0), rgba(255, 255, 255, 0.25));
 
     /* Width and height should have a max value as they cease to look like droplets after a certain point */
     width: 1px;
@@ -48,7 +48,7 @@
     ~
       */
       
-      animation-delay: -2s;
+      /* animation-delay: -3s; */
   }
 
 
@@ -75,12 +75,17 @@
 
     0% {
       transform: translateY(0%);
+      opacity: 1;
     }
     75% {
-      transform: translateY(90vh);
+      transform: translateY(585px);
+     
+    }
+    90%{
+       opacity: 0;
     }
     100% {
-      transform: translateY(100vh);
+      transform: translateY(650px);
     }
     /* to {
       margin-top: 300%;
@@ -99,8 +104,36 @@
     }
   } */
 
+.droplet-impact{
+  width: 15px;
+  height: 10px;
+  border-top: 2px dotted rgb(255, 255, 255);
+  border-radius: 50%;
+  opacity: 1;
+  transform: scale(0);
+  animation: droplet-impact 0.5s linear infinite;
+  /* Toggle display to remove effect */
+  display: block;
+}
 
-
+@keyframes droplet-impact {
+  0% {
+    opacity: 1;
+    transform: scale(0);
+  }
+  80% {
+    opacity: 1;
+    transform: scale(0);
+  }
+  90% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+}
 
 
 
