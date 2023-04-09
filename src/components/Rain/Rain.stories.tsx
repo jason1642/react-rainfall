@@ -9,13 +9,24 @@ const meta: Meta<typeof Rain> = {
   decorators: [
     (Story) => (
       <>
+      <div 
+          style={
+            {
+              backgroundColor: 'black',
+               position: 'relative',
+               border: '1px solid red',
+               borderRadius: '15px',
+                height: '1000px',
+                 width: '800px'
+                 }
+                 } ></div>
         <div 
           style={
             {
               // backgroundColor: 'linear-gradient(to bottom, #131313, #000000)',
               backgroundColor: 'black',
                position: 'relative',
-               border: '1px solid grey',
+               border: '1px solid blue',
                borderRadius: '15px',
                 height: '650px',
                  width: '1000px'
@@ -24,12 +35,14 @@ const meta: Meta<typeof Rain> = {
             <Story />
 
         
-        </div>     <div 
+        </div>    
+        
+        <div 
           style={
             {
-              backgroundColor: 'grey',
+              backgroundColor: 'black',
                position: 'relative',
-               border: '1px solid grey',
+               border: '1px solid yellow',
                borderRadius: '15px',
                 height: '1000px',
                  width: '800px'
