@@ -69,7 +69,7 @@ type Template = StoryObj<typeof Rain>;
 export const Primary: Template = {
   args: {
     numDrops: undefined,
-    impact: true,
+    showImpact: true,
     size: 'short',
     dropletColor: 'rgb(30, 154, 255)',
 

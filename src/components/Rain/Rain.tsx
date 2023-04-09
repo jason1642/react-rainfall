@@ -16,7 +16,7 @@ interface IRainProps extends dropletOptions {
 
 
 
-const Rain: React.FunctionComponent<IRainProps> = ({numDrops, dropletColor, size, impact,}) => {
+const Rain: React.FunctionComponent<IRainProps> = ({numDrops, dropletColor, size, showImpact,}) => {
     
   
   // Attach this ref to container to get max height and width
@@ -30,7 +30,7 @@ const Rain: React.FunctionComponent<IRainProps> = ({numDrops, dropletColor, size
         numDrops,
         dropletColor,
         size,
-        impact
+        showImpact
         }))
 
 
