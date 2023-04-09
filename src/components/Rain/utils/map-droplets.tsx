@@ -14,19 +14,20 @@ import selectDropletColor from './select-droplet-color';
   // 
 
   const mapDroplets = (rainRef: React.MutableRefObject<any>, dropletOptions: dropletOptions): Array<React.ReactElement> =>{
-    const { dropletColor, numDrops, showImpact, size, rainEffect, dropletOpacity = .5} = dropletOptions
+    const { dropletColor, numDrops, showImpact = true, size, rainEffect, dropletOpacity = .5} = dropletOptions
     const array = []
     // The max width here is important; we will need to make sure droplets are spread evenly(but still look natural with randomness).
     const {clientWidth: maxWidth, clientHeight: maxHeight} = rainRef.current
     // If I am calculating the number of drops according to width px and drops per x%, check/set numDrops before moving on
     const numDropsCount = numDrops ? Math.floor(numDrops) : Math.floor(maxWidth / 25)
 
+
     for(let i = 0; i < numDropsCount; i++){
       const randomUnder1Hundred = (Math.floor(Math.random() * (98 - 1 + 1) + 1))
        //random number between 5 and 2
       const randoFiver = (Math.floor(Math.random() * (5 - 1) + 2))
       const dropColor = selectDropletColor(dropletColor, rainEffect)
-      console.log(showImpact)
+      // console.log(showImpact)
       array.push(
         <DropletContainer
           maxHeight={maxHeight}
@@ -60,15 +61,18 @@ import selectDropletColor from './select-droplet-color';
                   `linear-gradient(to bottom, rgba(${dropColor.split('(')[1].split(')')[0]}, 0), rgba(${dropColor?.split('(')[1].split(')')[0]}, ${dropletOpacity}))`
               }}
             />
-            <DropImpact
+            {
+                showImpact && <DropImpact
               dropletColor={dropletColor}
               style={{
-                display: showImpact ? 'block' : 'none',
+                display: 'block',
                 animationDuration: `.6${randomUnder1Hundred}s`,
                 animationDelay: `.${randomUnder1Hundred}s`,
                 borderTop: `2px dotted ${dropColor}`
               }}
                />
+            }
+          
               
            </DropletContainer>
         )

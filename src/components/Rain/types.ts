@@ -3,7 +3,6 @@ export type numDrops = number | undefined;
 
 export type dropletColor = `rgb(${string},${string},${string})` | undefined;
 
-// Droplet size
 export type size = 'short' | 'default' | 'long' | undefined;
 
 export type showImpact = boolean | undefined;
@@ -15,6 +14,7 @@ export type fallSpeed = 'slow' | 'normal' | 'fast' | undefined;
 export type duration = 'slow' | 'normal' | 'fast' | undefined;
 
 export type dropletOpacity = number | undefined;
+
 
 // This is used to pass into mapObjects as an object
 export interface dropletOptions {

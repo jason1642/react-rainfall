@@ -68,11 +68,12 @@ type Template = StoryObj<typeof Rain>;
 // input into set object and won't work until its not undefined
 export const Primary: Template = {
   args: {
-    numDrops: undefined,
+    numDrops: 10,
     showImpact: true,
     size: 'default',
-    dropletColor: undefined,
+    dropletColor: 'rgb(255, 255,255)',
     rainEffect: 'rainbow',
+    dropletOpacity: .5,
 
   },
 };
