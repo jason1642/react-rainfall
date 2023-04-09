@@ -4,7 +4,7 @@
     "registry": "https://npm.pkg.github.com/react-rainfall",
     "access": "public"
   },
-  "version": "0.1.37",
+  "version": "0.1.4",
   "description": "Simple and customizable rainfall animation background for a parent element",
   "author": {
     "name": "Jason Cruz"

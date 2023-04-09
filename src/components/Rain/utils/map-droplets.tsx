@@ -1,7 +1,7 @@
 import Droplet from '../Droplet-sc/Droplet'
 import DropImpact from '../Droplet-sc/DropImpact';
 import DropletContainer from '../Droplet-sc/DropContainer';
-import type {numDrops, dropletOptions} from '../types'
+import type { dropletOptions } from '../types'
 
 
   // Create an array of HTML div elements to be rendered. These have animation styled attached to them, which can all 
@@ -9,7 +9,7 @@ import type {numDrops, dropletOptions} from '../types'
   // to get a new set of droplets.
   // numDrops could be null to allow for a smart position function to determine number of drops based on width
   const mapDroplets = (rainRef: React.MutableRefObject<any>, dropletOptions: dropletOptions): Array<React.ReactElement> =>{
-    const {dropletColor = 'rgb(255, 135, 235)', numDrops = 100} = dropletOptions
+    const {dropletColor = 'rgb(102, 122, 255)', numDrops = 100} = dropletOptions
     const array = []
     // The max width here is important; we will need to make sure droplets are spread evenly(but still look natural with randomness).
     
@@ -25,6 +25,7 @@ import type {numDrops, dropletOptions} from '../types'
       console.log(randoFiver)
       array.push(
         <DropletContainer
+          maxHeight={maxHeight}
           key={`drop${i}`}
           // className='drop-container'
           id={`drop${i}`}

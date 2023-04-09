@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 interface DropContainerProps {
     gapLength: number;
+    maxHeight: number;
 }
 
 const DropletContainer = styled.div<DropContainerProps>`
@@ -22,7 +23,7 @@ const DropletContainer = styled.div<DropContainerProps>`
     width: 15px;
     height: 120px;
     pointer-events: none;
-    animation: fall 0.5s linear infinite;
+    animation: fall .5s linear infinite;
 
     /* Preset values for the drop speed (seconds) should be provided; slow = 2s default = .73 fast = .40s */
     -webkit-animation: fall .5s linear infinite;
@@ -47,10 +48,6 @@ const DropletContainer = styled.div<DropContainerProps>`
       /* animation-delay: -3s; */
 
 
-    -webkit-animation: fall .5s linear infinite;
-    -moz-animation: fall .5s linear infinite;
-
-
   /* KEYFRAMES from droplet animation
      requires to but not from as it will take existing values and gradually change to the 'to' values
   */
@@ -67,14 +64,16 @@ const DropletContainer = styled.div<DropContainerProps>`
        according to the value provided. Here, the entire droplet position is being shifted downward by 90vh. 
        Calculating the pixels by height of parent element plus 120 to compensate for height of the droplet
        Changing the values below determines when the entire droplet stops and triggers the droplet-impact animation 
-        height of parent container + height of droplet
+       
+       height of parent container + height of droplet
        */
+
     75% {
-      transform: translateY(725px);
+        transform: translateY(${({maxHeight})=> maxHeight + 120}px);
     }
 
     100% {
-      transform: translateY(770px);
+      transform: translateY(${({maxHeight})=> maxHeight + 120 + 45}px);
     }
 
   }

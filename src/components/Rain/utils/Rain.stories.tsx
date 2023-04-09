@@ -17,19 +17,22 @@ const meta: Meta<typeof Rain> = {
                border: '1px solid red',
                borderRadius: '15px',
                 height: '1000px',
-                 width: '800px'
+                 width: '800px',
+                 marginBottom: '200px',
                  }
                  } ></div> */}
         <div 
           style={
             {
               // backgroundColor: 'linear-gradient(to bottom, #131313, #000000)',
-              backgroundColor: 'black',
+              background: 'linear-gradient(to bottom, #202020, #111119)',
                position: 'relative',
-               border: '1px solid blue',
+              //  border: '1px solid blue',
                borderRadius: '15px',
                 height: '650px',
-                 width: '1000px'
+                marginTop: '150px',
+                marginLeft: '150px',
+                 width: '800px'
                  }
                  } >
             <Story />
@@ -45,6 +48,8 @@ const meta: Meta<typeof Rain> = {
                border: '1px solid yellow',
                borderRadius: '15px',
                 height: '1000px',
+
+                marginTop: '200px',
                  width: '800px'
                  }
                  } ></div></>

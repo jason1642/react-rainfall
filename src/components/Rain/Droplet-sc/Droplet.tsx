@@ -28,6 +28,7 @@ const Droplet = styled.div<DropletProps>`
     width: 1px;
     height: 60%;
     margin-left: 7px;    
+    border-radius: 4px;
 
     -webkit-animation: droplet .5s linear infinite;
     -moz-animation: droplet .5s linear infinite;
