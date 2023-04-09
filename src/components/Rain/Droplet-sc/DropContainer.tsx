@@ -7,17 +7,18 @@ interface DropContainerProps {
 const DropletContainer = styled.div<DropContainerProps>`
   /* Constants */
 
-
-  /* Customizable */
-    left: ${(({gapLength})=>gapLength)}px;
-
-
-
-
-
-
     position: absolute;
     bottom: 100%;
+  left: ${(({gapLength})=>gapLength)}px;
+
+  /* Customizable */
+  
+
+
+
+
+
+
     width: 15px;
     height: 120px;
     pointer-events: none;
@@ -66,7 +67,8 @@ const DropletContainer = styled.div<DropContainerProps>`
        according to the value provided. Here, the entire droplet position is being shifted downward by 90vh. 
        Calculating the pixels by height of parent element plus 120 to compensate for height of the droplet
        Changing the values below determines when the entire droplet stops and triggers the droplet-impact animation 
-    */
+        height of parent container + height of droplet
+       */
     75% {
       transform: translateY(725px);
     }

@@ -1,8 +1,10 @@
 import styled from 'styled-components';
-
+import type { dropletColor } from '../types';
 interface DropletProps {
-  // rbg color must be provided in order to work with background: linear-gradient()
-  dropletColor: `rgb(${string}, ${string}, ${string})`;
+  // rbg color must be provided in order to work with background: linear-gradient(), if 
+  // invalid string is provided, rain color defaults to white
+  dropletColor: dropletColor;
+
 }
 
 
@@ -20,8 +22,8 @@ const Droplet = styled.div<DropletProps>`
     background: -moz-linear-gradient(top, rgba(13,52,58,1) 0%, rgba(255,255,255,.5) 100%); */
     /* background-color: rgb(183, 212, 255); */
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.25));
-    /* If invalid color is provided, use the top background color instead */
-    /* background: ${({dropletColor})=>`linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.25))`}; */
+    /* If invalid color is provided, use the top background linear gradient color effect instead */
+    background: ${({dropletColor})=>`linear-gradient(to bottom, rgba(${dropletColor?.split('(')[1].split(')')[0]}, 0), rgba(${dropletColor?.split('(')[1].split(')')[0]}, .5))`};
     /* Width and height should have a max value as they cease to look like droplets after a certain point */
     width: 1px;
     height: 60%;

@@ -1,6 +1,8 @@
 import styled from 'styled-components';
+import type { dropletColor } from '../types';
 
 interface DropImpactProps {
+    dropletColor: dropletColor;
 
 }
 
