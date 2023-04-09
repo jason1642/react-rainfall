@@ -4,8 +4,8 @@ import mapDroplets from './utils/map-droplets';
 import type {numDrops, dropletColor} from './types'
 
 interface IRainProps {
-    numDrops: numDrops;
-    dropletColor: dropletColor;
+    numDrops?: numDrops;
+    dropletColor?: dropletColor;
     // Important - Limit amount of drain droplets to prevent a crash or performance 
     // Add other option props such as:
     // - styles for rain container and droplets
