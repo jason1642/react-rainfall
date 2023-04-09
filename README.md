@@ -30,6 +30,7 @@ numDrops | false | number | 100 | number | The number of rain drops that is anim
 dropletColor | false | color in rbg() format | white | 'rgb(200, 200, 200) | Color of droplets, which will use a linear gradient effect. Must be in rgb format
 size | false | string | 'default' | 'short' (20px) <br /> 'default' (120px) <br /> 'long' (200px) | Change the length of the rain drops. 
 showImpact | false | boolean | true| boolean | Show the impact animation when the rain drop reachs the bottom
+rainEffect | false | string | undefined | 'rainbow' <br /> More in development | Select a preset for different rainfall effects
 
 
 
