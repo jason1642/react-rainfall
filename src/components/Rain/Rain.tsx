@@ -50,7 +50,7 @@ const Rain: React.FunctionComponent<IRainProps> = ({numDrops = 50, dropletColor,
   const [dropletArray, setDropletArray ] = useState<Array<React.ReactElement>>()
 
   useEffect(() => {
-    setDropletArray(mapDroplets(numDrops, rainRef, {numDrops, dropletColor}))
+    setDropletArray(mapDroplets(rainRef, {numDrops, dropletColor}))
     console.log('Number of drops: ', rainRef.current?.childElementCount)
     console.log(dropletArray)
   }, [numDrops, rainRef]);
