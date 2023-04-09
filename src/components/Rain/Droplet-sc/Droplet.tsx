@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 
 interface DropletProps {
-  dropletColor: string;
+  // rbg color must be provided in order to work with background: linear-gradient()
+  dropletColor: `rgb(${string}, ${string}, ${string})`;
 }
 
 
@@ -20,7 +21,7 @@ const Droplet = styled.div<DropletProps>`
     /* background-color: rgb(183, 212, 255); */
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.25));
     /* If invalid color is provided, use the top background color instead */
-    /* background-color: ${({dropletColor})=>dropletColor} */
+    /* background: ${({dropletColor})=>`linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.25))`}; */
     /* Width and height should have a max value as they cease to look like droplets after a certain point */
     width: 1px;
     height: 60%;
