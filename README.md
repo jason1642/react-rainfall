@@ -27,16 +27,22 @@
  Name | Is Required? | type | Default | options | Description 
 --- | -- | --- | --- | --- | ----
 numDrops | false | number | 100 | number | The number of rain drops that is animated
-dropletColor | false | color in rbg() format | white | 'rgb(200, 200, 200) | Color of droplets, which will use a linear gradient effect. Must be in rgb format
+dropletColor | false | color in rbg() format | white | 'rgb(200, 200, 200) | Color of droplets, which will use a linear gradient effect. Must be in rgb format.
 size | false | string | 'default' | 'short' (20px) <br /> 'default' (120px) <br /> 'long' (200px) | Change the length of the rain drops. 
-showImpact | false | boolean | true| boolean | Show the impact animation when the rain drop reachs the bottom
+showImpact | false | boolean | true| boolean | Show the impact animation when the rain drop reachs the bottom.
 rainEffect | false | string | undefined | 'rainbow' <br /> More in development | Select a preset for different rainfall effects
+dropletOpacity | false | number | .5 | 0 - 1 | Change the opacity of the droplet itself. Use a decimal number between 0 and 1.
 
 
 
 ![](https://github.com/jason1642/react-rainfall/blob/main/rainfall-gif-04-09-23.gif)
 
 
+
+## Planned updates
+ - Add more rain effect preset options
+ - Add direction change options
+ - Add in and out fading for droplets options. 
 
 
 ### Developer notes
@@ -45,7 +51,7 @@ rainEffect | false | string | undefined | 'rainbow' <br /> More in development |
 
 - (April 7th, 2023 ) Droplets are positions at random from start of end of height/width lengths. This means that
 it is possible to have most droplets at one half of an element (with bad luck). This can be addressed
-by making sure there is atleast 1 droplet for every 10 pixels (or something similar)
+by making sure there is atleast 1 droplet for every 10 pixels (or something similar) (Fixed)
 
 -  (April 7th, 2023 ) The default amount of droplets is 50 (currently), this means elements with a wide length will have droplets with 
 too much space in between them (positions being random from 0 - maxwidth makes this a bigger problem).
@@ -53,7 +59,7 @@ To prevent having the user figure out what is the correct amount for their eleme
 length and responsiveness), an algorithm should be created to assign positions for droplets for x amount 
 of pixels. Then move on to the next interval until there is no more space to continue adding more. This 
 will automatically assign the number of drops depending on width, which the user can still change if more 
-or less is desired.
+or less is desired. (Fixed)
 
 -  (April 8th, 2023 ) Currently the rendering looks like a video that is being looped back from the same position. It doesn't look natural
 and looks a bit choppy. More understanding of the animation and lifecycle of the droplet fall should be looked into.
@@ -61,5 +67,5 @@ Current range for vertical droplet position is -1000 <-> maxHeight, to make drop
 at a negative top position and end keyframe animation position at (top: set number greater than maxheight). 
 CSS {animation-delay: -2s}(Using a negative number will cause the animation to appear to have been already playing for x seconds)
 can be used to have the rain already start falling within the element since they initally would need some 
-time to appear in the main element because they all start above the boundries of the element. 
+time to appear in the main element because they all start above the boundries of the element. (Fixed)
 
