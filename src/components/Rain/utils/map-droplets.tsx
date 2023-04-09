@@ -26,7 +26,7 @@ import selectDropletColor from './select-droplet-color';
        //random number between 5 and 2
       const randoFiver = (Math.floor(Math.random() * (5 - 1) + 2))
       const dropColor = selectDropletColor(dropletColor, rainEffect)
-
+      console.log(size)
       array.push(
         <DropletContainer
           maxHeight={maxHeight}
@@ -55,7 +55,8 @@ import selectDropletColor from './select-droplet-color';
               style={{
                 animationDuration: `.5${randomUnder1Hundred}s`,
                 animationDelay: `.${randomUnder1Hundred}s`,
-                background: `linear-gradient(to bottom, rgba(${dropColor.split('(')[1].split(')')[0]}, 0), rgba(${dropletColor?.split('(')[1].split(')')[0]}, .4))`
+
+                background: `linear-gradient(to bottom, rgba(${dropColor.split('(')[1].split(')')[0]}, 0), rgba(${dropColor?.split('(')[1].split(')')[0]}, .8))`
               }}
             />
             <DropImpact
@@ -64,7 +65,7 @@ import selectDropletColor from './select-droplet-color';
                 display: showImpact ? 'block !important' : 'none !important',
                 animationDuration: `.5${randomUnder1Hundred}s`,
                 animationDelay: `.${randomUnder1Hundred}s`,
-                borderTop: ``
+                borderTop: `2px dotted ${dropColor}`
               }}
                />
               
