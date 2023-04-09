@@ -14,4 +14,4 @@ const dropletSizes = (size: size)=> {
 }
 
 
-export default dropletSizes
+export default dropletSizes 
