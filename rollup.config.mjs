@@ -9,7 +9,7 @@ import { terser } from "rollup-plugin-terser";
 
 const config =  [
   {
-    input: "src/index.ts",
+    input: "src/components/Rain/Rain.tsx",
     output: 
     [
       {
@@ -41,7 +41,7 @@ const config =  [
     input: "dist/esm/index.d.ts",
     output: [{ file: "dist/index.d.ts", format: "esm" }],
     plugins: [dts()],
-    external: [/\.css$/],
+    external: [/\.css$/,'react', 'react-dom'],
 
   },
 ];

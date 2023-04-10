@@ -28,8 +28,8 @@ const Rain: React.FunctionComponent<IRainProps> = ({numDrops, dropletColor, size
   const rainRef: React.MutableRefObject<HTMLDivElement | null> = useRef(null)
   const [dropletArray, setDropletArray ] = useState<Array<React.ReactElement>>()
 
-  useEffect(() => {
-    setDropletArray(mapDroplets(rainRef,
+  const mapOnMount = async()=> {
+     await setDropletArray(mapDroplets(rainRef,
        {
         numDrops,
         dropletColor,
@@ -38,7 +38,11 @@ const Rain: React.FunctionComponent<IRainProps> = ({numDrops, dropletColor, size
         rainEffect,
         dropletOpacity
         }))
+  }
 
+  useEffect(() => {
+   
+    rainRef && mapOnMount()
 
     console.log('Number of drops: ', rainRef.current?.childElementCount)
     // console.log(dropletArray)

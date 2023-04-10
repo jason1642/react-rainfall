@@ -3,8 +3,8 @@
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
     "access": "public"
-  },  
-  "version": "0.1.512",
+  },
+  "version": "0.1.514",
   "description": "Simple and customizable rainfall animation background for a parent element",
   "author": {
     "name": "Jason Cruz"
@@ -59,6 +59,7 @@
     "@testing-library/react": "^14.0.0",
     "@types/enzyme": "^3.10.12",
     "@types/jest": "^29.5.0",
+    "@types/mdx": "^2.0.4",
     "@types/react": "^18.0.15",
     "@types/styled-components": "^5.1.26",
     "babel-jest": "^29.5.0",

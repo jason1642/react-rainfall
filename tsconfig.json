@@ -17,12 +17,13 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
+    
     "lib": [
       "dom",
       "dom.iterable",
-      "esnext"
+      "esnext",
     ]
     },
     "exclude": ["node_modules", "dist", "example", "rollup.config.js"]
 
-}
+} 
