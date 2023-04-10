@@ -1,4 +1,5 @@
 import Droplet from '../Droplet-sc/Droplet'
+import React from 'react'
 import DropImpact from '../Droplet-sc/DropImpact';
 import DropletContainer from '../Droplet-sc/DropContainer';
 import type { dropletOptions } from '../types'

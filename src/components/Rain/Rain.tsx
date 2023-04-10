@@ -68,7 +68,7 @@ const Rain: React.FunctionComponent<IRainProps> = ({numDrops, dropletColor, size
 
     return rainRef ? ( 
       <div id='Rain' ref={rainRef}> 
-        {rainRef && dropletArray}
+        {(rainRef && dropletArray) && dropletArray}
       </div>
     ) : <></>
 }
