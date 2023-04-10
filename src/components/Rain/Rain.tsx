@@ -42,9 +42,9 @@ const Rain: React.FunctionComponent<IRainProps> = ({numDrops, dropletColor, size
 
   useEffect(() => {
    
-    rainRef && mapOnMount()
+    rainRef?.current?.clientWidth && mapOnMount()
 
-    console.log('Number of drops: ', rainRef.current?.childElementCount)
+    console.log('Number of drops: ', rainRef?.current?.childElementCount)
     // console.log(dropletArray)
   }, [numDrops, rainRef, rainEffect, showImpact, dropletColor, size, dropletOpacity]);
   // Issues - positions are possibly greater than the width or height of the screen size, overflowing
@@ -66,11 +66,11 @@ const Rain: React.FunctionComponent<IRainProps> = ({numDrops, dropletColor, size
   // Last version checks if number of drops changes, if so stop then start the rain again with new value
 
 
-    return ( 
+    return rainRef ? ( 
       <div id='Rain' ref={rainRef}> 
         {rainRef && dropletArray}
       </div>
-    )
+    ) : <></>
 }
 
 export default Rain;
