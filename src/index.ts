@@ -1,4 +1,1 @@
-
-import Rain from './components/Rain/Rain'
-
-export default Rain
+export * from './components';

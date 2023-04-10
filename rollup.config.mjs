@@ -9,7 +9,7 @@ import { terser } from "rollup-plugin-terser";
 
 const config =  [
   {
-    input: "src/components/Rain/Rain.tsx",
+    input: "src/index.ts",
     output: 
     [
       {
