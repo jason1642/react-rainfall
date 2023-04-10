@@ -3,7 +3,7 @@ import './Rain.css'
 import mapDroplets from './utils/map-droplets';
 import type {dropletOptions} from './types'
 
-interface IRainProps extends dropletOptions {
+export interface IRainProps extends dropletOptions {
     // Important - Limit amount of drain droplets to prevent a crash or performance 
     // Add other option props such as:
     // - styles for rain container and droplets

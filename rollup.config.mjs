@@ -4,8 +4,8 @@ import typescript from "@rollup/plugin-typescript";
 import dts from "rollup-plugin-dts";
 import peerDepsExternal from 'rollup-plugin-peer-deps-external'
 import postcss from "rollup-plugin-postcss";
-import { terser } from "rollup-plugin-terser";
-
+import terser from "@rollup/plugin-terser";
+import pkg from './package.json'  assert { type: "json" };
 
 const config =  [
   {
@@ -13,17 +13,17 @@ const config =  [
     output: 
     [
       {
-        file: "dist/cjs/index.js",
+        file: pkg.main,
         format: "cjs",
         sourcemap: true,
       },
       {
-        file: "dist/esm/index.js",
+        file: pkg.module,
         format: "esm",
         sourcemap: true,
       }, 
     ],
-    external: ['react', 'react-dom'],
+    external: ['react-dom'],
 
     plugins: [
       peerDepsExternal(),
@@ -31,6 +31,7 @@ const config =  [
       commonjs(),
       typescript({ 
         tsconfig: "./tsconfig.json"
+        // exclude: ["node_modules", "dist", "example", "rollup.config.js", "stories", "tests", "setupTests.ts, "]
       }),
       postcss(), 
       terser(),
@@ -38,10 +39,10 @@ const config =  [
   },
  
   {
-    input: "dist/esm/index.d.ts",
+    input: "dist/esm/types/index.d.ts",
     output: [{ file: "dist/index.d.ts", format: "esm" }],
     plugins: [dts()],
-    external: [/\.css$/,'react', 'react-dom'],
+    external: [/\.(css|less|scss)$/ ],
 
   },
 ];

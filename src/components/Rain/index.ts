@@ -1,1 +1,1 @@
-export {default} from './Rain'
+export { default } from './Rain'
