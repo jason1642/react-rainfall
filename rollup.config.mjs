@@ -23,7 +23,7 @@ const config =  [
         sourcemap: true,
       },  
     ],
-    external: ['react', 'react-dom'],
+    external: ['react-dom'],
 
     plugins: [
       peerDepsExternal(),
@@ -42,7 +42,7 @@ const config =  [
     input: "dist/esm/types/index.d.ts",
     output: [{ file: "dist/index.d.ts", format: "esm" }],
     plugins: [dts()],
-    external: [/\.(css|less|scss)$/ ],
+    external: [/\.css$/],
 
   },
 ];

@@ -2,7 +2,7 @@ import React from "react";
 import { render, RenderResult, waitFor, } from "@testing-library/react";
 // import {shallow} from 'enzyme'
 
-import Rain from "..";
+import Rain from "../Rain";
 
 
 
