@@ -1,4 +1,4 @@
-import type { size } from "../Rain.types"
+import type { size } from "./Rain.types"
 
 const dropletSizes = (size: size)=> {
     switch(size){ 

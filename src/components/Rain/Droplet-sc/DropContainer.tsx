@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import dropletSizes from '../utils/droplet-sizes'
+import dropletSizes from '../droplet-sizes'
 import type { size } from '../Rain.types';
 
 interface DropContainerProps {

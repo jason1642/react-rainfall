@@ -21,7 +21,7 @@ const config =  [
         file: pkg.module,
         format: "esm",
         sourcemap: true,
-      }, 
+      },  
     ],
     external: ['react', 'react-dom'],
 
