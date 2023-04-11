@@ -2,7 +2,7 @@ import Droplet from './Droplet-sc/Droplet'
 import React from 'react'
 import DropImpact from './Droplet-sc/DropImpact';
 import DropletContainer from './Droplet-sc/DropContainer';
-import type { dropletOptions } from './Rain.types'
+import type { dropletOptions } from './rainTypes'
 import selectDropletColor from './select-droplet-color';
 
   // Create an array of HTML div elements to be rendered. These have animation styled attached to them, which can all 
@@ -14,7 +14,7 @@ import selectDropletColor from './select-droplet-color';
   // Choosing certain effects might negate certain other options chosen depending on the effect. ex: choosing rainbow will negate any color options given
   // 
 
-  const mapDroplets = (rainRef: React.MutableRefObject<any>, dropletOptions: dropletOptions): Array<React.ReactElement> =>{
+  const mapDroplets = (rainRef: React.MutableRefObject<any>, dropletOptions: dropletOptions): Array<any> =>{
     const { dropletColor, numDrops, showImpact = true, size, rainEffect, dropletOpacity = .5} = dropletOptions
     const array = []
     // The max width here is important; we will need to make sure droplets are spread evenly(but still look natural with randomness).

@@ -9,7 +9,7 @@ import pkg from './package.json'  assert { type: "json" };
 
 const config =  [
   {
-    input: "src/index.ts",
+    input: "./src/index.tsx",
     output: 
     [
       {
@@ -22,27 +22,35 @@ const config =  [
         format: "esm",
         sourcemap: true,
       },  
+      
     ],
-    external: ['react-dom'],
-
     plugins: [
-      peerDepsExternal(),
+            peerDepsExternal(),
       resolve(),
-      commonjs(),
-      typescript({ 
+
+        typescript({ 
         tsconfig: "./tsconfig.json"
         // exclude: ["node_modules", "dist", "example", "rollup.config.js", "stories", "tests", "setupTests.ts, "]
       }),
+      
+      commonjs(),
+
+      
+    
       postcss(), 
       terser(),
     ],
+        external: ['react', 'react-dom'],
   },
  
   {
     input: "dist/esm/types/index.d.ts",
-    output: [{ file: "dist/index.d.ts", format: "esm" }],
+    output: [{
+       file: "dist/index.d.ts", format: "esm",
+       
+      }],
     plugins: [dts()],
-    external: [/\.css$/],
+    external: [/\.css$/, 'react', 'react-dom'],
 
   },
 ];

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import './Rain.css'
 import mapDroplets from './map-droplets';
-import type { dropletOptions } from './Rain.types'
+import type { dropletOptions } from './rainTypes'
 
 export interface IRainProps extends dropletOptions {
     // Important - Limit amount of drain droplets to prevent a crash or performance 
@@ -26,10 +26,15 @@ const Rain: React.FunctionComponent<IRainProps> = ({numDrops, dropletColor, size
   // Attach this ref to container to get max height and width
   // Container width and height are 100% of the parents w/h so droplets are'nt positioned beyond boundaries
   const rainRef: React.MutableRefObject<HTMLDivElement | null> = useRef(null)
-  const [dropletArray, setDropletArray ] = useState<Array<React.ReactElement>>()
+  const [dropletArray, setDropletArray ] = useState<Array<any>>()
 
-  const mapOnMount = async()=> {
-     await setDropletArray(mapDroplets(rainRef,
+  // const mapOnMount = ()=> {
+    
+  // }
+
+  useEffect(() => {
+   
+    rainRef?.current?.clientWidth && setDropletArray(mapDroplets(rainRef,
        {
         numDrops,
         dropletColor,
@@ -38,11 +43,6 @@ const Rain: React.FunctionComponent<IRainProps> = ({numDrops, dropletColor, size
         rainEffect,
         dropletOpacity
         }))
-  }
-
-  useEffect(() => {
-   
-    rainRef?.current?.clientWidth && mapOnMount()
 
     console.log('Number of drops: ', rainRef?.current?.childElementCount)
     // console.log(dropletArray)
@@ -66,11 +66,11 @@ const Rain: React.FunctionComponent<IRainProps> = ({numDrops, dropletColor, size
   // Last version checks if number of drops changes, if so stop then start the rain again with new value
 
 
-    return rainRef ? ( 
+    return  ( 
       <div id='Rain' ref={rainRef}> 
         {(rainRef && dropletArray) && dropletArray}
       </div>
-    ) : <></>
+    ) 
 }
 
 export default Rain;

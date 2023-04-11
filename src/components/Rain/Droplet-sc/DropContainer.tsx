@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import dropletSizes from '../droplet-sizes'
-import type { size } from '../Rain.types';
+import type { size } from '../rainTypes';
 
 interface DropContainerProps {
     gapLength: number;
