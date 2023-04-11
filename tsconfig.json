@@ -22,16 +22,19 @@
     //   "esnext",
     // ]
     },
+    "rootDir": "src",
+    "baseUrl": "src",
     "exclude": 
       [
         // "node_modules",
         //  "dist",
-        //   "example",
-           "rollup.config.js",
+          // "example",
+          //  "rollup.config.js",
             "**/*.stories.tsx",
              "**/*.test.tsx",
              "**/tests",
-             "**/stories"
+             "**/stories",
+             "**/setupTests.ts"
             ]
 
 } 

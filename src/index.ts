@@ -1,1 +1,1 @@
-export * from './components';
+export { Rain as Rain } from './components';

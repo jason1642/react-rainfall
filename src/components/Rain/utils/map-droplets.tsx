@@ -2,7 +2,7 @@ import Droplet from '../Droplet-sc/Droplet'
 import React from 'react'
 import DropImpact from '../Droplet-sc/DropImpact';
 import DropletContainer from '../Droplet-sc/DropContainer';
-import type { dropletOptions } from '../types'
+import type { dropletOptions } from '../Rain.types'
 import selectDropletColor from './select-droplet-color';
 
   // Create an array of HTML div elements to be rendered. These have animation styled attached to them, which can all 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import './Rain.css'
 import mapDroplets from './utils/map-droplets';
-import type {dropletOptions} from './types'
+import type {dropletOptions} from './Rain.types'
 
 export interface IRainProps extends dropletOptions {
     // Important - Limit amount of drain droplets to prevent a crash or performance 

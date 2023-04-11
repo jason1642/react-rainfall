@@ -1,4 +1,4 @@
-import type { rainEffect, dropletColor } from "../types"
+import type { rainEffect, dropletColor } from "../Rain.types"
 import {rainbowColors} from './preset-effects'
 
 // This will choose a single color for each droplet based on the rain effect and droplet color values

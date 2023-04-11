@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import type { dropletColor } from '../types';
+import type { dropletColor } from '../Rain.types';
 interface DropletProps {
   // rbg color must be provided in order to work with background: linear-gradient(), if 
   // invalid string is provided, rain color defaults to white

@@ -1,6 +1,6 @@
 import React from "react";
 import { StoryObj, Meta } from "@storybook/react";
-import Rain from "../Rain";
+import Rain from "..";
 
 // View component with this story, changes saved in the code editor automatically show on storybook
 
