@@ -4,7 +4,7 @@
     "registry": "https://registry.npmjs.org/",
     "access": "public"
   },
-  "version": "0.1.5303",
+  "version": "0.1.5305",
   "description": "Simple and customizable rainfall animation background for a parent element",
   "author": {
     "name": "Jason Cruz"
@@ -41,6 +41,14 @@
       "last 1 safari version"
     ]
   },
+  "keywords": [
+    "component",
+    "animation",
+    "rainfall",
+    "rain",
+    "react",
+    "react-component"
+  ],
   "devDependencies": {
     "@babel/core": "^7.21.4",
     "@babel/preset-env": "^7.21.4",
@@ -82,11 +90,12 @@
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "files": [
-    "dist"
+    "dist",
+    "src"
   ],
   "types": "dist/index.d.ts",
   "peerDependencies": {
-    "react": ">=16.8.0"
+    "react": "^16.8.0 || ^17.0.0 || ^18.0.0"
   }
  
 }

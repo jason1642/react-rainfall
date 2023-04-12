@@ -52,21 +52,26 @@
     "declaration": true,
     "declarationDir": "./types",
     "sourceMap": true,
-    "outDir": "./types",
+    "outDir": "types",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true, 
-    "emitDeclarationOnly": true
+    "emitDeclarationOnly": true,
+    "rootDir": "src",
+    "paths": {
+      "common": ["./src/*"],
+      "components": ["./src/components/*"]
+    }
   },
     
    "exclude": 
       [
 // "node_modules",
     
-            // "**/*.stories.tsx",
-            //  "**/*.test.tsx",
-            //  "**/tests",
+            "**/*.stories.tsx",
+             "**/*.test.tsx",
+             "**/tests",
             //  "**/stories",
-            //  "**/setupTests.ts"
+             "**/setupTests.ts"
             ],
 
             
