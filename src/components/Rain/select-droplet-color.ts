@@ -17,7 +17,7 @@ const selectDropletColor = (dropletColor: dropletColor, rainEffect: rainEffect):
 
     // `linear-gradient(to bottom, rgba(${dropletColor?.split('(')[1].split(')')[0]}, 0), rgba(${dropletColor?.split('(')[1].split(')')[0]}, .4)) !important`
     return dropletColor
-
+ 
 
 
     

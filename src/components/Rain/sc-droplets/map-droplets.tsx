@@ -2,8 +2,8 @@ import Droplet from './Droplet'
 import React from 'react'
 import DropImpact from './DropImpact';
 import DropletContainer from './DropContainer';
-import type { dropletOptions } from './rainTypes'
-import selectDropletColor from './select-droplet-color';
+import type { dropletOptions } from '../rainTypes'
+import selectDropletColor from '../select-droplet-color';
 
   // Create an array of HTML div elements to be rendered. These have animation styled attached to them, which can all 
   // be changed at the same time. They have their own unique positions which cannot be changed and must be rerendered

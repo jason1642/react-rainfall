@@ -1,6 +1,6 @@
 import React from 'react'
 // import './Rain.css'
-import mapDroplets from './map-droplets';
+import mapDroplets from './sc-droplets/map-droplets';
 import type { dropletOptions } from './rainTypes'
 
 // export interface IRainProps extends dropletOptions {

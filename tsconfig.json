@@ -54,18 +54,20 @@
     "sourceMap": true,
     "outDir": "dist",
     "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
+    "allowSyntheticDefaultImports": true, 
     "emitDeclarationOnly": true
-  }
+  },
     
-  //  "exclude": 
-  //     [
-  //           "**/*.stories.tsx",
-  //            "**/*.test.tsx",
-  //            "**/tests",
-  //            "**/stories",
-  //            "**/setupTests.ts"
-  //           ],
+   "exclude": 
+      [
+"node_modules",
+    
+            // "**/*.stories.tsx",
+            //  "**/*.test.tsx",
+            //  "**/tests",
+            //  "**/stories",
+            //  "**/setupTests.ts"
+            ],
 
             
 }

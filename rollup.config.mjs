@@ -11,16 +11,18 @@ const config =  [
   {
     input: "src/index.ts",
     output: 
-    [
-      // {
-      //   file: pkg.main,
-      //   format: "cjs",
-      //   sourcemap: true,
-      // },
+    [ 
+      {
+        file: pkg.main,
+        format: "cjs",
+        sourcemap: true,
+        preserveModulesRoot: 'src'
+      },
       {
         file: pkg.module,
         format: "esm",
         sourcemap: true,
+        preserveModulesRoot: 'src'
       }
     ],
     external: ['react-dom'],
@@ -30,7 +32,15 @@ const config =  [
       commonjs(),
       typescript({ 
         tsconfig: "./tsconfig.json",
-        // exclude: ["node_modules", "dist", "example", "rollup.config.js", "stories", "tests", "setupTests.ts, "]
+        exclude: [
+          // "node_modules",
+          // "dist", 
+          // "example",
+          // "rollup.config.js", 
+          // "stories",
+          // "tests",
+          // "setupTests.ts"
+          ]
         }),
       postcss(), 
       terser(),
@@ -38,7 +48,7 @@ const config =  [
   },
   {
     input: "dist/esm/types/index.d.ts",
-    output: [{ file: "dist/index.d.ts", format: "esm"}],
+    output: [{ file: "dist/index.d.ts", format: "esm", sourcemap: true}],
     // external: [/\.css$/],
    plugins: [dts()]
   }
