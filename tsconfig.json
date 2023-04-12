@@ -50,9 +50,9 @@
     "jsx": "react-jsx", 
     "module": "ESNext",  
     "declaration": true,
-    "declarationDir": "types",
+    "declarationDir": "./types",
     "sourceMap": true,
-    "outDir": "dist",
+    "outDir": "./types",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true, 
     "emitDeclarationOnly": true
@@ -60,7 +60,7 @@
     
    "exclude": 
       [
-"node_modules",
+// "node_modules",
     
             // "**/*.stories.tsx",
             //  "**/*.test.tsx",

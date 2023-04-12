@@ -6,6 +6,19 @@ import peerDepsExternal from 'rollup-plugin-peer-deps-external'
 import postcss from "rollup-plugin-postcss";
 import terser from "@rollup/plugin-terser";
 import pkg from './package.json'  assert { type: "json" };
+import url from '@rollup/plugin-url' 
+import { format, parse } from 'path';
+const getTypesPath = (jsFile) => {
+  const pathInfo = parse(jsFile);
+  return format({
+      ...pathInfo,
+      base: '',
+      dir: `${pathInfo.dir}/types`,
+      ext: '.d.ts',
+  });
+};
+
+
 
 const config =  [
   {
@@ -16,42 +29,42 @@ const config =  [
         file: pkg.main,
         format: "cjs",
         sourcemap: true,
-        preserveModulesRoot: 'src'
+        // preserveModulesRoot: 'src',
+        interop: 'compat',
+        inlineDynamicImports: true,
       },
       {
         file: pkg.module,
         format: "esm",
         sourcemap: true,
-        preserveModulesRoot: 'src'
+        // preserveModulesRoot: 'src',
+
       }
     ],
-    external: ['react-dom'],
+    external: ['react','react-dom'],
     plugins: [
       peerDepsExternal(),
       resolve(),
-      commonjs(),
-      typescript({ 
-        tsconfig: "./tsconfig.json",
-        exclude: [
-          // "node_modules",
-          // "dist", 
-          // "example",
-          // "rollup.config.js", 
-          // "stories",
-          // "tests",
-          // "setupTests.ts"
-          ]
-        }),
+      commonjs({
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+    }),
+      typescript({ tsconfig: "./tsconfig.json"}),
+      url(),
       postcss(), 
       terser(),
     ]
   },
+  // {
+  //   input: "dist/esm/types/index.d.ts",
+  //   output: [{ file: "dist/index.d.ts", format: "esm", sourcemap: true}],
+  //   external: [/\.css$/],
+  //  plugins: [dts()]
+  // }
   {
-    input: "dist/esm/types/index.d.ts",
-    output: [{ file: "dist/index.d.ts", format: "esm", sourcemap: true}],
-    // external: [/\.css$/],
-   plugins: [dts()]
-  }
+    input: getTypesPath(pkg.module ?? pkg.main),
+    output: [{ file: pkg.types, format: 'esm' }],
+    plugins: [dts()],
+},
 ]
 
 export default config

@@ -4,7 +4,7 @@
     "registry": "https://registry.npmjs.org/",
     "access": "public"
   },
-  "version": "0.1.530",
+  "version": "0.1.5303",
   "description": "Simple and customizable rainfall animation background for a parent element",
   "author": {
     "name": "Jason Cruz"
@@ -76,8 +76,9 @@
     "storybook": "^7.0.2",
     "styled-components": "^5.3.9",
     "tslib": "^2.5.0",
-    "typescript": "^5.0.4"
-    },
+    "typescript": "^5.0.4",
+    "@rollup/plugin-url": "^8.0.1"
+  },
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "files": [
@@ -87,4 +88,5 @@
   "peerDependencies": {
     "react": ">=16.8.0"
   }
+ 
 }
