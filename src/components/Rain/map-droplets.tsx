@@ -1,7 +1,7 @@
-import Droplet from './Droplet-sc/Droplet'
+import Droplet from './Droplet'
 import React from 'react'
-import DropImpact from './Droplet-sc/DropImpact';
-import DropletContainer from './Droplet-sc/DropContainer';
+import DropImpact from './DropImpact';
+import DropletContainer from './DropContainer';
 import type { dropletOptions } from './rainTypes'
 import selectDropletColor from './select-droplet-color';
 
@@ -78,7 +78,7 @@ import selectDropletColor from './select-droplet-color';
            </DropletContainer>
         )
     }
-    console.log(array.length)
+    // console.log(array.length)
     return array
   } 
 

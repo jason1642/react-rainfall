@@ -4,7 +4,7 @@
     "registry": "https://registry.npmjs.org/",
     "access": "public"
   },
-  "version": "0.1.5184",
+  "version": "0.1.524",
   "description": "Simple and customizable rainfall animation background for a parent element",
   "author": {
     "name": "Jason Cruz"
@@ -60,6 +60,7 @@
     "@testing-library/react": "^14.0.0",
     "@types/jest": "^29.5.0",
     "@types/react": "^18.0.34",
+    "@types/rollup-plugin-peer-deps-external": "^2.2.1",
     "@types/styled-components": "^5.1.26",
     "babel-jest": "^29.5.0",
     "babel-loader": "^9.1.2",
@@ -67,26 +68,25 @@
     "jest": "^29.5.0",
     "jest-environment-jsdom": "^29.5.0",
     "prop-types": "^15.8.1",
-    "react": "^18.2.0",
+    "react-dom": ">=16.8.0",
     "rollup": "^3.20.2",
     "rollup-plugin-dts": "^5.3.0",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-typescript2": "^0.34.1",
     "storybook": "^7.0.2",
     "styled-components": "^5.3.9",
     "tslib": "^2.5.0",
     "typescript": "^5.0.4",
-    "rollup-plugin-typescript2": "^0.34.1"
+    "typescript-styled-plugin": "^0.18.3"
   },
   "main": "dist/cjs/index.js",
-  "type": "module",
   "module": "dist/esm/index.js",
   "files": [
     "dist"
   ],
   "types": "dist/index.d.ts",
   "peerDependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react": ">=16.8.0"
   }
 }

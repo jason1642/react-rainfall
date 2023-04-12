@@ -19,7 +19,7 @@
 //     // "lib": [
 //     //   "dom",
 //     //   "dom.iterable",
-//     //   "esnext",
+//     //   "esnext", 
 //     // ]
 //     },
 //     "exclude": 
@@ -35,20 +35,20 @@
 //              "**/setupTests.ts"
 //             ]
 
-// } 
+// } n
 
 {
   "compilerOptions": {
     // Default
-    "target": "es5", 
+    "target": "ES2016", 
     "esModuleInterop": true, 
     "forceConsistentCasingInFileNames": true,
     "strict": true, 
     "skipLibCheck": true,
-
+"resolveJsonModule": true,
     // Added
     "jsx": "react-jsx", 
-    "module": "esnext",  
+    "module": "ESNext",  
     "declaration": true,
     "declarationDir": "types",
     "sourceMap": true,
@@ -56,14 +56,16 @@
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "emitDeclarationOnly": true
-  },
+  }
     
-   "exclude": 
-      [
-            "**/*.stories.tsx",
-             "**/*.test.tsx",
-             "**/tests",
-             "**/stories",
-             "**/setupTests.ts"
-            ]
+  //  "exclude": 
+  //     [
+  //           "**/*.stories.tsx",
+  //            "**/*.test.tsx",
+  //            "**/tests",
+  //            "**/stories",
+  //            "**/setupTests.ts"
+  //           ],
+
+            
 }

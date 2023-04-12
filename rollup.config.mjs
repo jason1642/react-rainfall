@@ -9,50 +9,39 @@ import pkg from './package.json'  assert { type: "json" };
 
 const config =  [
   {
-    input: "./src/index.tsx",
+    input: "src/index.ts",
     output: 
     [
-      {
-        file: pkg.main,
-        format: "cjs",
-        sourcemap: true,
-      },
+      // {
+      //   file: pkg.main,
+      //   format: "cjs",
+      //   sourcemap: true,
+      // },
       {
         file: pkg.module,
         format: "esm",
         sourcemap: true,
-      },  
-      
+      }
     ],
+    external: ['react-dom'],
     plugins: [
-            peerDepsExternal(),
+      peerDepsExternal(),
       resolve(),
-
-        typescript({ 
-        tsconfig: "./tsconfig.json"
-        // exclude: ["node_modules", "dist", "example", "rollup.config.js", "stories", "tests", "setupTests.ts, "]
-      }),
-      
       commonjs(),
-
-      
-    
+      typescript({ 
+        tsconfig: "./tsconfig.json",
+        // exclude: ["node_modules", "dist", "example", "rollup.config.js", "stories", "tests", "setupTests.ts, "]
+        }),
       postcss(), 
       terser(),
-    ],
-        external: ['react', 'react-dom'],
+    ]
   },
- 
   {
     input: "dist/esm/types/index.d.ts",
-    output: [{
-       file: "dist/index.d.ts", format: "esm",
-       
-      }],
-    plugins: [dts()],
-    external: [/\.css$/, 'react', 'react-dom'],
-
-  },
-];
+    output: [{ file: "dist/index.d.ts", format: "esm"}],
+    // external: [/\.css$/],
+   plugins: [dts()]
+  }
+]
 
 export default config

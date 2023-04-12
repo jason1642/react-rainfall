@@ -20,12 +20,12 @@ export type dropDistance = number | undefined;
 
 // This is used to pass into mapObjects as an object
 export interface dropletOptions {
-   readonly numDrops?: numDrops,
-   readonly dropletColor?: dropletColor,
-   readonly size?: size,
-   readonly showImpact?: showImpact,
-   readonly rainEffect?: rainEffect,
-   readonly dropletOpacity?: dropletOpacity,
+    numDrops?: numDrops,
+    dropletColor?: dropletColor,
+    size?: size,
+    showImpact?: showImpact,
+    rainEffect?: rainEffect,
+    dropletOpacity?: dropletOpacity,
 
 }
 

@@ -1,15 +1,15 @@
-import React, { useEffect, useState, useRef } from 'react'
-import './Rain.css'
+import React from 'react'
+// import './Rain.css'
 import mapDroplets from './map-droplets';
 import type { dropletOptions } from './rainTypes'
 
-export interface IRainProps extends dropletOptions {
+// export interface IRainProps extends dropletOptions {
     // Important - Limit amount of drain droplets to prevent a crash or performance 
     // Add other option props such as:
     // - styles for rain container and droplets
     // - Rain direction, speed, fall length
 
-}
+// }
 
 
 // Issues
@@ -20,19 +20,19 @@ export interface IRainProps extends dropletOptions {
 
 
 
-const Rain: React.FunctionComponent<IRainProps> = ({numDrops, dropletColor, size, showImpact, rainEffect, dropletOpacity}) => {
+const Rain: React.FC<dropletOptions> = ({numDrops, dropletColor, size, showImpact, rainEffect, dropletOpacity}) => {
     
   
   // Attach this ref to container to get max height and width
   // Container width and height are 100% of the parents w/h so droplets are'nt positioned beyond boundaries
-  const rainRef: React.MutableRefObject<HTMLDivElement | null> = useRef(null)
-  const [dropletArray, setDropletArray ] = useState<Array<any>>()
+  const rainRef: React.MutableRefObject<HTMLDivElement | null> = React.useRef(null)
+  const [dropletArray, setDropletArray ] = React.useState<Array<any>>([])
 
   // const mapOnMount = ()=> {
     
   // }
 
-  useEffect(() => {
+  React.useEffect(() => {
    
     rainRef?.current?.clientWidth && setDropletArray(mapDroplets(rainRef,
        {
@@ -44,7 +44,7 @@ const Rain: React.FunctionComponent<IRainProps> = ({numDrops, dropletColor, size
         dropletOpacity
         }))
 
-    console.log('Number of drops: ', rainRef?.current?.childElementCount)
+    // console.log('Number of drops: ', rainRef?.current?.childElementCount)
     // console.log(dropletArray)
   }, [numDrops, rainRef, rainEffect, showImpact, dropletColor, size, dropletOpacity]);
   // Issues - positions are possibly greater than the width or height of the screen size, overflowing
@@ -55,7 +55,9 @@ const Rain: React.FunctionComponent<IRainProps> = ({numDrops, dropletColor, size
 
   // Changes - Instead of have the rain fill the whole screen and beyond, only allow rain drops within parent element
   //         - Use typescript and understand how to use parent element attributes to limit the rains boundries
-
+  React.useEffect(()=>{
+  // console.log(dropletArray)
+}, [numDrops, rainRef, rainEffect, showImpact, dropletColor, size, dropletOpacity, dropletArray]);
 
 
   // First get height and width of parent
@@ -67,8 +69,26 @@ const Rain: React.FunctionComponent<IRainProps> = ({numDrops, dropletColor, size
 
 
     return  ( 
-      <div id='Rain' ref={rainRef}> 
-        {(rainRef && dropletArray) && dropletArray}
+      <div
+       id='Rain'
+        ref={rainRef}
+        style={{
+              /* Constants */
+    position: "absolute",
+    display: "block",
+    overflowY: "hidden",
+    overflowX: "hidden",
+    borderRadius: "inherit",
+    width: "100%",
+    height: "100%",
+    /* top: 0; */
+    left: "0",
+    /* Customizable */
+    zIndex: "10"
+        }}
+        > 
+        {dropletArray && dropletArray}
+        
       </div>
     ) 
 }

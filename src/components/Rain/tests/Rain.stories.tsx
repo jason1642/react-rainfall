@@ -1,7 +1,7 @@
 import React from "react";
 import { StoryObj, Meta } from "@storybook/react";
 import Rain from "../Rain";
-
+import '../Rain.css'
 // View component with this story, changes saved in the code editor automatically show on storybook
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export

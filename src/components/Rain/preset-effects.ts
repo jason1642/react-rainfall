@@ -24,6 +24,6 @@ export const rainbowColors = [
 // droplet color can only take 1 value, if a multicolor rain is desired, a color effect name should be given instead of the color
 
 
-export const rainbow = {
+const rainbow = {
 
 }
