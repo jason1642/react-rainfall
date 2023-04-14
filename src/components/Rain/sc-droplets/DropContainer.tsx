@@ -27,6 +27,10 @@ const FallKeyFrames = (maxHeight: number, size: size) => keyframes`
        * Droplet size is 60% of the height of the container
        height of parent container + height of droplet
        */
+
+       /* In translateY, multiple maxHeight by a number less than 1 to represent the precentage of the parents height that will be 
+       the size of the gap from the bottom/impact point
+         */
     75% {
         transform: translateY(${(maxHeight * .9) + dropletSizes(size)}px);
     }
@@ -35,7 +39,7 @@ const FallKeyFrames = (maxHeight: number, size: size) => keyframes`
         previous number was 90vh for 75% and 100vh for 100%
         */
     100% {
-      transform: translateY(${(maxHeight * .9) + dropletSizes(size)}px);
+      transform: translateY(${(maxHeight) + dropletSizes(size)}px);
     }
 `;
 
@@ -60,11 +64,11 @@ const DropletContainer = styled.div<DropContainerProps>`
     width: 15px;
     height: ${({size})=> dropletSizes(size)}px;
     pointer-events: none;
-    animation: ${({maxHeight, size})=>FallKeyFrames(maxHeight, size)} .5s linear infinite;
+    animation: ${({maxHeight, size})=>FallKeyFrames(maxHeight, size)} .6s linear infinite;
 
     /* Preset values for the drop speed (seconds) should be provided; slow = 2s default = .73 fast = .40s */
-    -webkit-animation: ${({maxHeight, size})=>FallKeyFrames(maxHeight, size)} .5s linear infinite;
-    -moz-animation: ${({maxHeight, size})=>FallKeyFrames(maxHeight, size)} .5s linear infinite;
+    -webkit-animation: ${({maxHeight, size})=>FallKeyFrames(maxHeight, size)} .6s linear infinite;
+    -moz-animation: ${({maxHeight, size})=>FallKeyFrames(maxHeight, size)} .6s linear infinite;
     
     /* 
     ~ Can be used to individually change duration while keeping others static
