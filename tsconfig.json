@@ -39,14 +39,12 @@
 
 {
   "compilerOptions": {
-    // Default
     "target": "ES2016", 
     "esModuleInterop": true, 
     "forceConsistentCasingInFileNames": true,
     "strict": true, 
     "skipLibCheck": true,
 "resolveJsonModule": true,
-    // Added
     "jsx": "react-jsx", 
     "module": "ESNext",  
     "declaration": true,
@@ -62,17 +60,12 @@
       "components": ["./src/components/*"]
     }
   },
-    
    "exclude": 
       [
-// "node_modules",
-    
-            "**/*.stories.tsx",
-             "**/*.test.tsx",
-             "**/tests",
-            //  "**/stories",
-             "**/setupTests.ts"
-            ],
-
-            
+        "node_modules",
+        "**/*.stories.tsx",
+        "**/*.test.tsx",
+        "**/tests",
+        "**/setupTests.ts"
+      ]           
 }

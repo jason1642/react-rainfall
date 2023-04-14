@@ -14,7 +14,7 @@ const DropletContainer = styled.div<DropContainerProps>`
   /* Constants */
 
     position: absolute;
-    bottom: 100%;
+    /* bottom: 100%; */
        // Come up with way to evenly split left position number based on amount of drops and width.
         // If numDrops is provided/known, just divide maxWidth by number of droplets and multiply the index 
         // by the result. 
@@ -70,7 +70,7 @@ const DropletContainer = styled.div<DropContainerProps>`
        issues besides having to account for the speed based on vertical position
     */
     0% {
-      transform: translateY(0vh);
+      transform: translateY(0px);
     }
     /* transform: translateY(xvh) - positions the element as if the vh has been shifted vertically
        according to the value provided. Here, the entire droplet position is being shifted downward by 90vh. 
@@ -80,14 +80,14 @@ const DropletContainer = styled.div<DropContainerProps>`
        height of parent container + height of droplet
        */
     75% {
-        transform: translateY(${({maxHeight, size})=> maxHeight + dropletSizes(size)}px);
+        transform: translateY(${({maxHeight, size})=> maxHeight }px);
     }
     /* 
         Figure out a good calculation to prevent impact animations for overflowing below container
         previous number was 90vh for 75% and 100vh for 100%
         */
     100% {
-      transform: translateY(${({maxHeight, size})=> maxHeight + dropletSizes(size) + 20}px);
+      transform: translateY(${({maxHeight, size})=> maxHeight + 20}px);
     }
 
   }

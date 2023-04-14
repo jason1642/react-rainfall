@@ -4,6 +4,7 @@ import DropImpact from './DropImpact';
 import DropletContainer from './DropContainer';
 import type { dropletOptions } from '../rainTypes'
 import selectDropletColor from '../select-droplet-color';
+import dropletSizes from './droplet-sizes'
 
   // Create an array of HTML div elements to be rendered. These have animation styled attached to them, which can all 
   // be changed at the same time. They have their own unique positions which cannot be changed and must be rerendered
@@ -14,11 +15,11 @@ import selectDropletColor from '../select-droplet-color';
   // Choosing certain effects might negate certain other options chosen depending on the effect. ex: choosing rainbow will negate any color options given
   // 
 
-  const mapDroplets = (rainRef: React.MutableRefObject<any>, dropletOptions: dropletOptions): Array<any> =>{
+  const mapDroplets = (rainRef: {maxWidth: number, maxHeight: number}, dropletOptions: dropletOptions): Array<any> =>{
     const { dropletColor, numDrops, showImpact = true, size, rainEffect, dropletOpacity = .5} = dropletOptions
     const array = []
     // The max width here is important; we will need to make sure droplets are spread evenly(but still look natural with randomness).
-    const {clientWidth: maxWidth, clientHeight: maxHeight} = rainRef.current
+    const {maxWidth, maxHeight} = rainRef
     // If I am calculating the number of drops according to width px and drops per x%, check/set numDrops before moving on
     const numDropsCount = numDrops ? Math.floor(numDrops) : Math.floor(maxWidth / 25)
 
@@ -28,13 +29,13 @@ import selectDropletColor from '../select-droplet-color';
        //random number between 5 and 2
       const randoFiver = (Math.floor(Math.random() * (5 - 1) + 2))
       const dropColor = selectDropletColor(dropletColor, rainEffect)
-      // console.log(showImpact)
+      // console.log(`drop${Math.random() * i + 14}${randomUnder1Hundred}`)
       array.push(
         <DropletContainer
           maxHeight={maxHeight}
-          key={`drop${i}`}
+          key={`drop${Math.random() * i}${randomUnder1Hundred}`}
           // className='drop-container'
-          id={`drop${i}`}
+          // id={`drop${i}`}
           // Static gap between droplets: divide width by amount of drops to get the size per gap, then multiply by index to get incremented positon based on gap
           gapLength={(maxWidth / numDropsCount) * i}
 

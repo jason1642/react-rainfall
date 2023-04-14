@@ -1,8 +1,8 @@
-import React from 'react'
+import React, {forwardRef} from 'react'
 // import './Rain.css'
 import mapDroplets from './sc-droplets/map-droplets';
 import type { dropletOptions } from './rainTypes'
-
+import styled from 'styled-components';
 // export interface IRainProps extends dropletOptions {
     // Important - Limit amount of drain droplets to prevent a crash or performance 
     // Add other option props such as:
@@ -12,9 +12,8 @@ import type { dropletOptions } from './rainTypes'
 // }
 
 
-// Issues
+// Issues 
 // 
-
 
 
 
@@ -25,28 +24,44 @@ const Rain: React.FC<dropletOptions> = ({numDrops, dropletColor, size, showImpac
   
   // Attach this ref to container to get max height and width
   // Container width and height are 100% of the parents w/h so droplets are'nt positioned beyond boundaries
-  const rainRef: React.MutableRefObject<HTMLDivElement | null> = React.useRef(null)
-  const [dropletArray, setDropletArray ] = React.useState<Array<any>>([])
+  const rainRef: React.MutableRefObject<HTMLDivElement | null> | null = React.useRef(null)
+  const [dropletArray, setDropletArray ] = React.useState<Array<any> | null>([])
+  const [maxHeight, setMaxHeight] = React.useState<number>()
+  const [maxWidth, setMaxWidth] = React.useState<number>()
 
   // const mapOnMount = ()=> {
     
   // }
+// Styled components must be redeclared on render or else it will have the same class name as another styled component if used twice  in the same app
+const Container = styled.div`
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: 10;
+  border-radius: inherit;
+  left: 0;
+`;
 
+  
   React.useEffect(() => {
-   
-    rainRef?.current?.clientWidth && setDropletArray(mapDroplets(rainRef,
+    console.log('setting up droplet array')
+    rainRef.current !== null && setDropletArray(mapDroplets({maxWidth: rainRef.current?.clientWidth, maxHeight: rainRef.current.clientHeight},
        {
         numDrops,
         dropletColor,
         size,
         showImpact,
-        rainEffect,
+        rainEffect, 
         dropletOpacity
         }))
 
+        return ()=>{ 
+          console.log('cleaning up useeffect')
+          setDropletArray(null)
+        }
     // console.log('Number of drops: ', rainRef?.current?.childElementCount)
     // console.log(dropletArray)
-  }, [numDrops, rainRef, rainEffect, showImpact, dropletColor, size, dropletOpacity]);
+  }, [ numDrops, rainEffect, showImpact, dropletColor, size, dropletOpacity]);
   // Issues - positions are possibly greater than the width or height of the screen size, overflowing
   // the element making a scroll bar appear and disappear rapidly. 
 
@@ -56,8 +71,11 @@ const Rain: React.FC<dropletOptions> = ({numDrops, dropletColor, size, showImpac
   // Changes - Instead of have the rain fill the whole screen and beyond, only allow rain drops within parent element
   //         - Use typescript and understand how to use parent element attributes to limit the rains boundries
   React.useEffect(()=>{
-  // console.log(dropletArray)
-}, [numDrops, rainRef, rainEffect, showImpact, dropletColor, size, dropletOpacity, dropletArray]);
+    console.log(rainRef.current?.offsetHeight)
+  console.log(rainRef.current?.clientHeight)
+    !maxHeight && setMaxHeight(rainRef.current?.offsetHeight)
+    !maxWidth && setMaxWidth(rainRef.current?.clientWidth)
+}, []);
 
 
   // First get height and width of parent
@@ -69,27 +87,13 @@ const Rain: React.FC<dropletOptions> = ({numDrops, dropletColor, size, showImpac
 
 
     return  ( 
-      <div
-       id='Rain'
+      <Container
         ref={rainRef}
-        style={{
-              /* Constants */
-    position: "absolute",
-    display: "block",
-    overflowY: "hidden",
-    overflowX: "hidden",
-    borderRadius: "inherit",
-    width: "100%",
-    height: "100%",
-    /* top: 0; */
-    left: "0",
-    /* Customizable */
-    zIndex: "10"
-        }}
-        > 
+        >
+          
         {dropletArray && dropletArray}
         
-      </div>
+      </Container>
     ) 
 }
 

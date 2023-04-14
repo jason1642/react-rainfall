@@ -10,7 +10,7 @@ interface DropletProps {
 
 const Droplet = styled.div<DropletProps>`
    /* Constants */
-   position: absolute;
+   position:  ;
   /* margin-left: 7px; */
   /* Customizable */
 

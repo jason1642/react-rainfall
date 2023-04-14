@@ -9,7 +9,8 @@ const meta: Meta<typeof Rain> = {
   component: Rain,
   decorators: [
     (Story) => (
-      <>
+      <div style={{backgroundColor: '#040e2c', padding: '700px 0',
+      width: '100%'}}>
       {/* <div 
           style={
             {
@@ -26,17 +27,17 @@ const meta: Meta<typeof Rain> = {
           style={
             {
               // backgroundColor: 'linear-gradient(to bottom, #131313, #000000)',
-              background: 'linear-gradient(to bottom, #202020, #111119)',
+              background: 'linear-gradient(to bottom, hsl(224.21052631578948, 100%, 26.078431372549023%), #111119)',
                position: 'relative',
               //  border: '1px solid blue',
                borderRadius: '15px',
-                height: '650px',
+                height: '50vh',
                 marginTop: '150px',
                 marginLeft: '150px',
-                 width: '1200px'
+                 width: '80vw'
                  }
                  } >
-            <Story />
+            <Story rainEffect='rainbow' />
 
         
         </div>    
@@ -51,9 +52,16 @@ const meta: Meta<typeof Rain> = {
                 height: '1000px',
 
                 marginTop: '200px',
-                 width: '800px'
+                 width: '50vw'
                  }
-                 } ></div></>
+                 } >
+
+<Story />
+
+                 </div>
+                 
+                 
+                 </div>
     )
   ]
 } 

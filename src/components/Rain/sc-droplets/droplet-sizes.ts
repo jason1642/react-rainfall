@@ -3,7 +3,7 @@ import type { size } from "../rainTypes"
 const dropletSizes = (size: size)=> {
     switch(size){ 
         case 'default': 
-            return 100
+            return 120
         case 'short':
             return 25;
         case 'long': 

@@ -7,7 +7,9 @@ import postcss from "rollup-plugin-postcss";
 import terser from "@rollup/plugin-terser";
 import pkg from './package.json'  assert { type: "json" };
 import url from '@rollup/plugin-url' 
+
 import { format, parse } from 'path';
+
 const getTypesPath = (jsFile) => {
   const pathInfo = parse(jsFile);
   return format({
@@ -18,42 +20,27 @@ const getTypesPath = (jsFile) => {
   });
 };
 
-
-
 const config =  [
   {
     input: "src/index.ts",
     output: 
-    [ 
-      {
+    [ {
         file: pkg.main,
         format: "cjs",
-        sourcemap: true,
-        // preserveModulesRoot: 'src',
-        // interop: 'compat',
-        // inlineDynamicImports: true,
+        sourcemap: true
       },
       {
         file: pkg.module,
         format: "esm",
         sourcemap: true,
-        preserveModulesRoot: 'src',
-
-      },
-   
-    ],
+        preserveModulesRoot: 'src'
+      }],
     external: ['react','react-dom'],
     plugins: [
       peerDepsExternal(),
       resolve(),
-      commonjs({
-        extensions: ['.js', '.jsx', '.ts', '.tsx'],
-    }),
-      typescript(
-        {
-           tsconfig: "./tsconfig.json"
-           
-          }),
+      commonjs({ extensions: ['.js', '.jsx', '.ts', '.tsx'] }),
+      typescript({ tsconfig: "./tsconfig.json" }),
       url(),
       postcss(), 
       terser(),
@@ -69,30 +56,7 @@ const config =  [
     input: getTypesPath(pkg.module ?? pkg.main),
     output: [{ file: pkg.types, format: 'esm' }],
     plugins: [dts()],
-},
-// {
-//   input: "src/index.ts",
-
-// output: {
-//     dir: 'dist/src',
-//     format: 'umd',
-//     sourcemap: true,
-// //     preserveModules: true,
-// // preserveModulesRoot: 'src',
-//   },
-//   external: ['react','react-dom'],
-//   plugins: [
-//     peerDepsExternal(),
-//     resolve(),
-//     commonjs({
-//       extensions: ['.js', '.jsx', '.ts', '.tsx'],
-//   }),
-//     typescript(),
-//     url(),
-//     postcss(), 
-//     terser(),
-//   ]
-// }
+}
 ]
 
 export default config
