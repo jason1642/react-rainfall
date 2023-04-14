@@ -16,7 +16,7 @@ import dropletSizes from './droplet-sizes'
   // 
 
   const mapDroplets = (rainRef: {maxWidth: number, maxHeight: number}, dropletOptions: dropletOptions): Array<any> =>{
-    const { dropletColor, numDrops, showImpact = true, size, rainEffect, dropletOpacity = .5} = dropletOptions
+    const { dropletColor, numDrops, showImpact = true, size = 'default', rainEffect, dropletOpacity = .5} = dropletOptions
     const array = []
     // The max width here is important; we will need to make sure droplets are spread evenly(but still look natural with randomness).
     const {maxWidth, maxHeight} = rainRef
@@ -29,13 +29,12 @@ import dropletSizes from './droplet-sizes'
        //random number between 5 and 2
       const randoFiver = (Math.floor(Math.random() * (5 - 1) + 2))
       const dropColor = selectDropletColor(dropletColor, rainEffect)
-      // console.log(`drop${Math.random() * i + 14}${randomUnder1Hundred}`)
+      console.log(maxHeight)
       array.push(
         <DropletContainer
           maxHeight={maxHeight}
-          key={`drop${Math.random() * i}${randomUnder1Hundred}`}
+          key={`drop${Math.random() * (i + 13)}${randomUnder1Hundred}`}
           // className='drop-container'
-          // id={`drop${i}`}
           // Static gap between droplets: divide width by amount of drops to get the size per gap, then multiply by index to get incremented positon based on gap
           gapLength={(maxWidth / numDropsCount) * i}
 
@@ -52,7 +51,7 @@ import dropletSizes from './droplet-sizes'
             {/* animation timing for proceeding two divs don't need much customization */}
             <Droplet
               // className='droplet'
-              
+              id={`drop${Math.random() * i + 51}${randomUnder1Hundred}`}
               dropletColor={dropletColor}
               
               style={{
@@ -65,6 +64,7 @@ import dropletSizes from './droplet-sizes'
             />
             {
                 showImpact && <DropImpact
+                
               dropletColor={dropletColor}
               style={{
                 display: 'block',

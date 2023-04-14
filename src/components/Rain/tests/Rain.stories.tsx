@@ -37,7 +37,7 @@ const meta: Meta<typeof Rain> = {
                  width: '80vw'
                  }
                  } >
-            <Story rainEffect='rainbow' />
+            <Story  />
 
         
         </div>    

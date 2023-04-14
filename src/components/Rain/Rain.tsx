@@ -16,22 +16,6 @@ import styled from 'styled-components';
 // 
 
 
-
-
-
-const Rain: React.FC<dropletOptions> = ({numDrops, dropletColor, size, showImpact, rainEffect, dropletOpacity}) => {
-    
-  
-  // Attach this ref to container to get max height and width
-  // Container width and height are 100% of the parents w/h so droplets are'nt positioned beyond boundaries
-  const rainRef: React.MutableRefObject<HTMLDivElement | null> | null = React.useRef(null)
-  const [dropletArray, setDropletArray ] = React.useState<Array<any> | null>([])
-  const [maxHeight, setMaxHeight] = React.useState<number>()
-  const [maxWidth, setMaxWidth] = React.useState<number>()
-
-  // const mapOnMount = ()=> {
-    
-  // }
 // Styled components must be redeclared on render or else it will have the same class name as another styled component if used twice  in the same app
 const Container = styled.div`
   height: 100%;
@@ -42,10 +26,26 @@ const Container = styled.div`
   left: 0;
 `;
 
+
+const Rain: React.FC<dropletOptions> = ({numDrops, dropletColor, size, showImpact, rainEffect, dropletOpacity}) => {
+    
+  
+  // Attach this ref to container to get max height and width
+  // Container width and height are 100% of the parents w/h so droplets are'nt positioned beyond boundaries
+  const rainRef: React.MutableRefObject<HTMLDivElement | null> | null = React.useRef(null)
+  const [dropletArray, setDropletArray ] = React.useState<Array<any> | null>([])
+  // const [maxHeight, setMaxHeight] = React.useState<number>()
+  // const [maxWidth, setMaxWidth] = React.useState<number>()
+  const [stateRef, setStateRef] = React.useState<any>()
+  // const mapOnMount = ()=> {
+    
+  // }
+
+
   
   React.useEffect(() => {
     console.log('setting up droplet array')
-    rainRef.current !== null && setDropletArray(mapDroplets({maxWidth: rainRef.current?.clientWidth, maxHeight: rainRef.current.clientHeight},
+    stateRef !== undefined && setDropletArray(mapDroplets({maxWidth: stateRef.current.clientWidth, maxHeight: stateRef.current.clientHeight},
        {
         numDrops,
         dropletColor,
@@ -61,7 +61,7 @@ const Container = styled.div`
         }
     // console.log('Number of drops: ', rainRef?.current?.childElementCount)
     // console.log(dropletArray)
-  }, [ numDrops, rainEffect, showImpact, dropletColor, size, dropletOpacity]);
+  }, [stateRef]);
   // Issues - positions are possibly greater than the width or height of the screen size, overflowing
   // the element making a scroll bar appear and disappear rapidly. 
 
@@ -71,10 +71,10 @@ const Container = styled.div`
   // Changes - Instead of have the rain fill the whole screen and beyond, only allow rain drops within parent element
   //         - Use typescript and understand how to use parent element attributes to limit the rains boundries
   React.useEffect(()=>{
-    console.log(rainRef.current?.offsetHeight)
-  console.log(rainRef.current?.clientHeight)
-    !maxHeight && setMaxHeight(rainRef.current?.offsetHeight)
-    !maxWidth && setMaxWidth(rainRef.current?.clientWidth)
+    console.log(rainRef)
+    rainRef && setStateRef(rainRef)
+    // !maxHeight && setMaxHeight(rainRef.current?.offsetHeight)
+    // !maxWidth && setMaxWidth(rainRef.current?.clientWidth)
 }, []);
 
 
@@ -91,7 +91,7 @@ const Container = styled.div`
         ref={rainRef}
         >
           
-        {dropletArray && dropletArray}
+        { dropletArray}
         
       </Container>
     ) 
