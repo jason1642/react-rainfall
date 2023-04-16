@@ -7,6 +7,8 @@ import postcss from "rollup-plugin-postcss";
 import terser from "@rollup/plugin-terser";
 import pkg from './package.json'  assert { type: "json" };
 import url from '@rollup/plugin-url' 
+import sourcemaps from 'rollup-plugin-sourcemaps';
+import babel from '@rollup/plugin-babel'
 
 import { format, parse } from 'path';
 
@@ -24,25 +26,61 @@ const config =  [
   {
     input: "src/index.ts",
     output: 
-    [ {
-        file: pkg.main,
-        format: "cjs",
-        sourcemap: true
-      },
-      {
-        file: pkg.module,
-        format: "esm",
-        sourcemap: true,
-        preserveModulesRoot: 'src'
-      }],
-    external: ['react','react-dom'],
+      [ {
+          file: pkg.main,
+          format: "cjs",
+          sourcemap: true,
+          interop: 'auto',
+          globals: {
+            react: 'React',
+            'react-dom': 'ReactDOM',
+            'styled-components': 'styled'
+        }
+
+        },
+        {
+          file: pkg.module,
+          format: "esm",
+          sourcemap: true,
+
+        }],
+        treeshake: {
+          preset: 'smallest',
+          manualPureFunctions: ['styled', 'local']
+        },
+    external: ['react','react-dom', 'styled-components'],
+  
     plugins: [
-      peerDepsExternal(),
-      resolve(),
-      commonjs({ extensions: ['.js', '.jsx', '.ts', '.tsx'] }),
-      typescript({ tsconfig: "./tsconfig.json" }),
+            resolve(),
+          peerDepsExternal(),
+
+
+     
+
+        
+
+  
+      
+    
+        babel(
+        {
+          plugins: ['babel-plugin-styled-components'],
+          exclude: ['node_modules/**', 'public/**'],
+          extensions: ['.js', '.jsx', '.ts', '.tsx'],
+          inputSourceMap: true
+
+        }
+        ),
+     
+      
+      typescript({ tsconfig: './tsconfig.json'}),
+
+ 
+      sourcemaps(),
+            commonjs({ extensions: ['.js', '.jsx', '.ts', '.tsx'], include: /node_modules/ }),
+
       url(),
-      postcss(), 
+      postcss(),
       terser(),
     ]
   },

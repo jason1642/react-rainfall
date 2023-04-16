@@ -1,68 +1,37 @@
-// {
-//   "compilerOptions": {
-//     "target": "es5",
-//     "declaration": true,
-//     "declarationDir": "types",
-//     "sourceMap": true,
-//     "emitDeclarationOnly": true,
-//     "outDir": "dist",
-//     "skipLibCheck": true,
-//     "esModuleInterop": true,
-//     "allowSyntheticDefaultImports": true,
-//     "strict": true,
-//     "forceConsistentCasingInFileNames": true,
-//     "module": "ESNext",
-//     "moduleResolution": "node",
-//     "resolveJsonModule": true,
-//     "jsx": "react",
-    
-//     // "lib": [
-//     //   "dom",
-//     //   "dom.iterable",
-//     //   "esnext", 
-//     // ]
-//     },
-//     "exclude": 
-//       [
-//         // "node_modules",
-//         //  "dist",
-//           // "example",
-//           //  "rollup.config.js",
-//             "**/*.stories.tsx",
-//              "**/*.test.tsx",
-//              "**/tests",
-//              "**/stories",
-//              "**/setupTests.ts"
-//             ]
-
-// } n
-
 {
   "compilerOptions": {
-    "target": "ES2016", 
+    "target": "ES6", 
+    "typeRoots": ["node_modules/@types", "esm/types"],
     "esModuleInterop": true, 
     "forceConsistentCasingInFileNames": true,
     "strict": true, 
     "skipLibCheck": true,
 "resolveJsonModule": true,
     "jsx": "react-jsx", 
-    "module": "ESNext",  
+    "module": "ESNext",
     "declaration": true,
     "declarationDir": "./types",
-    "sourceMap": true,
+    "sourceMap": true, 
+    // "inlineSources": false,
     "outDir": "types",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true, 
     "emitDeclarationOnly": true,
-    "rootDir": "src",
-    "paths": {
-      "common": ["./src/*"],
-      "components": ["./src/components/*"]
-    }
+    // "rootDir": "src",
+    "sourceRoot": "src",
+        // "paths": {
+    //   "common": ["./src/*"],
+    //   "components": ["./src/components/*"]
+    // }
   },
+  // "include": [
+  //   "src/"
+  // ],
    "exclude": 
       [
-        "node_modules",
+        "./dist",
+        // "./node_modules",
+        // "node_modules/styled-components",
         "**/*.stories.tsx",
         "**/*.test.tsx",
         "**/tests",
