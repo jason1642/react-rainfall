@@ -20,7 +20,7 @@ const Rain: React.FunctionComponent<dropletOptions> = ({numDrops, dropletColor, 
   const [stateRef, setStateRef] = React.useState<any>()
   
   React.useEffect(() => {
-    console.log('setting up droplet array')
+    // console.log('setting up droplet array')
     stateRef !== undefined && setDropletArray(mapDroplets({maxWidth: stateRef.current.clientWidth, maxHeight: stateRef.current.clientHeight},
        {
         numDrops,
@@ -32,7 +32,7 @@ const Rain: React.FunctionComponent<dropletOptions> = ({numDrops, dropletColor, 
         }))
 
         return ()=>{ 
-          console.log('cleaning up useeffect')
+          // console.log('cleaning up useeffect')
           setDropletArray(null)
         }
 

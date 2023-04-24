@@ -10,7 +10,7 @@ const meta: Meta<typeof Rain> = {
   decorators: [
     (Story) => (
       <div style={{backgroundColor: '#040e2c', padding: '700px 0',
-      width: '100%'}}>
+      width: '100vw', height: '100%'}}>
       {/* <div 
           style={
             {
@@ -31,10 +31,10 @@ const meta: Meta<typeof Rain> = {
                position: 'relative',
               //  border: '1px solid blue',
                borderRadius: '15px',
-                height: '50vh',
+                height: '100vh',
                 marginTop: '150px',
                 marginLeft: '150px',
-                 width: '80vw'
+                 width: '100vw'
                  }
                  } >
             <Story  />
