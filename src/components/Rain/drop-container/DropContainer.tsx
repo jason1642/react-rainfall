@@ -1,10 +1,10 @@
 import "./dropContainer.css";
-import type { CSSProperties, ReactNode } from "react";
+import type { CSSProperties, ReactNode, HTMLAttributes } from "react";
 import dropletSizes from "../droplet-sizes";
 import type { size } from "../rainTypes";
 import React from "react";
 
-interface DropContainerProps {
+interface DropContainerProps extends HTMLAttributes<HTMLDivElement> {
   gapLength: number;
   maxHeight: number;
   size: size;
@@ -25,6 +25,7 @@ const DropContainer: React.FunctionComponent<DropContainerProps> = ({
   size,
   style,
   children,
+  ...divProps
 }) => {
   const dropHeight = dropletSizes(size);
 
@@ -37,7 +38,7 @@ const DropContainer: React.FunctionComponent<DropContainerProps> = ({
   };
 
   return (
-    <div className="rain-drop-container" style={containerStyle}>
+    <div {...divProps} className="rain-drop-container" style={containerStyle}>
       {children}
     </div>
   );

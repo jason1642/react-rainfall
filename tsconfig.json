@@ -31,7 +31,6 @@
       [
         "./dist",
         // "./node_modules",
-        // "node_modules/styled-components",
         "**/*.stories.tsx",
         "**/*.test.tsx",
         "**/tests",

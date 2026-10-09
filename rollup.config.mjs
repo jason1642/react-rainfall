@@ -8,7 +8,6 @@ import terser from "@rollup/plugin-terser";
 import pkg from './package.json'  assert { type: "json" };
 import url from '@rollup/plugin-url' 
 import sourcemaps from 'rollup-plugin-sourcemaps';
-import babel from '@rollup/plugin-babel'
 
 import { format, parse } from 'path';
 
@@ -33,8 +32,7 @@ const config =  [
           interop: 'auto',
           globals: {
             react: 'React',
-            'react-dom': 'ReactDOM',
-            'styled-components': 'styled'
+            'react-dom': 'ReactDOM'
         }
 
         },
@@ -46,9 +44,9 @@ const config =  [
         }],
         treeshake: {
           preset: 'smallest',
-          manualPureFunctions: ['styled', 'local']
+          manualPureFunctions: ['local']
         },
-    external: ['react','react-dom', 'styled-components'],
+    external: ['react','react-dom'],
   
     plugins: [
             resolve(),
@@ -62,17 +60,6 @@ const config =  [
   
       
     
-        babel(
-        {
-          plugins: ['babel-plugin-styled-components'],
-          exclude: ['node_modules/**', 'public/**'],
-          extensions: ['.js', '.jsx', '.ts', '.tsx'],
-          inputSourceMap: true
-
-        }
-        ),
-     
-      
       typescript({ tsconfig: './tsconfig.json'}),
 
  
