@@ -19,9 +19,8 @@ const mapDroplets = (
   } = options;
 
   const { maxWidth, maxHeight } = rainRef;
-  const requestedDrops = numDrops === undefined
-    ? Math.floor(maxWidth / 25)
-    : Math.floor(numDrops);
+  const requestedDrops =
+    numDrops === undefined ? Math.floor(maxWidth / 25) : Math.floor(numDrops);
   const numDropsCount = Math.max(0, requestedDrops);
   const columnWidth = numDropsCount > 0 ? maxWidth / numDropsCount : 0;
 
