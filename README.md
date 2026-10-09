@@ -44,6 +44,8 @@ showLightning | false | boolean | false | true / false | Enable lightning flashe
 lightningFrequency | false | number | 9 | seconds | Average interval between lightning flashes.
 lightningFlashDuration | false | number | 450 | milliseconds | Duration of each flash, clamped to 80–4000 ms.
 lightningColor | false | string | #eaf3ff | CSS color | Color used for the lightning bolt and flash.
+dropStyle | false | string | 'streak' | 'streak', 'pixel', 'soft', 'orb' | Change the visual shape of each raindrop. Pixel uses stepped edges; soft blurs the streak; orb makes short bead-like drops.
+depth | false | boolean | false | true / false | Randomize drop scale, brightness, blur, and overlap to create small distant drops and larger foreground drops.
 
 
 
@@ -65,6 +67,8 @@ lightningColor | false | string | #eaf3ff | CSS color | Color used for the light
   lightningFrequency={8}
   lightningFlashDuration={500}
   lightningColor="#eaf3ff"
+  dropStyle="pixel"
+  depth
 />
 ```
 

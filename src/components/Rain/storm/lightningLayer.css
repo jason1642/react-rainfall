@@ -1,6 +1,6 @@
 .storm-lightning-layer {
   position: absolute;
-  z-index: 2;
+  z-index: 1000;
   inset: 0;
   overflow: hidden;
   pointer-events: none;
@@ -80,8 +80,13 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .storm-lightning-layer.is-flashing .storm-lightning-flash,
+  .storm-lightning-layer.is-flashing .storm-lightning-flash {
+    animation: none;
+    opacity: 0.12;
+  }
+
   .storm-lightning-layer.is-flashing .storm-lightning-bolt {
     animation: none;
+    opacity: 0.42;
   }
 }
