@@ -12,6 +12,7 @@
  ## Usage 
  ```jsx
     import Rain from 'react-rainfall'
+    import 'react-rainfall/dist/style.css'
    // IMPORTANT - Parent element must have position relative or else rain will be positioned based on viewport 
     <div style={{
        position: 'relative',
@@ -43,4 +44,3 @@ dropletOpacity | false | number | .5 | 0 - 1 | Change the opacity of the droplet
  - Add more rain effect preset options
  - Add direction change options
  - Add in and out fading for droplets options. 
-

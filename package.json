@@ -17,7 +17,8 @@
   "scripts": {
     "test": "jest",
     "rollup": "rollup -c",
-    "build": "rollup -c",
+    "clean": "node scripts/clean-dist.mjs",
+    "build": "npm run clean && npm run rollup",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
@@ -89,6 +90,7 @@
     "dist"
   ],
   "types": "dist/index.d.ts",
+  "style": "dist/style.css",
   "peerDependencies": {
     "react": "^19.0.0"
   }

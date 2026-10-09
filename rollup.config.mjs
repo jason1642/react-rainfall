@@ -14,7 +14,8 @@ const config =  [
     input: "src/index.ts",
     output: 
       [ {
-          file: pkg.main,
+          dir: 'dist',
+          entryFileNames: 'cjs/index.js',
           format: "cjs",
           sourcemap: true,
           interop: 'auto',
@@ -25,7 +26,8 @@ const config =  [
 
         },
         {
-          file: pkg.module,
+          dir: 'dist',
+          entryFileNames: 'esm/index.js',
           format: "esm",
           sourcemap: true,
 
@@ -62,7 +64,7 @@ const config =  [
       sourcemaps(),
       commonjs({ extensions: ['.js', '.jsx', '.ts', '.tsx'], include: /node_modules/ }),
       url(),
-      postcss(),
+      postcss({ extract: 'style.css' }),
       terser(),
     ]
   },
