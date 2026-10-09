@@ -1,16 +1,12 @@
-import type { dropletColor } from "../rainTypes";
 import type { CSSProperties } from "react";
 import "./impact.css";
 
-interface DropletProps {
-  dropletColor: dropletColor;
+interface DropImpactProps {
   style?: CSSProperties;
 }
 
-function Droplet({ dropletColor }: DropletProps) {
-  return (
-    <div className="rain-droplet" style={{ backgroundColor: dropletColor }} />
-  );
+function DropImpact({ style }: DropImpactProps) {
+  return <div className="rain-drop-impact" style={style} />;
 }
 
-export default Droplet;
+export default DropImpact;

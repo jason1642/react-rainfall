@@ -1,19 +1,29 @@
-.rain-droplet {
+.rain-drop {
   position: absolute;
-  width: 1px;
-  height: 60%;
-  margin-left: 7px;
+  left: 50%;
+  width: 2px;
+  height: 100%;
   border-radius: 4px;
-  animation: rain-droplet-fade 0.5s linear infinite;
+  transform: translateX(-50%);
+  animation: rain-drop-fade 1s linear infinite;
 }
 
-@keyframes rain-droplet-fade {
+.rain-drop {
+  background-repeat: no-repeat;
+}
+
+@keyframes rain-drop-fade {
   0%,
-  65% {
+  8% {
+    opacity: 0;
+  }
+
+  18%,
+  68% {
     opacity: 1;
   }
 
-  75%,
+  78%,
   100% {
     opacity: 0;
   }

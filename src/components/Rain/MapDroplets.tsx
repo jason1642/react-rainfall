@@ -19,45 +19,50 @@ const mapDroplets = (
   } = options;
 
   const { maxWidth, maxHeight } = rainRef;
-  const numDropsCount = numDrops
-    ? Math.floor(numDrops)
-    : Math.floor(maxWidth / 25);
+  const requestedDrops = numDrops === undefined
+    ? Math.floor(maxWidth / 25)
+    : Math.floor(numDrops);
+  const numDropsCount = Math.max(0, requestedDrops);
+  const columnWidth = numDropsCount > 0 ? maxWidth / numDropsCount : 0;
 
   const drops: ReactElement[] = [];
 
   for (let i = 0; i < numDropsCount; i++) {
-    const randomUnder1Hundred = Math.floor(Math.random() * 98) + 1;
-    const randoFiver = Math.floor(Math.random() * 4) + 2;
+    const durationSeconds = 0.7 + Math.random() * 0.8;
+    const randomDelaySeconds = Math.random() * durationSeconds;
+    const horizontalJitter = (Math.random() - 0.5) * columnWidth * 0.7;
+    const left = Math.max(
+      0,
+      Math.min(maxWidth - 15, i * columnWidth + horizontalJitter),
+    );
     const dropColor = selectDropletColor(dropletColor, rainEffect);
     const rgb = dropColor.match(/\(([^)]+)\)/)?.[1] ?? "255, 255, 255";
 
     const animationStyle: CSSProperties = {
-      animationDuration: `.6${randomUnder1Hundred}s`,
-      animationDelay: `.${randomUnder1Hundred}s`,
+      animationDuration: `${durationSeconds.toFixed(2)}s`,
+      animationDelay: `-${randomDelaySeconds.toFixed(2)}s`,
     };
 
     drops.push(
       <DropletContainer
         key={`drop-${i}`}
         maxHeight={maxHeight}
-        gapLength={(maxWidth / numDropsCount) * i}
+        gapLength={left}
         size={size}
         style={{
           ...animationStyle,
-          bottom: `${randoFiver * 2 - 1 + 100}%`,
+          bottom: `${102 + Math.random() * 8}%`,
         }}
       >
         <Droplet
-          dropletColor={dropletColor}
           style={{
             ...animationStyle,
-            background: `linear-gradient(to bottom, rgba(${rgb}, 0), rgba(${rgb}, ${dropletOpacity}))`,
+            backgroundImage: `linear-gradient(to bottom, rgba(${rgb}, 0), rgba(${rgb}, ${dropletOpacity}))`,
           }}
         />
 
         {showImpact && (
           <DropImpact
-            dropletColor={dropletColor}
             style={{
               display: "block",
               ...animationStyle,

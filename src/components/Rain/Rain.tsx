@@ -1,5 +1,5 @@
 import React from "react";
-import mapDroplets from "./map-droplets";
+import mapDroplets from "./MapDroplets";
 import type { dropletOptions } from "./rainTypes";
 import "./Rain.css";
 
@@ -12,7 +12,9 @@ const Rain: React.FunctionComponent<dropletOptions> = ({
   dropletOpacity,
 }) => {
   const rainRef = React.useRef<HTMLDivElement>(null);
-  const [dropletArray, setDropletArray] = React.useState<React.ReactElement[]>([]);
+  const [dropletArray, setDropletArray] = React.useState<React.ReactElement[]>(
+    [],
+  );
 
   React.useEffect(() => {
     const element = rainRef.current;
@@ -36,7 +38,11 @@ const Rain: React.FunctionComponent<dropletOptions> = ({
     );
   }, [numDrops, dropletColor, size, showImpact, rainEffect, dropletOpacity]);
 
-  return <div ref={rainRef} className="rain-container">{dropletArray}</div>;
+  return (
+    <div ref={rainRef} className="rain-container">
+      {dropletArray}
+    </div>
+  );
 };
 
 export default Rain;

@@ -1,14 +1,18 @@
-.rain-droplet {
+.rain-drop-impact {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
   width: 15px;
   height: 10px;
-  border-top: 2px dotted rgb(255, 255, 255);
+  margin-left: -7.5px;
+  border-top: 2px dotted currentColor;
   border-radius: 50%;
   opacity: 1;
   transform: scale(0);
-  animation: droplet-impact 0.6s linear infinite;
+  animation: rain-drop-impact 1s linear infinite;
 }
 
-@keyframes droplet-impact {
+@keyframes rain-drop-impact {
   0% {
     opacity: 1;
     transform: scale(0);
