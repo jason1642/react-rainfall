@@ -1,0 +1,30 @@
+.rain-drop {
+  position: absolute;
+  left: 50%;
+  width: 2px;
+  height: 100%;
+  border-radius: 4px;
+  transform: translateX(-50%);
+  animation: rain-drop-fade 1s linear infinite;
+}
+
+.rain-drop {
+  background-repeat: no-repeat;
+}
+
+@keyframes rain-drop-fade {
+  0%,
+  8% {
+    opacity: 0;
+  }
+
+  18%,
+  68% {
+    opacity: 1;
+  }
+
+  78%,
+  100% {
+    opacity: 0;
+  }
+}

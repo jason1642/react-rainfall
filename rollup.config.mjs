@@ -1,54 +1,42 @@
 import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
-import typescript from "@rollup/plugin-typescript";
+import babel from "@rollup/plugin-babel";
 import dts from "rollup-plugin-dts";
 import peerDepsExternal from 'rollup-plugin-peer-deps-external'
 import postcss from "rollup-plugin-postcss";
 import terser from "@rollup/plugin-terser";
-import pkg from './package.json'  assert { type: "json" };
+import pkg from './package.json' with { type: "json" };
 import url from '@rollup/plugin-url' 
 import sourcemaps from 'rollup-plugin-sourcemaps';
-import babel from '@rollup/plugin-babel'
-
-import { format, parse } from 'path';
-
-const getTypesPath = (jsFile) => {
-  const pathInfo = parse(jsFile);
-  return format({
-      ...pathInfo,
-      base: '',
-      dir: `${pathInfo.dir}/types`,
-      ext: '.d.ts',
-  });
-};
 
 const config =  [
   {
     input: "src/index.ts",
     output: 
       [ {
-          file: pkg.main,
+          dir: 'dist',
+          entryFileNames: 'cjs/index.js',
           format: "cjs",
           sourcemap: true,
           interop: 'auto',
           globals: {
             react: 'React',
-            'react-dom': 'ReactDOM',
-            'styled-components': 'styled'
+            'react-dom': 'ReactDOM'
         }
 
         },
         {
-          file: pkg.module,
+          dir: 'dist',
+          entryFileNames: 'esm/index.js',
           format: "esm",
           sourcemap: true,
 
         }],
         treeshake: {
           preset: 'smallest',
-          manualPureFunctions: ['styled', 'local']
+          manualPureFunctions: ['local']
         },
-    external: ['react','react-dom', 'styled-components'],
+    external: ['react','react-dom'],
   
     plugins: [
             resolve(),
@@ -62,37 +50,28 @@ const config =  [
   
       
     
-        babel(
-        {
-          plugins: ['babel-plugin-styled-components'],
-          exclude: ['node_modules/**', 'public/**'],
-          extensions: ['.js', '.jsx', '.ts', '.tsx'],
-          inputSourceMap: true
-
-        }
-        ),
-     
-      
-      typescript({ tsconfig: './tsconfig.json'}),
-
- 
+      babel({
+        babelHelpers: 'bundled',
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+        include: ['src/**/*'],
+        configFile: false,
+        presets: [
+          ['@babel/preset-env', { modules: false }],
+          ['@babel/preset-react', { runtime: 'automatic' }],
+          '@babel/preset-typescript',
+        ],
+      }),
       sourcemaps(),
-            commonjs({ extensions: ['.js', '.jsx', '.ts', '.tsx'], include: /node_modules/ }),
-
+      commonjs({ extensions: ['.js', '.jsx', '.ts', '.tsx'], include: /node_modules/ }),
       url(),
-      postcss(),
+      postcss({ extract: 'style.css' }),
       terser(),
     ]
   },
-  // {
-  //   input: "dist/esm/types/index.d.ts",
-  //   output: [{ file: "dist/index.d.ts", format: "esm", sourcemap: true}],
-  //   external: [/\.css$/],
-  //  plugins: [dts()]
-  // }
   {
-    input: getTypesPath(pkg.module ?? pkg.main),
+    input: "src/index.ts",
     output: [{ file: pkg.types, format: 'esm' }],
+    external: [/\.css$/],
     plugins: [dts()],
 }
 ]

@@ -1,0 +1,22 @@
+.rain-drop-container {
+  position: absolute;
+  left: var(--drop-left);
+  width: 15px;
+  height: var(--drop-height);
+  pointer-events: none;
+  animation: rain-drop-fall 0.6s linear infinite;
+}
+
+@keyframes rain-drop-fall {
+  0% {
+    transform: translateY(0);
+  }
+
+  75% {
+    transform: translateY(var(--fall-75));
+  }
+
+  100% {
+    transform: translateY(var(--fall-100));
+  }
+}

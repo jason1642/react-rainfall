@@ -1,0 +1,9 @@
+.rain-container {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: absolute;
+  z-index: 10;
+  border-radius: inherit;
+  left: 0;
+}
