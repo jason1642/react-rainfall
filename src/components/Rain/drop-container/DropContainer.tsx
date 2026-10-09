@@ -1,6 +1,6 @@
 import "./dropContainer.css";
 import type { CSSProperties, ReactNode } from "react";
-import dropletSizes from "../sc-droplets/droplet-sizes";
+import dropletSizes from "../droplet-sizes";
 import type { size } from "../rainTypes";
 import React from "react";
 

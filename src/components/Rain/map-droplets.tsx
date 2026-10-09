@@ -1,9 +1,9 @@
 import type { CSSProperties, ReactElement } from "react";
-import Droplet from "../Droplet/Droplet";
-import DropImpact from "../impact/Impact";
-import DropletContainer from "../drop-container/DropContainer";
-import type { dropletOptions } from "../rainTypes";
-import selectDropletColor from "../select-droplet-color";
+import Droplet from "./Droplet/Droplet";
+import DropImpact from "./impact/Impact";
+import DropletContainer from "./drop-container/DropContainer";
+import type { dropletOptions } from "./rainTypes";
+import selectDropletColor from "./select-droplet-color";
 
 const mapDroplets = (
   rainRef: { maxWidth: number; maxHeight: number },
