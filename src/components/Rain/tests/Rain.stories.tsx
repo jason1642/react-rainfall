@@ -7,6 +7,7 @@ import Rain from "../Rain";
 const meta: Meta<typeof Rain> = {
   title: "ReactComponentLibrary/Rain",
   component: Rain,
+  tags: ["autodocs"],
   decorators: [
     (Story) => (
       <div
