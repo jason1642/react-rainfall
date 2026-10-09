@@ -7,3 +7,41 @@
   border-radius: inherit;
   left: 0;
 }
+
+.rain-container--passing-shower {
+  animation: rain-passing-shower-intensity 12s ease-in-out infinite;
+}
+
+@keyframes rain-passing-shower-intensity {
+  0%,
+  100% {
+    opacity: 0.18;
+  }
+
+  18% {
+    opacity: 0.46;
+  }
+
+  42% {
+    opacity: 1;
+  }
+
+  58% {
+    opacity: 0.86;
+  }
+
+  78% {
+    opacity: 0.3;
+  }
+
+  90% {
+    opacity: 0.12;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rain-container--passing-shower {
+    animation: none;
+    opacity: 0.6;
+  }
+}

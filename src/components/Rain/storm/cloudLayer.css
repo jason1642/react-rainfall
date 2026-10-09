@@ -1,0 +1,39 @@
+.storm-cloud-layer {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  mask-image: linear-gradient(to bottom, #000 0%, #000 52%, transparent 100%);
+}
+
+.storm-cloud {
+  position: absolute;
+  width: var(--cloud-size);
+  height: calc(var(--cloud-size) * 0.42);
+  opacity: var(--cloud-opacity);
+  filter: blur(12px);
+  background:
+    radial-gradient(ellipse at 18% 72%, rgba(190, 204, 224, 0.9) 0 22%, transparent 24%),
+    radial-gradient(ellipse at 38% 52%, rgba(205, 216, 232, 0.94) 0 29%, transparent 31%),
+    radial-gradient(ellipse at 61% 62%, rgba(178, 194, 217, 0.9) 0 30%, transparent 32%),
+    radial-gradient(ellipse at 82% 75%, rgba(163, 181, 209, 0.88) 0 22%, transparent 24%);
+  animation: storm-cloud-drift var(--cloud-speed) ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@keyframes storm-cloud-drift {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(var(--cloud-drift));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .storm-cloud {
+    animation: none;
+  }
+}

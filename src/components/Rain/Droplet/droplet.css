@@ -8,6 +8,46 @@
   animation: rain-drop-fade 1s linear infinite;
 }
 
+.rain-drop--pixel {
+  border-radius: 0;
+  clip-path: polygon(
+    25% 0,
+    75% 0,
+    75% 7%,
+    100% 7%,
+    100% 26%,
+    75% 26%,
+    75% 43%,
+    100% 43%,
+    100% 63%,
+    75% 63%,
+    75% 82%,
+    100% 82%,
+    100% 100%,
+    0 100%,
+    0 82%,
+    25% 82%,
+    25% 63%,
+    0 63%,
+    0 43%,
+    25% 43%,
+    25% 26%,
+    0 26%,
+    0 7%,
+    25% 7%
+  );
+  image-rendering: pixelated;
+}
+
+.rain-drop--soft {
+  filter: blur(1px);
+}
+
+.rain-drop--orb {
+  border-radius: 50%;
+  box-shadow: 0 0 5px rgba(210, 231, 255, 0.38);
+}
+
 .rain-drop {
   background-repeat: no-repeat;
 }

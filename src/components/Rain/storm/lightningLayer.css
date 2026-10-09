@@ -1,0 +1,87 @@
+.storm-lightning-layer {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.storm-lightning-flash {
+  position: absolute;
+  inset: 0;
+  background: var(--lightning-color);
+  opacity: 0;
+}
+
+.storm-lightning-bolt {
+  position: absolute;
+  top: -2%;
+  width: clamp(70px, 16vw, 190px);
+  height: 104%;
+  overflow: visible;
+  fill: var(--lightning-color);
+  opacity: 0;
+  filter: drop-shadow(0 0 14px var(--lightning-color));
+}
+
+.storm-lightning-layer.is-flashing .storm-lightning-flash {
+  animation: storm-lightning-flash var(--lightning-duration) ease-out both;
+}
+
+.storm-lightning-layer.is-flashing .storm-lightning-bolt {
+  animation: storm-lightning-bolt var(--lightning-duration) ease-out both;
+}
+
+@keyframes storm-lightning-flash {
+  0%,
+  100% {
+    opacity: 0;
+  }
+
+  8% {
+    opacity: 0.48;
+  }
+
+  15% {
+    opacity: 0.04;
+  }
+
+  24% {
+    opacity: 0.3;
+  }
+
+  34% {
+    opacity: 0;
+  }
+}
+
+@keyframes storm-lightning-bolt {
+  0%,
+  100% {
+    opacity: 0;
+  }
+
+  7% {
+    opacity: 0.95;
+  }
+
+  13% {
+    opacity: 0.12;
+  }
+
+  20% {
+    opacity: 0.8;
+  }
+
+  32% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .storm-lightning-layer.is-flashing .storm-lightning-flash,
+  .storm-lightning-layer.is-flashing .storm-lightning-bolt {
+    animation: none;
+  }
+}

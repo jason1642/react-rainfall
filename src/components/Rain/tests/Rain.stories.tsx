@@ -18,13 +18,37 @@ const scenes = {
       "radial-gradient(ellipse at 80% 20%, rgba(176, 201, 221, .25), transparent 38%), linear-gradient(145deg, #526b78 0%, #314854 52%, #1e303b 100%)",
     glow: "rgba(207, 229, 242, .25)",
   },
-  downpour: {
-    eyebrow: "STORM WATCH · HEAVY RAIN",
-    title: "Let the storm\nroll through.",
-    detail: "HEAVY DOWNPOUR",
+  steady: {
+    eyebrow: "OVERCAST · ALL AFTERNOON",
+    title: "A steady rhythm\noutside the window.",
+    detail: "STEADY RAIN",
+    background:
+      "radial-gradient(ellipse at 78% 12%, rgba(154, 184, 219, .2), transparent 36%), linear-gradient(145deg, #485b70 0%, #2b3d53 52%, #172537 100%)",
+    glow: "rgba(148, 183, 229, .22)",
+  },
+  passing: {
+    eyebrow: "PASSING SHOWER · MOVING THROUGH",
+    title: "The clouds gather,\nthen drift away.",
+    detail: "PASSING SHOWER",
+    background:
+      "radial-gradient(ellipse at 78% 12%, rgba(165, 195, 221, .24), transparent 38%), linear-gradient(145deg, #506574 0%, #344b5a 52%, #1c303e 100%)",
+    glow: "rgba(170, 206, 232, .24)",
+  },
+  heavy: {
+    eyebrow: "RAIN WARNING · INTENSE",
+    title: "Let the rain\ncome pouring down.",
+    detail: "HEAVY RAIN",
     background:
       "radial-gradient(ellipse at 68% 0%, rgba(105, 133, 204, .28), transparent 34%), linear-gradient(145deg, #26334d 0%, #151d32 50%, #0b101d 100%)",
     glow: "rgba(139, 166, 255, .28)",
+  },
+  mist: {
+    eyebrow: "LOW CLOUD · FINE RAIN",
+    title: "A veil of rain\nsoftens the world.",
+    detail: "MISTY RAIN",
+    background:
+      "radial-gradient(ellipse at 72% 8%, rgba(220, 230, 226, .23), transparent 38%), linear-gradient(145deg, #687773 0%, #435552 53%, #263b3a 100%)",
+    glow: "rgba(207, 224, 214, .2)",
   },
   rainbow: {
     eyebrow: "AFTER THE RAIN · CLEARING",
@@ -39,7 +63,8 @@ const scenes = {
 type SceneName = keyof typeof scenes;
 
 const SceneDecorator: Decorator = (Story, context) => {
-  const sceneName = (context.parameters.scene as SceneName | undefined) ?? "midnight";
+  const sceneName =
+    (context.parameters.scene as SceneName | undefined) ?? "midnight";
   const scene = scenes[sceneName];
 
   return (
@@ -232,25 +257,79 @@ export const Primary: Story = {
     size: "long",
     showImpact: true,
     dropletOpacity: 0.52,
+    angle: 20,
   },
 };
 
 export const GentleDrizzle: Story = {
   name: "Gentle drizzle",
-  args: { profile: "light-drizzle" },
+  args: {
+    profile: "light-drizzle",
+    angle: 20
+  },
   parameters: { scene: "drizzle" },
 };
 
-export const HeavyDownpour: Story = {
-  name: "Heavy downpour",
+export const SteadyRain: Story = {
+  args: { profile: "steady-rain" },
+  parameters: { scene: "steady" },
+};
+
+export const PassingShower: Story = {
+  args: { profile: "passing-shower" },
+  parameters: { scene: "passing" },
+};
+
+export const HeavyRain: Story = {
+  args: { profile: "heavy-rain" },
+  parameters: { scene: "heavy" },
+};
+
+export const WindDrivenRain: Story = {
+  name: "Wind-driven rain",
+  args: { profile: "heavy-rain", angle: 18 },
+  parameters: { scene: "heavy" },
+};
+
+export const StormLayers: Story = {
+  name: "Storm clouds and lightning",
   args: {
-    numDrops: 128,
-    dropletColor: "rgb(206, 224, 255)",
-    size: "long",
-    showImpact: true,
-    dropletOpacity: 0.72,
+    profile: "heavy-rain",
+    angle: 18,
+    showClouds: true,
+    cloudCount: 4,
+    cloudSize: 380,
+    cloudSpeed: 32,
+    cloudOpacity: 0.45,
+    cloudDrift: 140,
+    showLightning: true,
+    lightningFrequency: 8,
+    lightningFlashDuration: 500,
+    lightningColor: "#eaf3ff",
   },
-  parameters: { scene: "downpour" },
+  parameters: { scene: "heavy" },
+};
+
+export const PixelRain: Story = {
+  name: "Pixel rain",
+  args: { profile: "steady-rain", dropStyle: "pixel", angle: 18 },
+  parameters: { scene: "steady" },
+};
+
+export const RainWithDepth: Story = {
+  name: "Rain with depth",
+  args: {
+    profile: "steady-rain",
+    dropStyle: "streak",
+    depth: true,
+    numDrops: 90,
+  },
+  parameters: { scene: "steady" },
+};
+
+export const MistyRain: Story = {
+  args: { profile: "misty-rain" },
+  parameters: { scene: "mist" },
 };
 
 export const ColorRain: Story = {

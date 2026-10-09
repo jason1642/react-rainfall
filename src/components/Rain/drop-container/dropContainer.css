@@ -1,5 +1,6 @@
 .rain-drop-container {
   position: absolute;
+  z-index: 1;
   left: var(--drop-left);
   width: 15px;
   height: var(--drop-height);
@@ -9,14 +10,14 @@
 
 @keyframes rain-drop-fall {
   0% {
-    transform: translateY(0);
+    transform: translate(0, 0);
   }
 
   75% {
-    transform: translateY(var(--fall-75));
+    transform: translate(var(--fall-x-75), var(--fall-75));
   }
 
   100% {
-    transform: translateY(var(--fall-100));
+    transform: translate(var(--fall-x-100), var(--fall-100));
   }
 }
