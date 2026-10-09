@@ -1,34 +1,46 @@
-import styled, { keyframes } from "styled-components";
+import "./dropContainer.css";
+import type { CSSProperties, ReactNode } from "react";
 import dropletSizes from "../sc-droplets/droplet-sizes";
 import type { size } from "../rainTypes";
+import React from "react";
 
 interface DropContainerProps {
   gapLength: number;
   maxHeight: number;
   size: size;
+  style?: CSSProperties;
+  children?: ReactNode;
 }
 
-const FallKeyFrames = (maxHeight: number, size: size) => keyframes`
-  ${"0%"} { transform: translateY(0px); }
-  ${"75%"}{ transform: translateY(${maxHeight * 0.9 + dropletSizes(size)}px); }
-  ${"100%"} { transform: translateY(${maxHeight + dropletSizes(size)}px); }
-`;
+type DropContainerStyle = CSSProperties & {
+  "--drop-left": string;
+  "--drop-height": string;
+  "--fall-75": string;
+  "--fall-100": string;
+};
 
-const DropletContainer = styled.div<DropContainerProps>`
-  position: absolute;
+const DropContainer: React.FunctionComponent<DropContainerProps> = ({
+  gapLength,
+  maxHeight,
+  size,
+  style,
+  children,
+}) => {
+  const dropHeight = dropletSizes(size);
 
-  left: ${({ gapLength }) => gapLength}px;
+  const containerStyle: DropContainerStyle = {
+    ...style,
+    "--drop-left": `${gapLength}px`,
+    "--drop-height": `${dropHeight}px`,
+    "--fall-75": `${maxHeight * 0.9 + dropHeight}px`,
+    "--fall-100": `${maxHeight + dropHeight}px`,
+  };
 
-  width: 15px;
-  height: ${({ size }) => dropletSizes(size)}px;
-  pointer-events: none;
-  animation: ${({ maxHeight, size }) => FallKeyFrames(maxHeight, size)} 0.6s
-    linear infinite;
+  return (
+    <div className="rain-drop-container" style={containerStyle}>
+      {children}
+    </div>
+  );
+};
 
-  -webkit-animation: ${({ maxHeight, size }) => FallKeyFrames(maxHeight, size)}
-    0.6s linear infinite;
-  -moz-animation: ${({ maxHeight, size }) => FallKeyFrames(maxHeight, size)}
-    0.6s linear infinite;
-`;
-
-export default DropletContainer;
+export default DropContainer;
