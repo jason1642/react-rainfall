@@ -53,7 +53,7 @@ depth | false | boolean | false | true / false | Randomize drop scale, brightnes
 
 
 
-![](https://github.com/user-attachments/assets/7c02882a-7e70-4af0-b238-76957b1e7357.gif)
+![](https://github.com/jason1642/react-rainfall/blob/main/thunderRain.gif)
 
 
 
