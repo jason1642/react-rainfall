@@ -7,7 +7,7 @@ export type size = 'short' | 'default' | 'long' | undefined;
 
 export type showImpact = boolean | undefined;
 
-export type rainEffect = 'rainbow' | undefined;
+export type rainProfile = 'light-drizzle' | 'rainbow';
 
 export type fallSpeed = 'slow' | 'normal' | 'fast' | undefined;
 
@@ -23,9 +23,8 @@ export interface dropletOptions {
     dropletColor?: dropletColor,
     size?: size,
     showImpact?: showImpact,
-    rainEffect?: rainEffect,
+    profile?: rainProfile,
     dropletOpacity?: dropletOpacity,
 
 }
-
 

@@ -8,7 +8,7 @@ const Rain: React.FunctionComponent<dropletOptions> = ({
   dropletColor,
   size,
   showImpact,
-  rainEffect,
+  profile,
   dropletOpacity,
 }) => {
   const rainRef = React.useRef<HTMLDivElement>(null);
@@ -31,12 +31,12 @@ const Rain: React.FunctionComponent<dropletOptions> = ({
           dropletColor,
           size,
           showImpact,
-          rainEffect,
+          profile,
           dropletOpacity,
         },
       ),
     );
-  }, [numDrops, dropletColor, size, showImpact, rainEffect, dropletOpacity]);
+  }, [numDrops, dropletColor, size, showImpact, profile, dropletOpacity]);
 
   return (
     <div ref={rainRef} className="rain-container">

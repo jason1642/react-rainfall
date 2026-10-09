@@ -3,6 +3,7 @@ import Droplet from "./Droplet/Droplet";
 import DropImpact from "./impact/Impact";
 import DropletContainer from "./drop-container/DropContainer";
 import type { dropletOptions } from "./rainTypes";
+import { getRainProfileDefaults } from "./rain-profiles";
 import selectDropletColor from "./select-droplet-color";
 
 const mapDroplets = (
@@ -12,15 +13,23 @@ const mapDroplets = (
   const {
     dropletColor,
     numDrops,
-    showImpact = true,
-    size = "default",
-    rainEffect,
-    dropletOpacity = 0.5,
+    showImpact,
+    size,
+    profile,
+    dropletOpacity,
   } = options;
 
   const { maxWidth, maxHeight } = rainRef;
+  const profileDefaults = getRainProfileDefaults(profile);
+  const effectiveSize = size ?? profileDefaults.size ?? "default";
+  const effectiveShowImpact =
+    showImpact ?? profileDefaults.showImpact ?? true;
+  const effectiveOpacity =
+    dropletOpacity ?? profileDefaults.dropletOpacity ?? 0.5;
   const requestedDrops =
-    numDrops === undefined ? Math.floor(maxWidth / 25) : Math.floor(numDrops);
+    numDrops === undefined
+      ? Math.floor(maxWidth / profileDefaults.dropsPerWidth)
+      : Math.floor(numDrops);
   const numDropsCount = Math.max(0, requestedDrops);
   const columnWidth = numDropsCount > 0 ? maxWidth / numDropsCount : 0;
 
@@ -34,7 +43,10 @@ const mapDroplets = (
       0,
       Math.min(maxWidth - 15, i * columnWidth + horizontalJitter),
     );
-    const dropColor = selectDropletColor(dropletColor, rainEffect);
+    const dropColor = selectDropletColor(
+      dropletColor ?? profileDefaults.dropletColor,
+      profile,
+    );
     const rgb = dropColor.match(/\(([^)]+)\)/)?.[1] ?? "255, 255, 255";
 
     const animationStyle: CSSProperties = {
@@ -47,7 +59,7 @@ const mapDroplets = (
         key={`drop-${i}`}
         maxHeight={maxHeight}
         gapLength={left}
-        size={size}
+        size={effectiveSize}
         style={{
           ...animationStyle,
           bottom: `${102 + Math.random() * 8}%`,
@@ -56,11 +68,11 @@ const mapDroplets = (
         <Droplet
           style={{
             ...animationStyle,
-            backgroundImage: `linear-gradient(to bottom, rgba(${rgb}, 0), rgba(${rgb}, ${dropletOpacity}))`,
+            backgroundImage: `linear-gradient(to bottom, rgba(${rgb}, 0), rgba(${rgb}, ${effectiveOpacity}))`,
           }}
         />
 
-        {showImpact && (
+        {effectiveShowImpact && (
           <DropImpact
             style={{
               display: "block",

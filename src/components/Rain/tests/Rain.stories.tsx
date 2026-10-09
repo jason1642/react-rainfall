@@ -237,13 +237,7 @@ export const Primary: Story = {
 
 export const GentleDrizzle: Story = {
   name: "Gentle drizzle",
-  args: {
-    numDrops: 36,
-    dropletColor: "rgb(220, 238, 248)",
-    size: "short",
-    showImpact: false,
-    dropletOpacity: 0.32,
-  },
+  args: { profile: "light-drizzle" },
   parameters: { scene: "drizzle" },
 };
 
@@ -263,7 +257,7 @@ export const ColorRain: Story = {
   name: "Color rain",
   args: {
     numDrops: 74,
-    rainEffect: "rainbow",
+    profile: "rainbow",
     size: "default",
     showImpact: true,
     dropletOpacity: 0.56,
