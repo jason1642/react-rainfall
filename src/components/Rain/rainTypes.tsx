@@ -17,13 +17,15 @@ export type cloudSize = number | undefined;
 export type cloudSpeed = number | undefined;
 export type cloudOpacity = number | undefined;
 export type cloudDrift = number | undefined;
+export type cloudBlur = number | undefined;
+export type cloudColor = string | undefined;
 export type showLightning = boolean | undefined;
 export type lightningFrequency = number | undefined;
 export type lightningFlashDuration = number | undefined;
 export type lightningColor = string | undefined;
 
 export type rainDropStyle = "streak" | "pixel" | "soft" | "orb" | "snowflake" | "hailstone";
-export type impactStyle = "splash" | "spray";
+export type impactStyle = "splash" | "spray" | "ripple";
 export type duration = "slow" | "normal" | "fast" | undefined;
 export type rainProfile =
   | "light-drizzle"
@@ -58,6 +60,9 @@ export interface dropletOptions {
   cloudSpeed?: cloudSpeed;
   cloudOpacity?: cloudOpacity;
   cloudDrift?: cloudDrift;
+  cloudBlur?: cloudBlur;
+  cloudColor?: cloudColor;
+  rainFromClouds?: boolean;
   showLightning?: showLightning;
   lightningFrequency?: lightningFrequency;
   lightningFlashDuration?: lightningFlashDuration;

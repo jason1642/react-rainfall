@@ -25,18 +25,30 @@ const mapDroplets = (
     dropStyle,
     depth,
     duration,
+    rainFromClouds,
+    cloudCount,
+    cloudSize,
   } = options;
 
   const { maxWidth, maxHeight } = rainRef;
   const profileDefaults = getRainProfileDefaults(profile);
+  const localCloudCount = Math.max(
+    1,
+    Math.min(24, Math.floor(cloudCount ?? profileDefaults.cloudCount ?? 3)),
+  );
+  const localCloudSize = Math.max(80, cloudSize ?? profileDefaults.cloudSize ?? 320);
   const effectiveSize = size ?? profileDefaults.size ?? "default";
   const effectiveShowImpact = showImpact ?? profileDefaults.showImpact ?? true;
   const effectiveImpactStyle =
     impactStyle ?? profileDefaults.impactStyle ?? "splash";
-  const effectiveImpactThickness = Math.max(0.5, Math.min(8,
-    impactThickness ?? profileDefaults.impactThickness ?? 2.5));
-  const effectiveImpactOpacity = Math.max(0, Math.min(1,
-    impactOpacity ?? profileDefaults.impactOpacity ?? 0.65));
+  const effectiveImpactThickness = Math.max(
+    0.5,
+    Math.min(8, impactThickness ?? profileDefaults.impactThickness ?? 2.5),
+  );
+  const effectiveImpactOpacity = Math.max(
+    0,
+    Math.min(1, impactOpacity ?? profileDefaults.impactOpacity ?? 0.65),
+  );
   const effectiveOpacity =
     dropletOpacity ?? profileDefaults.dropletOpacity ?? 0.5;
   const effectiveAngleValue = angle ?? profileDefaults.angle ?? 0;
@@ -69,7 +81,9 @@ const mapDroplets = (
     Math.max(maxWidth, maxWidth + totalHorizontalDrift) + rotatedDropHalfWidth;
   const coverageWidth = Math.max(0, coverageEnd - coverageStart);
   const coverageMultiplier = maxWidth > 0 ? coverageWidth / maxWidth : 0;
-  const numDropsCount = Math.ceil(requestedDropsCount * coverageMultiplier);
+  const numDropsCount = rainFromClouds
+    ? requestedDropsCount
+    : Math.ceil(requestedDropsCount * coverageMultiplier);
   const columnWidth = numDropsCount > 0 ? coverageWidth / numDropsCount : 0;
 
   const drops: ReactElement[] = [];
@@ -99,7 +113,12 @@ const mapDroplets = (
     // that drop has visibly fallen.
     const randomDelaySeconds = Math.random() * durationSeconds;
     const horizontalJitter = (Math.random() - 0.5) * columnWidth * 0.7;
-    const landingLeft = coverageStart + i * columnWidth + horizontalJitter;
+    const landingLeft = rainFromClouds
+      ? ((Math.floor(Math.random() * localCloudCount) + 0.5) /
+          localCloudCount) *
+          maxWidth +
+        (Math.random() - 0.5) * localCloudSize * 0.65
+      : coverageStart + i * columnWidth + horizontalJitter;
     const left = landingLeft - dropHorizontalDrift;
     const dropColor = selectDropletColor(
       dropletColor ?? profileDefaults.dropletColor,

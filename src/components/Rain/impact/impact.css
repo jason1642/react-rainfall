@@ -23,25 +23,24 @@
 }
 
 @keyframes rain-impact-splash {
-  0%,
-  78% {
+  0%, 76% {
     opacity: 0;
-    transform: translate3d(0, 0, 0) scale(0.25);
+    transform: translate3d(0, 0, 0) scale(0.2);
   }
 
-  83% {
-    opacity: 0.95;
-    transform: translate3d(var(--splash-x-start), -3px, 0) scale(1);
+  81% {
+    opacity: 0.9;
+    transform: translate3d(var(--splash-x-start), -4px, 0) scale(0.8);
   }
 
-  92% {
-    opacity: 0.8;
-    transform: translate3d(var(--splash-x-end), var(--splash-y), 0) scale(0.8);
+  91% {
+    opacity: 0.75;
+    transform: translate3d(var(--splash-x-end), var(--splash-y), 0) scale(1);
   }
 
   100% {
     opacity: 0;
-    transform: translate3d(var(--splash-x-end), 0, 0) scale(0.2);
+    transform: translate3d(calc(var(--splash-x-end) * 1.25), calc(var(--splash-y) - 2px), 0) scale(0.8);
   }
 }
 
@@ -50,15 +49,14 @@
 }
 
 @keyframes rain-impact-spray {
-  0%,
-  78% {
+  0%, 76% {
     opacity: 0;
     transform: translate3d(0, 0, 0) scale(0.2);
   }
 
-  82% {
-    opacity: 1;
-    transform: translate3d(var(--splash-x-start), -4px, 0) scale(0.9);
+  81% {
+    opacity: 0.95;
+    transform: translate3d(var(--splash-x-start), -5px, 0) scale(0.9);
   }
 
   90% {
@@ -66,14 +64,41 @@
     transform: translate3d(var(--splash-x-end), var(--splash-y), 0) scale(1);
   }
 
-  96% {
-    opacity: 0.55;
-    transform: translate3d(var(--splash-x-end), calc(var(--splash-y) + 8px), 0)
-      scale(0.7);
-  }
-
   100% {
     opacity: 0;
-    transform: translate3d(var(--splash-x-end), 0, 0) scale(0.35);
+    transform: translate3d(calc(var(--splash-x-end) * 1.2), calc(var(--splash-y) - 3px), 0) scale(0.65);
   }
+}
+
+.rain-drop-impact--ripple {
+  display: block;
+}
+
+.rain-impact-ripple {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  transform: translate(-50%, 50%) scale(0.12, 0.2);
+  opacity: 0;
+  animation: rain-impact-ripple 1s ease-out infinite;
+  will-change: transform, opacity;
+}
+
+.rain-impact-ripple:nth-child(2) {
+  animation-name: rain-impact-ripple-late;
+}
+
+@keyframes rain-impact-ripple {
+  0%, 77% { opacity: 0; transform: translate(-50%, 50%) scale(0.12, 0.2); }
+  81% { opacity: 0.8; }
+  98% { opacity: 0; transform: translate(-50%, 50%) scale(1.8, 1.35); }
+  100% { opacity: 0; }
+}
+
+@keyframes rain-impact-ripple-late {
+  0%, 82% { opacity: 0; transform: translate(-50%, 50%) scale(0.12, 0.2); }
+  86% { opacity: 0.55; }
+  100% { opacity: 0; transform: translate(-50%, 50%) scale(1.8, 1.35); }
 }

@@ -28,12 +28,15 @@ const Rain: React.FunctionComponent<dropletOptions> = ({
   cloudSpeed,
   cloudOpacity,
   cloudDrift,
+  cloudBlur,
+  cloudColor,
   showLightning,
   lightningFrequency,
   lightningFlashDuration,
   lightningColor,
   dropStyle,
   depth,
+  rainFromClouds = false,
   showWind = false,
 }) => {
   const stormOptions = getResolvedStormOptions(profile, {
@@ -43,11 +46,16 @@ const Rain: React.FunctionComponent<dropletOptions> = ({
     cloudSpeed,
     cloudOpacity,
     cloudDrift,
+    cloudBlur,
+    cloudColor,
     showLightning,
     lightningFrequency,
     lightningFlashDuration,
     lightningColor,
   });
+  const effectiveCloudCount = rainFromClouds
+    ? Math.max(1, stormOptions.cloudCount)
+    : stormOptions.cloudCount;
 
   const rainRef = React.useRef<HTMLDivElement>(null);
   const [dropletArray, setDropletArray] = React.useState<React.ReactElement[]>(
@@ -84,6 +92,9 @@ const Rain: React.FunctionComponent<dropletOptions> = ({
             angle,
             dropStyle,
             depth,
+            rainFromClouds,
+            cloudCount: effectiveCloudCount,
+            cloudSize: stormOptions.cloudSize,
           },
         ),
       );
@@ -112,6 +123,9 @@ const Rain: React.FunctionComponent<dropletOptions> = ({
     angle,
     dropStyle,
     depth,
+    rainFromClouds,
+    effectiveCloudCount,
+    stormOptions.cloudSize,
   ]);
 
   return (
@@ -124,13 +138,15 @@ const Rain: React.FunctionComponent<dropletOptions> = ({
         .filter(Boolean)
         .join(" ")}
     >
-      {stormOptions.showClouds && (
+      {(stormOptions.showClouds || rainFromClouds) && (
         <CloudLayer
-          count={stormOptions.cloudCount}
+          count={effectiveCloudCount}
           size={stormOptions.cloudSize}
           speed={stormOptions.cloudSpeed}
           opacity={stormOptions.cloudOpacity}
           drift={stormOptions.cloudDrift}
+          blur={stormOptions.cloudBlur}
+          color={stormOptions.cloudColor}
         />
       )}
       {dropletArray}

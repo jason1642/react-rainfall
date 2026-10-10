@@ -12,6 +12,8 @@ export interface ResolvedStormOptions {
   cloudSpeed: number;
   cloudOpacity: number;
   cloudDrift: number;
+  cloudBlur: number;
+  cloudColor: string;
   showLightning: boolean;
   lightningFrequency: number;
   lightningFlashDuration: number;
@@ -93,9 +95,11 @@ const rainProfiles: Record<rainProfile, RainProfileDefaults> = {
     showClouds: true,
     cloudCount: 5,
     cloudSize: 420,
-    cloudSpeed: 36,
-    cloudOpacity: 0.48,
+    cloudSpeed: 24,
+    cloudOpacity: 0.72,
     cloudDrift: 360,
+    cloudBlur: 4,
+    cloudColor: "#43527f",
     showLightning: true,
     lightningFrequency: 15,
     lightningFlashDuration: 300,
@@ -209,6 +213,8 @@ export const getResolvedStormOptions = (
     | "cloudSpeed"
     | "cloudOpacity"
     | "cloudDrift"
+    | "cloudBlur"
+    | "cloudColor"
     | "showLightning"
     | "lightningFrequency"
     | "lightningFlashDuration"
@@ -224,6 +230,8 @@ export const getResolvedStormOptions = (
     cloudSpeed: overrides.cloudSpeed ?? defaults.cloudSpeed ?? 36,
     cloudOpacity: overrides.cloudOpacity ?? defaults.cloudOpacity ?? 0.4,
     cloudDrift: overrides.cloudDrift ?? defaults.cloudDrift ?? 120,
+    cloudBlur: overrides.cloudBlur ?? defaults.cloudBlur ?? 4,
+    cloudColor: overrides.cloudColor ?? defaults.cloudColor ?? "#43527f",
     showLightning: overrides.showLightning ?? defaults.showLightning ?? false,
     lightningFrequency:
       overrides.lightningFrequency ?? defaults.lightningFrequency ?? 9,

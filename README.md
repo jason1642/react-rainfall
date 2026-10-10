@@ -31,7 +31,7 @@ numDrops | false | number | parentWidth / 25 | number | Target number of visible
 dropletColor | false | color in rbg() format | white | 'rgb(200, 200, 200) | Color of droplets, which will use a linear gradient effect. Must be in rgb format.
 size | false | string | 'default' | 'short' (10px) <br /> 'default' (19px) <br /> 'long' (34px) for streaks | Change the visible length of rain streaks.
 showImpact | false | boolean | true| boolean | Show the impact animation when the rain drop reachs the bottom.
-impactStyle | false | string | 'splash' (profile default may vary) | 'splash', 'spray' | Choose the impact motion. `spray` uses separated droplets; `splash` keeps the original particle burst.
+impactStyle | false | string | 'splash' (profile default may vary) | 'splash', 'spray', 'ripple' | Choose upward splash particles, a spray burst, or expanding puddle rings.
 impactThickness | false | number | 2.5 | 0.5 - 8 pixels | Set the diameter of the impact particles.
 impactOpacity | false | number | 0.65 | 0 - 1 | Set the overall impact visibility.
 angle | false | number | 0 | -75 to 75 | Tilt the rain from vertical in degrees. Positive values drift right; negative values drift left. Values outside this range are clamped.
@@ -44,6 +44,8 @@ cloudSize | false | number | 320 (420 for `heavy-rain`) | pixels | Approximate w
 cloudSpeed | false | number | 36 | seconds | Time for clouds to drift in one direction; they ease back and repeat.
 cloudOpacity | false | number | 0.4 (0.48 for `heavy-rain`) | 0 - 1 | Opacity of the clouds.
 cloudDrift | false | number | 120 (360 for `heavy-rain`) | pixels | Horizontal cloud drift per direction. Positive moves right; negative moves left.
+cloudBlur | false | number | 4px | 0 - 40 pixels | Adjust cloud softness. Use a low value for distinct cloud edges.
+cloudColor | false | string | #43527f | CSS color | Set the color of the cloud shapes.
 showLightning | false | boolean | false (true for `heavy-rain`) | true / false | Enable lightning flashes above the rain. This is a visual effect and does not play thunder audio.
 lightningFrequency | false | number | 9 (15 for `heavy-rain`) | seconds | Average interval between flashes; the first flash appears within about one second.
 lightningFlashDuration | false | number | 450 (300 for `heavy-rain`) | milliseconds | Duration of each flash, clamped to 80–4000 ms.
@@ -51,6 +53,7 @@ lightningColor | false | string | #dfe6ff | CSS color | Color used for the light
 dropStyle | false | string | 'streak' | 'streak', 'pixel', 'soft', 'orb', 'snowflake', 'hailstone' | Change the visual shape of each precipitation particle.
 depth | false | boolean | false (true for `heavy-rain`) | true / false | Vary drop size, speed, opacity, blur, and impact height to create distant and foreground rain layers.
 showWind | false | boolean | false | true / false | Add subtle periodic animated gusts across the rain layer.
+rainFromClouds | false | boolean | false | true / false | Cluster rain beneath the cloud positions. Clouds are shown automatically when this is enabled.
 
 
 

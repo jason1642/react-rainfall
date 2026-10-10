@@ -375,3 +375,33 @@ export const FineImpacts: Story = {
   },
   parameters: { scene: "heavy" },
 };
+
+export const PuddleRipples: Story = {
+  name: "Rain on a puddle",
+  args: { profile: "steady-rain", impactStyle: "ripple", numDrops: 48 },
+  parameters: { scene: "steady" },
+};
+
+export const DefinedMovingClouds: Story = {
+  name: "Defined, moving clouds",
+  args: {
+    profile: "heavy-rain",
+    cloudOpacity: 0.82,
+    cloudBlur: 1,
+    cloudColor: "#596b9a",
+    cloudDrift: 280,
+    cloudSpeed: 20,
+  },
+  parameters: { scene: "heavy" },
+};
+
+export const RainFromClouds: Story = {
+  name: "Rain falling from clouds",
+  args: {
+    profile: "heavy-rain",
+    rainFromClouds: true,
+    cloudCount: 2,
+    cloudSize: 360,
+  },
+  parameters: { scene: "heavy" },
+};
