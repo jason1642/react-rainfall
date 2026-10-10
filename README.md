@@ -12,8 +12,9 @@
  ## Usage 
  ```jsx
     import Rain from 'react-rainfall'
-    import 'react-rainfall/dist/style.css'
-   // IMPORTANT - Parent element must have position relative or else rain will be positioned based on viewport 
+    import 'react-rainfall/dist/style.css' 
+   // IMPORTANT - Parent element must have position relative or else rain will be positioned based on viewport
+   // Must also import css files in file where <Rain /> is used
     <div style={{
        position: 'relative',
        height: '600px',
@@ -82,7 +83,3 @@ depth | false | boolean | false | true / false | Randomize drop scale, brightnes
 
 
 
-## Planned updates
- - Add more rain profile options, such as storm
- - Add direction change options
- - Add in and out fading for droplets options. 
