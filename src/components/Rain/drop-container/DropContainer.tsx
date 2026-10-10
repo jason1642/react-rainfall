@@ -32,8 +32,9 @@ const DropContainer: React.FunctionComponent<DropContainerProps> = ({
   ...divProps
 }) => {
   const dropHeight = dropletSizes(size);
-  const fall75 = maxHeight * 0.9 + dropHeight;
-  const fall100 = maxHeight + dropHeight;
+  // Land on the bottom edge; the impact layer is lifted slightly above it.
+  const fall75 = maxHeight * 0.9;
+  const fall100 = maxHeight;
   const horizontalShift = (fall: number) =>
     `${Math.tan((angle * Math.PI) / 180) * fall}px`;
 

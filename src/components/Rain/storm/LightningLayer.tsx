@@ -13,6 +13,20 @@ type LightningStyle = CSSProperties & {
   "--lightning-duration": string;
 };
 
+function createBoltPoints() {
+  const points = ["50,0"];
+  let x = 50;
+  let y = 0;
+
+  while (y < 100) {
+    y = Math.min(100, y + 8 + Math.random() * 13);
+    x = Math.max(16, Math.min(84, x + (Math.random() - 0.5) * 42));
+    points.push(`${x.toFixed(1)},${y.toFixed(1)}`);
+  }
+
+  return points.join(" ");
+}
+
 function LightningLayer({
   frequency,
   flashDuration,
@@ -20,6 +34,7 @@ function LightningLayer({
 }: LightningLayerProps) {
   const [isFlashing, setIsFlashing] = React.useState(false);
   const [boltPosition, setBoltPosition] = React.useState(50);
+  const [boltPoints, setBoltPoints] = React.useState(createBoltPoints);
   const safeFrequency = Number.isFinite(frequency)
     ? Math.max(0.75, frequency)
     : 9;
@@ -37,6 +52,7 @@ function LightningLayer({
         : safeFrequency * (0.7 + Math.random() * 0.6);
       nextFlashTimer = setTimeout(() => {
         setBoltPosition(16 + Math.random() * 68);
+        setBoltPoints(createBoltPoints());
         setIsFlashing(true);
         flashEndTimer = setTimeout(() => {
           setIsFlashing(false);
@@ -67,10 +83,10 @@ function LightningLayer({
       <svg
         className="storm-lightning-bolt"
         style={{ left: `${boltPosition}%` }}
-        viewBox="0 0 100 400"
+        viewBox="0 0 100 100"
         preserveAspectRatio="none"
       >
-        <path d="M58 0 18 208h29L30 400l57-238H55L76 0z" />
+        <polyline points={boltPoints} />
       </svg>
     </div>
   );

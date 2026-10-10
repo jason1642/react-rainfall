@@ -265,7 +265,7 @@ export const GentleDrizzle: Story = {
   name: "Gentle drizzle",
   args: {
     profile: "light-drizzle",
-    angle: 20
+    angle: 20,
   },
   parameters: { scene: "drizzle" },
 };
@@ -285,6 +285,12 @@ export const HeavyRain: Story = {
   parameters: { scene: "heavy" },
 };
 
+export const HeavyRainWithSplashImpact: Story = {
+  name: "Heavy rain with splash impact",
+  args: { profile: "heavy-rain", impactStyle: "splash" },
+  parameters: { scene: "heavy" },
+};
+
 export const WindDrivenRain: Story = {
   name: "Wind-driven rain",
   args: { profile: "heavy-rain", angle: 18 },
@@ -301,7 +307,7 @@ export const StormLayers: Story = {
     cloudSize: 380,
     cloudSpeed: 32,
     cloudOpacity: 0.45,
-    cloudDrift: 140,
+    cloudDrift: 360,
     showLightning: true,
     lightningFrequency: 8,
     lightningFlashDuration: 500,
@@ -342,4 +348,30 @@ export const ColorRain: Story = {
     dropletOpacity: 0.56,
   },
   parameters: { scene: "rainbow" },
+};
+
+export const Snow: Story = {
+  args: { profile: "snow" },
+  parameters: { scene: "steady" },
+};
+
+export const Hail: Story = {
+  args: { profile: "hail" },
+  parameters: { scene: "heavy" },
+};
+
+export const RainWithPeriodicWind: Story = {
+  name: "Rain with periodic wind gusts",
+  args: { profile: "steady-rain", showWind: true, angle: 8 },
+  parameters: { scene: "midnight" },
+};
+
+export const FineImpacts: Story = {
+  name: "Fine, subtle impacts",
+  args: {
+    profile: "heavy-rain",
+    impactThickness: 1.3,
+    impactOpacity: 0.32,
+  },
+  parameters: { scene: "heavy" },
 };

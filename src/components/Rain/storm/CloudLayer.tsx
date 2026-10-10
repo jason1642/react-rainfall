@@ -16,7 +16,7 @@ type CloudStyle = CSSProperties & {
   "--cloud-drift": string;
 };
 
-const cloudHeights = ["2%", "10%", "18%", "6%", "22%", "13%"];
+const cloudHeights = ["-12%", "-4%", "5%", "-9%", "12%", "2%"];
 
 function CloudLayer({ count, size, speed, opacity, drift }: CloudLayerProps) {
   const safeCount = Number.isFinite(count)
@@ -32,13 +32,15 @@ function CloudLayer({ count, size, speed, opacity, drift }: CloudLayerProps) {
   return (
     <div className="storm-cloud-layer" aria-hidden="true">
       {Array.from({ length: safeCount }, (_, index) => {
+        const sizeScale = 0.72 + Math.random() * 0.56;
+        const opacityScale = 0.72 + Math.random() * 0.28;
         const style: CloudStyle = {
-          "--cloud-size": `${safeSize}px`,
-          "--cloud-speed": `${safeSpeed}s`,
-          "--cloud-opacity": `${safeOpacity}`,
+          "--cloud-size": `${safeSize * sizeScale}px`,
+          "--cloud-speed": `${safeSpeed * (0.85 + Math.random() * 0.3)}s`,
+          "--cloud-opacity": `${safeOpacity * opacityScale}`,
           "--cloud-drift": `${safeDrift}px`,
           left: `${(index * 43) % 120 - 10}%`,
-          top: cloudHeights[index % cloudHeights.length],
+          top: `calc(${cloudHeights[index % cloudHeights.length]} + ${Math.random() * 6 - 3}%)`,
           animationDelay: `${(-index * safeSpeed) / safeCount}s`,
         };
 

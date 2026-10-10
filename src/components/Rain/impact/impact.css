@@ -2,31 +2,78 @@
   position: absolute;
   left: 50%;
   bottom: 0;
-  width: 15px;
-  height: 10px;
-  margin-left: -7.5px;
-  border-top: 2px dotted currentColor;
-  border-radius: 50%;
-  opacity: 1;
-  transform: scale(0);
-  animation: rain-drop-impact 1s linear infinite;
+  width: 0;
+  height: 0;
+  color: var(--drop-impact-color, currentColor);
+  pointer-events: none;
 }
 
-@keyframes rain-drop-impact {
-  0% {
-    opacity: 1;
-    transform: scale(0);
+.rain-impact-particle {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 4px currentColor;
+  opacity: 0;
+  animation: rain-impact-splash 1s linear infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes rain-impact-splash {
+  0%,
+  78% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0.25);
   }
-  80% {
-    opacity: 1;
-    transform: scale(0);
+
+  83% {
+    opacity: 0.95;
+    transform: translate3d(var(--splash-x-start), -3px, 0) scale(1);
   }
-  90% {
-    opacity: 0.5;
-    transform: scale(1);
+
+  92% {
+    opacity: 0.8;
+    transform: translate3d(var(--splash-x-end), var(--splash-y), 0) scale(0.8);
   }
+
   100% {
     opacity: 0;
-    transform: scale(1.5);
+    transform: translate3d(var(--splash-x-end), 0, 0) scale(0.2);
+  }
+}
+
+.rain-drop-impact--spray .rain-impact-particle {
+  animation-name: rain-impact-spray;
+}
+
+@keyframes rain-impact-spray {
+  0%,
+  78% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0.2);
+  }
+
+  82% {
+    opacity: 1;
+    transform: translate3d(var(--splash-x-start), -4px, 0) scale(0.9);
+  }
+
+  90% {
+    opacity: 0.9;
+    transform: translate3d(var(--splash-x-end), var(--splash-y), 0) scale(1);
+  }
+
+  96% {
+    opacity: 0.55;
+    transform: translate3d(var(--splash-x-end), calc(var(--splash-y) + 8px), 0)
+      scale(0.7);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--splash-x-end), 0, 0) scale(0.35);
   }
 }

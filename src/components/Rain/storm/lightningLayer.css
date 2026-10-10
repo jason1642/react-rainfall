@@ -20,7 +20,11 @@
   width: clamp(70px, 16vw, 190px);
   height: 104%;
   overflow: visible;
-  fill: var(--lightning-color);
+  fill: none;
+  stroke: var(--lightning-color);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: bevel;
   opacity: 0;
   filter: drop-shadow(0 0 14px var(--lightning-color));
 }

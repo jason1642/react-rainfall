@@ -15,66 +15,92 @@ const mapDroplets = (
     dropletColor,
     numDrops,
     showImpact,
+    impactStyle,
+    impactThickness,
+    impactOpacity,
     size,
     profile,
     dropletOpacity,
-    angle = 0,
-    dropStyle = "streak",
-    depth = false,
+    angle,
+    dropStyle,
+    depth,
+    duration,
   } = options;
 
   const { maxWidth, maxHeight } = rainRef;
   const profileDefaults = getRainProfileDefaults(profile);
   const effectiveSize = size ?? profileDefaults.size ?? "default";
   const effectiveShowImpact = showImpact ?? profileDefaults.showImpact ?? true;
+  const effectiveImpactStyle =
+    impactStyle ?? profileDefaults.impactStyle ?? "splash";
+  const effectiveImpactThickness = Math.max(0.5, Math.min(8,
+    impactThickness ?? profileDefaults.impactThickness ?? 2.5));
+  const effectiveImpactOpacity = Math.max(0, Math.min(1,
+    impactOpacity ?? profileDefaults.impactOpacity ?? 0.65));
   const effectiveOpacity =
     dropletOpacity ?? profileDefaults.dropletOpacity ?? 0.5;
-  const effectiveAngle = Number.isFinite(angle)
-    ? Math.max(-75, Math.min(75, angle))
+  const effectiveAngleValue = angle ?? profileDefaults.angle ?? 0;
+  const effectiveAngle = Number.isFinite(effectiveAngleValue)
+    ? Math.max(-75, Math.min(75, effectiveAngleValue))
     : 0;
+  const effectiveDropStyle = dropStyle ?? profileDefaults.dropStyle ?? "streak";
+  const effectiveDepth = depth ?? profileDefaults.depth ?? false;
+  const effectiveDuration = duration ?? profileDefaults.duration ?? "normal";
+  const speedMultiplier =
+    effectiveDuration === "fast" ? 1.3 : effectiveDuration === "slow" ? 0.7 : 1;
+  const effectiveNumDrops = numDrops ?? profileDefaults.numDrops;
   const angleRadians = (effectiveAngle * Math.PI) / 180;
   const horizontalDriftPerPixel = Math.tan(angleRadians);
   const requestedDrops =
-    numDrops === undefined
+    effectiveNumDrops === undefined
       ? Math.floor(maxWidth / profileDefaults.dropsPerWidth)
-      : Math.floor(numDrops);
+      : Math.floor(effectiveNumDrops);
   const requestedDropsCount = Math.max(0, requestedDrops);
-  const totalFallDistance = maxHeight + dropletSizes(effectiveSize);
-  const totalHorizontalDrift =
-    horizontalDriftPerPixel * totalFallDistance;
+  const totalFallDistance = maxHeight;
+  const totalHorizontalDrift = horizontalDriftPerPixel * totalFallDistance;
   const rotatedDropHalfWidth =
-    (dropletSizes(effectiveSize) * (depth ? 1.45 : 1) *
+    (dropletSizes(effectiveSize) *
+      (effectiveDepth ? 1.45 : 1) *
       Math.abs(Math.sin(angleRadians))) /
     2;
-  const coverageStart = Math.min(0, totalHorizontalDrift) - rotatedDropHalfWidth;
+  const coverageStart =
+    Math.min(0, totalHorizontalDrift) - rotatedDropHalfWidth;
   const coverageEnd =
-    Math.max(maxWidth, maxWidth + totalHorizontalDrift) +
-    rotatedDropHalfWidth;
+    Math.max(maxWidth, maxWidth + totalHorizontalDrift) + rotatedDropHalfWidth;
   const coverageWidth = Math.max(0, coverageEnd - coverageStart);
   const coverageMultiplier = maxWidth > 0 ? coverageWidth / maxWidth : 0;
-  const numDropsCount = Math.ceil(
-    requestedDropsCount * coverageMultiplier,
-  );
+  const numDropsCount = Math.ceil(requestedDropsCount * coverageMultiplier);
   const columnWidth = numDropsCount > 0 ? coverageWidth / numDropsCount : 0;
 
   const drops: ReactElement[] = [];
   const dropDimensions = {
-    streak: { width: 2, height: 100 },
-    pixel: { width: 8, height: 100 },
-    soft: { width: 4, height: 100 },
-    orb: { width: 7, height: 42 },
-  }[dropStyle];
+    streak: { width: 2, height: { short: 10, default: 19, long: 34 } },
+    pixel: { width: 8, height: { short: 12, default: 22, long: 34 } },
+    soft: { width: 4, height: { short: 14, default: 24, long: 36 } },
+    orb: { width: 7, height: { short: 7, default: 9, long: 12 } },
+    snowflake: { width: 10, height: { short: 10, default: 13, long: 16 } },
+    hailstone: { width: 8, height: { short: 9, default: 12, long: 16 } },
+  }[effectiveDropStyle];
+  const baseDropHeight = dropDimensions.height[effectiveSize];
 
   for (let i = 0; i < numDropsCount; i++) {
-    const depthPosition = depth ? Math.random() : 1;
-    const depthScale = depth ? 0.55 + depthPosition * 0.9 : 1;
-    const depthOpacity = depth ? 0.35 + depthPosition * 0.65 : 1;
-    const depthBlur = depth ? (1 - depthPosition) * 1.2 : 0;
-    const durationSeconds = 0.7 + Math.random() * 0.8;
+    const depthPosition = effectiveDepth ? Math.random() : 1;
+    const depthScale = effectiveDepth ? 0.55 + depthPosition * 0.9 : 1;
+    const depthOpacity = effectiveDepth ? 0.35 + depthPosition * 0.65 : 1;
+    const depthBlur = effectiveDepth ? (1 - depthPosition) * 1.2 : 0;
+    const fallDistance =
+      maxHeight * (effectiveDepth ? 0.58 + depthPosition * 0.42 : 1);
+    const dropHorizontalDrift = horizontalDriftPerPixel * fallDistance;
+    const depthSpeed = effectiveDepth ? 0.75 + depthPosition * 0.5 : 1;
+    const durationSeconds =
+      (0.9 + Math.random() * 0.8) / (speedMultiplier * depthSpeed);
+    // Positive delays stagger launches from the top. Negative delays start
+    // some drops partway through their cycle, which can show a splash before
+    // that drop has visibly fallen.
     const randomDelaySeconds = Math.random() * durationSeconds;
     const horizontalJitter = (Math.random() - 0.5) * columnWidth * 0.7;
     const landingLeft = coverageStart + i * columnWidth + horizontalJitter;
-    const left = landingLeft - horizontalDriftPerPixel * totalFallDistance;
+    const left = landingLeft - dropHorizontalDrift;
     const dropColor = selectDropletColor(
       dropletColor ?? profileDefaults.dropletColor,
       profile,
@@ -83,44 +109,59 @@ const mapDroplets = (
 
     const animationStyle: CSSProperties = {
       animationDuration: `${durationSeconds.toFixed(2)}s`,
-      animationDelay: `-${randomDelaySeconds.toFixed(2)}s`,
+      animationDelay: `${randomDelaySeconds.toFixed(2)}s`,
+      animationFillMode: "both",
     };
 
     drops.push(
       <DropletContainer
         key={`drop-${i}`}
-        maxHeight={maxHeight}
+        maxHeight={fallDistance}
         gapLength={left}
         size={effectiveSize}
         angle={effectiveAngle}
         style={{
           ...animationStyle,
-          bottom: `${102 + Math.random() * 8}%`,
-          zIndex: depth ? Math.ceil(depthPosition * 9) + 1 : 1,
+          bottom: "100%",
+          zIndex: effectiveDepth ? Math.ceil(depthPosition * 9) + 1 : 1,
         }}
       >
         <Droplet
-          variant={dropStyle}
+          variant={effectiveDropStyle}
           style={{
             ...animationStyle,
             transform: `translateX(-50%) rotate(${-effectiveAngle}deg)`,
+            color: dropColor,
             width: `${dropDimensions.width * depthScale}px`,
-            height: `${dropDimensions.height * depthScale}%`,
+            height: `${baseDropHeight * depthScale}px`,
+            opacity: effectiveDropStyle === "snowflake" ? depthOpacity : undefined,
             bottom: 0,
             filter:
-              depthBlur || dropStyle === "soft"
-                ? `blur(${depthBlur + (dropStyle === "soft" ? 1 : 0)}px)`
+              depthBlur || effectiveDropStyle === "soft"
+                ? `blur(${depthBlur + (effectiveDropStyle === "soft" ? 1 : 0)}px)`
                 : undefined,
-            backgroundImage: `linear-gradient(to bottom, rgba(${rgb}, 0), rgba(${rgb}, ${effectiveOpacity * depthOpacity}))`,
+            backgroundImage:
+              effectiveDropStyle === "snowflake"
+                ? undefined
+                : effectiveDropStyle === "hailstone"
+                  ? `radial-gradient(circle at 30% 25%, rgba(255,255,255,.95), rgba(${rgb}, ${effectiveOpacity * depthOpacity}) 55%, rgba(${rgb}, ${effectiveOpacity * depthOpacity}))`
+                  : `linear-gradient(to bottom, rgba(${rgb}, 0), rgba(${rgb}, ${effectiveOpacity * depthOpacity}))`,
+            backgroundColor: undefined,
           }}
         />
 
         {effectiveShowImpact && (
           <DropImpact
+            variant={effectiveImpactStyle}
+            thickness={effectiveImpactThickness * depthScale}
             style={{
               display: "block",
               ...animationStyle,
-              borderTop: `2px dotted ${dropColor}`,
+              color: dropColor,
+              opacity: depthOpacity * effectiveImpactOpacity,
+              transform: `translateY(-2px) scale(${depthScale})`,
+              transformOrigin: "center bottom",
+              filter: depthBlur ? `blur(${depthBlur}px)` : undefined,
             }}
           />
         )}

@@ -1,0 +1,33 @@
+.rain-wind-layer {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.rain-wind-layer span {
+  position: absolute;
+  left: -65%;
+  width: 58%;
+  height: 1px;
+  border-radius: 50%;
+  opacity: 0;
+  background: linear-gradient(90deg, transparent, rgba(210, 229, 255, 0.12), transparent);
+  filter: blur(1px);
+  animation: rain-wind-gust 9s ease-in-out infinite;
+}
+
+.rain-wind-layer span:nth-child(1) { top: 34%; animation-delay: 1s; }
+.rain-wind-layer span:nth-child(2) { top: 57%; width: 72%; animation-delay: 4.2s; }
+.rain-wind-layer span:nth-child(3) { top: 76%; width: 48%; animation-delay: 7s; }
+
+@keyframes rain-wind-gust {
+  0%, 68%, 100% { opacity: 0; transform: translateX(0) skewY(-3deg); }
+  76% { opacity: 0.8; }
+  92% { opacity: 0.5; transform: translateX(290%) skewY(-3deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rain-wind-layer span { animation: none; }
+}
