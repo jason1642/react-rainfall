@@ -386,12 +386,25 @@ export const DefinedMovingClouds: Story = {
   name: "Defined, moving clouds",
   args: {
     profile: "heavy-rain",
+    cloudProfile: "puffy",
     cloudOpacity: 0.82,
     cloudBlur: 1,
     cloudColor: "#596b9a",
     cloudDrift: 280,
     cloudSpeed: 20,
   },
+  parameters: { scene: "heavy" },
+};
+
+export const SoftClouds: Story = {
+  name: "Soft cloud profile",
+  args: { profile: "heavy-rain", cloudProfile: "soft" },
+  parameters: { scene: "heavy" },
+};
+
+export const RollingClouds: Story = {
+  name: "Rolling animated cloud profile",
+  args: { profile: "heavy-rain", cloudProfile: "rolling" },
   parameters: { scene: "heavy" },
 };
 
@@ -404,4 +417,54 @@ export const RainFromClouds: Story = {
     cloudSize: 360,
   },
   parameters: { scene: "heavy" },
+};
+
+export const GustingCloudRain: Story = {
+  name: "Cloud rain with gusting wind",
+  args: {
+    profile: "heavy-rain",
+    rainFromClouds: true,
+    showWind: true,
+    windVariation: 10,
+    gustFrequency: 6,
+    cloudCount: 2,
+    cloudSpeed: 20,
+  },
+  parameters: { scene: "heavy" },
+};
+
+export const SubtleWind: Story = {
+  name: "Subtle wind profile",
+  args: { profile: "steady-rain", windProfile: "subtle" },
+  parameters: { scene: "steady" },
+};
+
+export const BreezyWind: Story = {
+  name: "Breezy wind profile",
+  args: { profile: "steady-rain", windProfile: "breezy" },
+  parameters: { scene: "steady" },
+};
+
+export const GustyWind: Story = {
+  name: "Gusty wind profile",
+  args: { profile: "heavy-rain", windProfile: "gusty" },
+  parameters: { scene: "heavy" },
+};
+
+export const SquallWind: Story = {
+  name: "Squall wind profile",
+  args: { profile: "heavy-rain", windProfile: "squall" },
+  parameters: { scene: "heavy" },
+};
+
+export const RainOnGlass: Story = {
+  name: "Rain running down glass",
+  args: {
+    profile: "steady-rain",
+    surface: "glass",
+    glassFog: 0.32,
+    glassRefraction: 3,
+    numDrops: 42,
+  },
+  parameters: { scene: "midnight" },
 };

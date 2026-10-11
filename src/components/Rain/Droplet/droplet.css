@@ -10,32 +10,9 @@
 
 .rain-drop--pixel {
   border-radius: 0;
-  clip-path: polygon(
-    25% 0,
-    75% 0,
-    75% 7%,
-    100% 7%,
-    100% 26%,
-    75% 26%,
-    75% 43%,
-    100% 43%,
-    100% 63%,
-    75% 63%,
-    75% 82%,
-    100% 82%,
-    100% 100%,
-    0 100%,
-    0 82%,
-    25% 82%,
-    25% 63%,
-    0 63%,
-    0 43%,
-    25% 43%,
-    25% 26%,
-    0 26%,
-    0 7%,
-    25% 7%
-  );
+  clip-path: polygon(35% 0,65% 0,65% 12%,78% 12%,78% 25%,90% 25%,90% 50%,100% 50%,100% 75%,85% 75%,85% 88%,70% 88%,70% 100%,30% 100%,30% 88%,15% 88%,15% 75%,0 75%,0 50%,10% 50%,10% 25%,22% 25%,22% 12%,35% 12%);
+  image-rendering: pixelated;
+  box-shadow: 0 0 3px currentColor;
   image-rendering: pixelated;
 }
 
@@ -59,7 +36,26 @@
   background-position: center;
   background-repeat: no-repeat;
   filter: drop-shadow(0 0 2px currentColor);
+  animation-name: rain-drop-fade, rain-snow-tumble;
+  animation-duration: 3s, 4s;
+  animation-timing-function: linear, ease-in-out;
+  animation-iteration-count: infinite, infinite;
+  animation-fill-mode: both, none;
 }
+
+.rain-drop--snowflake::before,
+.rain-drop--snowflake::after {
+  position: absolute;
+  top: 25%;
+  left: 10%;
+  width: 80%;
+  height: 1px;
+  content: "";
+  background: currentColor;
+}
+
+.rain-drop--snowflake::before { transform: rotate(30deg); }
+.rain-drop--snowflake::after { transform: rotate(-30deg); }
 
 .rain-drop--hailstone {
   border-radius: 50%;
@@ -73,11 +69,22 @@
 @keyframes rain-drop-fade {
   0%,
   68% {
-    opacity: 1;
+    opacity: var(--drop-opacity, 1);
   }
 
   78%,
   100% {
     opacity: 0;
   }
+}
+
+@keyframes rain-drop-angle-sway {
+  0%, 100% { rotate: 0deg; }
+  25%, 75% { rotate: var(--wind-angle); }
+  50% { rotate: var(--wind-angle-reverse); }
+}
+
+@keyframes rain-snow-tumble {
+  0%, 100% { rotate: -12deg; translate: 0 0; }
+  50% { rotate: 12deg; translate: 7px 0; }
 }

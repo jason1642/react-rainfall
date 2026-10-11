@@ -1,4 +1,4 @@
-import type { dropletOptions, rainProfile } from "./rainTypes";
+import type { cloudProfile, dropletOptions, rainProfile, windProfile } from "./rainTypes";
 
 export interface RainProfileDefaults extends dropletOptions {
   dropsPerWidth: number;
@@ -14,11 +14,32 @@ export interface ResolvedStormOptions {
   cloudDrift: number;
   cloudBlur: number;
   cloudColor: string;
+  cloudProfile: cloudProfile;
   showLightning: boolean;
   lightningFrequency: number;
   lightningFlashDuration: number;
   lightningColor: string;
 }
+
+export interface ResolvedWindOptions {
+  showWind: boolean;
+  windVariation: number;
+  gustFrequency: number;
+  windStrength: number;
+}
+
+const cloudProfiles: Record<cloudProfile, Pick<ResolvedStormOptions, "cloudBlur" | "cloudOpacity" | "cloudSpeed" | "cloudDrift" | "cloudColor">> = {
+  soft: { cloudBlur: 18, cloudOpacity: 0.38, cloudSpeed: 34, cloudDrift: 110, cloudColor: "#65738f" },
+  puffy: { cloudBlur: 2, cloudOpacity: 0.76, cloudSpeed: 16, cloudDrift: 190, cloudColor: "#43527f" },
+  rolling: { cloudBlur: 3, cloudOpacity: 0.72, cloudSpeed: 8, cloudDrift: 300, cloudColor: "#374667" },
+};
+
+const windProfiles: Record<windProfile, Omit<ResolvedWindOptions, "showWind">> = {
+  subtle: { windVariation: 8, gustFrequency: 8, windStrength: 0.45 },
+  breezy: { windVariation: 13, gustFrequency: 6, windStrength: 0.68 },
+  gusty: { windVariation: 22, gustFrequency: 4.5, windStrength: 0.9 },
+  squall: { windVariation: 30, gustFrequency: 3, windStrength: 1 },
+};
 
 // Each profile defines its own starting point. Explicit props override it.
 const rainProfiles: Record<rainProfile, RainProfileDefaults> = {
@@ -100,6 +121,7 @@ const rainProfiles: Record<rainProfile, RainProfileDefaults> = {
     cloudDrift: 360,
     cloudBlur: 4,
     cloudColor: "#43527f",
+    cloudProfile: "puffy",
     showLightning: true,
     lightningFrequency: 15,
     lightningFlashDuration: 300,
@@ -126,7 +148,7 @@ const rainProfiles: Record<rainProfile, RainProfileDefaults> = {
     lightningColor: "#dfe6ff",
   },
   snow: {
-    dropsPerWidth: 32,
+    dropsPerWidth: 24,
     dropletColor: "rgb(240, 248, 255)",
     size: "default",
     showImpact: false,
@@ -215,6 +237,7 @@ export const getResolvedStormOptions = (
     | "cloudDrift"
     | "cloudBlur"
     | "cloudColor"
+    | "cloudProfile"
     | "showLightning"
     | "lightningFrequency"
     | "lightningFlashDuration"
@@ -222,16 +245,19 @@ export const getResolvedStormOptions = (
   >,
 ): ResolvedStormOptions => {
   const defaults = getRainProfileDefaults(profile);
+  const selectedCloudProfile = overrides.cloudProfile ?? defaults.cloudProfile ?? "puffy";
+  const cloudDefaults = cloudProfiles[selectedCloudProfile];
 
   return {
     showClouds: overrides.showClouds ?? defaults.showClouds ?? false,
     cloudCount: overrides.cloudCount ?? defaults.cloudCount ?? 3,
     cloudSize: overrides.cloudSize ?? defaults.cloudSize ?? 320,
-    cloudSpeed: overrides.cloudSpeed ?? defaults.cloudSpeed ?? 36,
-    cloudOpacity: overrides.cloudOpacity ?? defaults.cloudOpacity ?? 0.4,
-    cloudDrift: overrides.cloudDrift ?? defaults.cloudDrift ?? 120,
-    cloudBlur: overrides.cloudBlur ?? defaults.cloudBlur ?? 4,
-    cloudColor: overrides.cloudColor ?? defaults.cloudColor ?? "#43527f",
+    cloudSpeed: overrides.cloudSpeed ?? cloudDefaults.cloudSpeed ?? defaults.cloudSpeed ?? 36,
+    cloudOpacity: overrides.cloudOpacity ?? cloudDefaults.cloudOpacity ?? defaults.cloudOpacity ?? 0.4,
+    cloudDrift: overrides.cloudDrift ?? cloudDefaults.cloudDrift ?? defaults.cloudDrift ?? 120,
+    cloudBlur: overrides.cloudBlur ?? cloudDefaults.cloudBlur ?? defaults.cloudBlur ?? 4,
+    cloudColor: overrides.cloudColor ?? cloudDefaults.cloudColor ?? defaults.cloudColor ?? "#43527f",
+    cloudProfile: selectedCloudProfile,
     showLightning: overrides.showLightning ?? defaults.showLightning ?? false,
     lightningFrequency:
       overrides.lightningFrequency ?? defaults.lightningFrequency ?? 9,
@@ -241,6 +267,19 @@ export const getResolvedStormOptions = (
       450,
     lightningColor:
       overrides.lightningColor ?? defaults.lightningColor ?? "#dfe6ff",
+  };
+};
+
+export const getResolvedWindOptions = (
+  profile: windProfile | undefined,
+  overrides: Pick<dropletOptions, "showWind" | "windVariation" | "gustFrequency">,
+): ResolvedWindOptions => {
+  const defaults = windProfiles[profile ?? "subtle"];
+  return {
+    showWind: overrides.showWind ?? profile !== undefined,
+    windVariation: overrides.windVariation ?? defaults.windVariation,
+    gustFrequency: overrides.gustFrequency ?? defaults.gustFrequency,
+    windStrength: defaults.windStrength,
   };
 };
 

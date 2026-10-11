@@ -11,6 +11,7 @@ interface DropImpactProps {
 type SplashParticleStyle = CSSProperties & {
   "--splash-x-start": string;
   "--splash-x-end": string;
+  "--splash-x-out": string;
   "--splash-y": string;
 };
 
@@ -51,6 +52,7 @@ function DropImpact({ variant = "splash", thickness = 2.5, style }: DropImpactPr
             animationDelay,
             "--splash-x-start": `${direction * 3}px`,
             "--splash-x-end": `${direction * 9 + (variant === "spray" ? (Math.random() - 0.5) * 8 : 0)}px`,
+            "--splash-x-out": `${(direction * 9 + (variant === "spray" ? (Math.random() - 0.5) * 8 : 0)) * (variant === "spray" ? 1.2 : 1.25)}px`,
             "--splash-y": `${variant === "spray" ? -16 - Math.random() * 13 : -12 - (1 - Math.abs(direction) / 2) * 6}px`,
           } as SplashParticleStyle}
         />

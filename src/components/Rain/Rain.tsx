@@ -4,10 +4,12 @@ import type { dropletOptions } from "./rainTypes";
 import {
   getRainProfileClassName,
   getResolvedStormOptions,
+  getResolvedWindOptions,
 } from "./rain-profiles";
 import CloudLayer from "./storm/CloudLayer";
 import LightningLayer from "./storm/LightningLayer";
 import WindLayer from "./storm/WindLayer";
+import GlassLayer from "./surface/GlassLayer";
 import "./Rain.css";
 
 const Rain: React.FunctionComponent<dropletOptions> = ({
@@ -30,6 +32,7 @@ const Rain: React.FunctionComponent<dropletOptions> = ({
   cloudDrift,
   cloudBlur,
   cloudColor,
+  cloudProfile,
   showLightning,
   lightningFrequency,
   lightningFlashDuration,
@@ -37,7 +40,13 @@ const Rain: React.FunctionComponent<dropletOptions> = ({
   dropStyle,
   depth,
   rainFromClouds = false,
-  showWind = false,
+  showWind,
+  windProfile,
+  windVariation,
+  gustFrequency,
+  surface = "air",
+  glassFog = 0.18,
+  glassRefraction = 2,
 }) => {
   const stormOptions = getResolvedStormOptions(profile, {
     showClouds,
@@ -48,14 +57,30 @@ const Rain: React.FunctionComponent<dropletOptions> = ({
     cloudDrift,
     cloudBlur,
     cloudColor,
+    cloudProfile,
     showLightning,
     lightningFrequency,
     lightningFlashDuration,
     lightningColor,
   });
+  const windOptions = getResolvedWindOptions(windProfile, {
+    showWind,
+    windVariation,
+    gustFrequency,
+  });
+  const effectiveShowWind = windOptions.showWind;
   const effectiveCloudCount = rainFromClouds
     ? Math.max(1, stormOptions.cloudCount)
     : stormOptions.cloudCount;
+  const effectiveCloudDrift = rainFromClouds && cloudDrift === undefined
+    ? 0
+    : stormOptions.cloudDrift;
+  const safeWindVariation = Number.isFinite(windOptions.windVariation)
+    ? Math.max(0, Math.min(30, windOptions.windVariation))
+    : 8;
+  const safeGustFrequency = Number.isFinite(windOptions.gustFrequency)
+    ? Math.max(1, Math.min(120, windOptions.gustFrequency))
+    : 8;
 
   const rainRef = React.useRef<HTMLDivElement>(null);
   const [dropletArray, setDropletArray] = React.useState<React.ReactElement[]>(
@@ -95,6 +120,9 @@ const Rain: React.FunctionComponent<dropletOptions> = ({
             rainFromClouds,
             cloudCount: effectiveCloudCount,
             cloudSize: stormOptions.cloudSize,
+            showWind: effectiveShowWind,
+            windVariation: safeWindVariation,
+            gustFrequency: safeGustFrequency,
           },
         ),
       );
@@ -124,6 +152,10 @@ const Rain: React.FunctionComponent<dropletOptions> = ({
     dropStyle,
     depth,
     rainFromClouds,
+    effectiveShowWind,
+    windProfile,
+    safeWindVariation,
+    safeGustFrequency,
     effectiveCloudCount,
     stormOptions.cloudSize,
   ]);
@@ -144,13 +176,20 @@ const Rain: React.FunctionComponent<dropletOptions> = ({
           size={stormOptions.cloudSize}
           speed={stormOptions.cloudSpeed}
           opacity={stormOptions.cloudOpacity}
-          drift={stormOptions.cloudDrift}
+          drift={effectiveCloudDrift}
           blur={stormOptions.cloudBlur}
           color={stormOptions.cloudColor}
+          windVariation={effectiveShowWind ? safeWindVariation : 0}
+          gustFrequency={safeGustFrequency}
         />
       )}
       {dropletArray}
-      {showWind && <WindLayer />}
+      {surface === "glass" && (
+        <GlassLayer fog={glassFog} refraction={glassRefraction} />
+      )}
+      {effectiveShowWind && (
+        <WindLayer gustFrequency={safeGustFrequency} windVariation={safeWindVariation} strength={windOptions.windStrength} />
+      )}
       {stormOptions.showLightning && (
         <LightningLayer
           frequency={stormOptions.lightningFrequency}

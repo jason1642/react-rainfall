@@ -19,6 +19,9 @@ export type cloudOpacity = number | undefined;
 export type cloudDrift = number | undefined;
 export type cloudBlur = number | undefined;
 export type cloudColor = string | undefined;
+export type cloudProfile = "soft" | "puffy" | "rolling";
+export type windProfile = "subtle" | "breezy" | "gusty" | "squall";
+export type surface = "air" | "glass";
 export type showLightning = boolean | undefined;
 export type lightningFrequency = number | undefined;
 export type lightningFlashDuration = number | undefined;
@@ -62,7 +65,13 @@ export interface dropletOptions {
   cloudDrift?: cloudDrift;
   cloudBlur?: cloudBlur;
   cloudColor?: cloudColor;
+  cloudProfile?: cloudProfile;
   rainFromClouds?: boolean;
+  windVariation?: number;
+  gustFrequency?: number;
+  surface?: surface;
+  glassFog?: number;
+  glassRefraction?: number;
   showLightning?: showLightning;
   lightningFrequency?: lightningFrequency;
   lightningFlashDuration?: lightningFlashDuration;
@@ -70,4 +79,5 @@ export interface dropletOptions {
   dropStyle?: rainDropStyle;
   depth?: boolean;
   showWind?: boolean;
+  windProfile?: windProfile;
 }

@@ -9,6 +9,8 @@ interface CloudLayerProps {
   drift: number;
   blur: number;
   color: string;
+  windVariation: number;
+  gustFrequency: number;
 }
 
 type CloudStyle = CSSProperties & {
@@ -18,9 +20,12 @@ type CloudStyle = CSSProperties & {
   "--cloud-drift": string;
   "--cloud-blur": string;
   "--cloud-color": string;
+  "--wind-drift": string;
+  "--wind-drift-left": string;
+  "--gust-frequency": string;
 };
 
-function CloudLayer({ count, size, speed, opacity, drift, blur, color }: CloudLayerProps) {
+function CloudLayer({ count, size, speed, opacity, drift, blur, color, windVariation, gustFrequency }: CloudLayerProps) {
   const safeCount = Number.isFinite(count)
     ? Math.min(24, Math.max(0, Math.floor(count)))
     : 0;
@@ -31,6 +36,8 @@ function CloudLayer({ count, size, speed, opacity, drift, blur, color }: CloudLa
     : 0.4;
   const safeDrift = Number.isFinite(drift) ? drift : 0;
   const safeBlur = Number.isFinite(blur) ? Math.max(0, Math.min(40, blur)) : 4;
+  const safeWindVariation = Number.isFinite(windVariation) ? Math.max(0, Math.min(30, windVariation)) : 0;
+  const safeGustFrequency = Number.isFinite(gustFrequency) ? Math.max(1, gustFrequency) : 8;
 
   return (
     <div className="storm-cloud-layer" aria-hidden="true">
@@ -44,12 +51,25 @@ function CloudLayer({ count, size, speed, opacity, drift, blur, color }: CloudLa
           "--cloud-drift": `${safeDrift}px`,
           "--cloud-blur": `${safeBlur}px`,
           "--cloud-color": color,
+          "--wind-drift": `${Math.min(100, Math.tan((safeWindVariation * Math.PI) / 180) * safeSize)}px`,
+          "--wind-drift-left": `${-Math.min(100, Math.tan((safeWindVariation * Math.PI) / 180) * safeSize) * 0.35}px`,
+          "--gust-frequency": `${safeGustFrequency}s`,
           left: `${((index + 0.5) / safeCount) * 100}%`,
-          top: `${-22 + Math.random() * 15}%`,
-          animationDelay: `${(-index * safeSpeed) / safeCount}s`,
+          top: `${-8 + Math.random() * 8}%`,
+          animationDuration: `${safeSpeed * (0.85 + Math.random() * 0.3)}s, ${safeGustFrequency}s`,
+          animationDelay: `${(-index * safeSpeed) / safeCount}s, 0s`,
         };
 
-        return <div className="storm-cloud" key={index} style={style} />;
+        return (
+          <div className="storm-cloud" key={index} style={style}>
+            <i className="storm-cloud-base" />
+            <i className="storm-cloud-puff storm-cloud-puff--one" />
+            <i className="storm-cloud-puff storm-cloud-puff--two" />
+            <i className="storm-cloud-puff storm-cloud-puff--three" />
+            <i className="storm-cloud-puff storm-cloud-puff--four" />
+            <i className="storm-cloud-puff storm-cloud-puff--five" />
+          </div>
+        );
       })}
     </div>
   );

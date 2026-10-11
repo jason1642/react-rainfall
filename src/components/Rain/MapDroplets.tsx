@@ -28,6 +28,9 @@ const mapDroplets = (
     rainFromClouds,
     cloudCount,
     cloudSize,
+    showWind,
+    windVariation,
+    gustFrequency,
   } = options;
 
   const { maxWidth, maxHeight } = rainRef;
@@ -37,6 +40,12 @@ const mapDroplets = (
     Math.min(24, Math.floor(cloudCount ?? profileDefaults.cloudCount ?? 3)),
   );
   const localCloudSize = Math.max(80, cloudSize ?? profileDefaults.cloudSize ?? 320);
+  const safeWindVariation = Number.isFinite(windVariation)
+    ? Math.max(0, Math.min(30, windVariation ?? 0))
+    : 0;
+  const safeGustFrequency = Number.isFinite(gustFrequency)
+    ? Math.max(1, gustFrequency ?? 8)
+    : 8;
   const effectiveSize = size ?? profileDefaults.size ?? "default";
   const effectiveShowImpact = showImpact ?? profileDefaults.showImpact ?? true;
   const effectiveImpactStyle =
@@ -82,7 +91,12 @@ const mapDroplets = (
   const coverageWidth = Math.max(0, coverageEnd - coverageStart);
   const coverageMultiplier = maxWidth > 0 ? coverageWidth / maxWidth : 0;
   const numDropsCount = rainFromClouds
-    ? requestedDropsCount
+    ? numDrops === undefined
+      ? Math.min(
+          requestedDropsCount,
+          Math.max(12, Math.ceil(requestedDropsCount * 0.1)),
+        )
+      : requestedDropsCount
     : Math.ceil(requestedDropsCount * coverageMultiplier);
   const columnWidth = numDropsCount > 0 ? coverageWidth / numDropsCount : 0;
 
@@ -102,8 +116,10 @@ const mapDroplets = (
     const depthScale = effectiveDepth ? 0.55 + depthPosition * 0.9 : 1;
     const depthOpacity = effectiveDepth ? 0.35 + depthPosition * 0.65 : 1;
     const depthBlur = effectiveDepth ? (1 - depthPosition) * 1.2 : 0;
-    const fallDistance =
-      maxHeight * (effectiveDepth ? 0.58 + depthPosition * 0.42 : 1);
+    const sourceTop = rainFromClouds
+      ? Math.max(0, Math.min(maxHeight * 0.4, localCloudSize * (0.29 + Math.random() * 0.06)))
+      : 0;
+    const fallDistance = maxHeight - sourceTop;
     const dropHorizontalDrift = horizontalDriftPerPixel * fallDistance;
     const depthSpeed = effectiveDepth ? 0.75 + depthPosition * 0.5 : 1;
     const durationSeconds =
@@ -117,7 +133,7 @@ const mapDroplets = (
       ? ((Math.floor(Math.random() * localCloudCount) + 0.5) /
           localCloudCount) *
           maxWidth +
-        (Math.random() - 0.5) * localCloudSize * 0.65
+        (Math.random() - 0.5) * localCloudSize * 0.34
       : coverageStart + i * columnWidth + horizontalJitter;
     const left = landingLeft - dropHorizontalDrift;
     const dropColor = selectDropletColor(
@@ -131,6 +147,43 @@ const mapDroplets = (
       animationDelay: `${randomDelaySeconds.toFixed(2)}s`,
       animationFillMode: "both",
     };
+    const containerAnimationStyle = showWind
+      ? ({
+          ...animationStyle,
+          animationName: "rain-drop-fall, rain-drop-wind-sway",
+          animationDuration: `${durationSeconds.toFixed(2)}s, ${safeGustFrequency}s`,
+          animationDelay: `${randomDelaySeconds.toFixed(2)}s, 0s`,
+          animationTimingFunction: "linear, ease-in-out",
+          animationIterationCount: "infinite, infinite",
+          animationFillMode: "both, none",
+          "--wind-sway": `${Math.min(80, Math.tan((safeWindVariation * Math.PI) / 180) * maxHeight)}px`,
+          "--wind-sway-left": `${-Math.min(80, Math.tan((safeWindVariation * Math.PI) / 180) * maxHeight) * 0.35}px`,
+        } as CSSProperties)
+      : animationStyle;
+    const dropletAnimationStyle = showWind
+      ? {
+          ...animationStyle,
+          animationName: "rain-drop-fade, rain-drop-angle-sway",
+          animationDuration: `${durationSeconds.toFixed(2)}s, ${safeGustFrequency}s`,
+          animationDelay: `${randomDelaySeconds.toFixed(2)}s, 0s`,
+          animationTimingFunction: "linear, ease-in-out",
+          animationIterationCount: "infinite, infinite",
+          animationFillMode: "both, none",
+          rotate: "0deg",
+          "--wind-angle": `${safeWindVariation}deg`,
+          "--wind-angle-reverse": `${-safeWindVariation}deg`,
+        } as CSSProperties
+      : effectiveDropStyle === "snowflake"
+        ? {
+            ...animationStyle,
+            animationName: "rain-drop-fade, rain-snow-tumble",
+            animationDuration: `${durationSeconds.toFixed(2)}s, ${Math.max(2, durationSeconds * 2.8).toFixed(2)}s`,
+            animationDelay: `${randomDelaySeconds.toFixed(2)}s, 0s`,
+            animationTimingFunction: "linear, ease-in-out",
+            animationIterationCount: "infinite, infinite",
+            animationFillMode: "both, none",
+          } as CSSProperties
+      : animationStyle;
 
     drops.push(
       <DropletContainer
@@ -140,20 +193,28 @@ const mapDroplets = (
         size={effectiveSize}
         angle={effectiveAngle}
         style={{
-          ...animationStyle,
-          bottom: "100%",
+          ...containerAnimationStyle,
+          ...(rainFromClouds
+            ? { top: `${sourceTop - dropletSizes(effectiveSize)}px`, bottom: "auto" }
+            : { bottom: "100%" }),
           zIndex: effectiveDepth ? Math.ceil(depthPosition * 9) + 1 : 1,
         }}
       >
         <Droplet
           variant={effectiveDropStyle}
           style={{
-            ...animationStyle,
+            ...dropletAnimationStyle,
             transform: `translateX(-50%) rotate(${-effectiveAngle}deg)`,
             color: dropColor,
             width: `${dropDimensions.width * depthScale}px`,
             height: `${baseDropHeight * depthScale}px`,
-            opacity: effectiveDropStyle === "snowflake" ? depthOpacity : undefined,
+            opacity:
+              effectiveDropStyle === "snowflake"
+                ? effectiveOpacity * depthOpacity
+                : undefined,
+            ...(effectiveDropStyle === "snowflake"
+              ? ({ "--drop-opacity": `${effectiveOpacity * depthOpacity}` } as CSSProperties)
+              : {}),
             bottom: 0,
             filter:
               depthBlur || effectiveDropStyle === "soft"

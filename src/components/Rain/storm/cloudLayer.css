@@ -2,41 +2,61 @@
   position: absolute;
   z-index: 0;
   inset: 0 0 auto;
-  height: 52%;
+  height: 42%;
   overflow: hidden;
   pointer-events: none;
-  mask-image: linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 76%, transparent 100%);
 }
 
 .storm-cloud {
   position: absolute;
   width: var(--cloud-size);
-  height: calc(var(--cloud-size) * 0.48);
+  height: calc(var(--cloud-size) * 0.42);
   opacity: var(--cloud-opacity);
   filter: blur(var(--cloud-blur));
-  background:
-    radial-gradient(ellipse at 50% 72%, var(--cloud-color) 0 30%, transparent 66%),
-    radial-gradient(ellipse at 18% 66%, var(--cloud-color) 0 21%, transparent 59%),
-    radial-gradient(ellipse at 34% 43%, var(--cloud-color) 0 22%, transparent 58%),
-    radial-gradient(ellipse at 55% 48%, var(--cloud-color) 0 25%, transparent 62%),
-    radial-gradient(ellipse at 76% 52%, var(--cloud-color) 0 22%, transparent 60%),
-    radial-gradient(ellipse at 91% 67%, var(--cloud-color) 0 20%, transparent 58%);
-  animation: storm-cloud-drift var(--cloud-speed) ease-in-out infinite alternate;
-  will-change: transform;
+  animation-name: storm-cloud-drift, storm-cloud-gust;
+  animation-timing-function: ease-in-out, ease-in-out;
+  animation-iteration-count: infinite, infinite;
+  animation-direction: alternate, normal;
+  will-change: transform, translate;
 }
 
-@keyframes storm-cloud-drift {
-  from {
-    transform: translateX(0);
-  }
+.storm-cloud i {
+  position: absolute;
+  display: block;
+  background: var(--cloud-color);
+  box-shadow: inset -4px -6px 10px rgba(8, 14, 30, 0.18);
+}
 
-  to {
-    transform: translateX(var(--cloud-drift));
-  }
+.storm-cloud-base {
+  left: 8%;
+  bottom: 7%;
+  width: 84%;
+  height: 47%;
+  border-radius: 48% 50% 42% 44% / 70% 70% 34% 36%;
+}
+
+.storm-cloud-puff {
+  border-radius: 50%;
+}
+
+.storm-cloud-puff--one { left: 9%; bottom: 26%; width: 26%; height: 42%; }
+.storm-cloud-puff--two { left: 23%; bottom: 35%; width: 32%; height: 58%; }
+.storm-cloud-puff--three { left: 43%; bottom: 40%; width: 31%; height: 56%; }
+.storm-cloud-puff--four { left: 62%; bottom: 30%; width: 27%; height: 46%; }
+.storm-cloud-puff--five { left: 77%; bottom: 21%; width: 18%; height: 37%; }
+
+@keyframes storm-cloud-drift {
+  from { transform: translateX(0); }
+  to { transform: translateX(var(--cloud-drift)); }
+}
+
+@keyframes storm-cloud-gust {
+  0%, 100% { translate: 0 0; }
+  25%, 75% { translate: var(--wind-drift-left) 0; }
+  50% { translate: var(--wind-drift) 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .storm-cloud {
-    animation: none;
-  }
+  .storm-cloud { animation: none; }
 }

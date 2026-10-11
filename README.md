@@ -46,6 +46,7 @@ cloudOpacity | false | number | 0.4 (0.48 for `heavy-rain`) | 0 - 1 | Opacity of
 cloudDrift | false | number | 120 (360 for `heavy-rain`) | pixels | Horizontal cloud drift per direction. Positive moves right; negative moves left.
 cloudBlur | false | number | 4px | 0 - 40 pixels | Adjust cloud softness. Use a low value for distinct cloud edges.
 cloudColor | false | string | #43527f | CSS color | Set the color of the cloud shapes.
+cloudProfile | false | string | 'puffy' | 'soft', 'puffy', 'rolling' | Choose diffuse clouds, clearly shaped clouds, or faster rolling clouds. Explicit cloud props override the preset values.
 showLightning | false | boolean | false (true for `heavy-rain`) | true / false | Enable lightning flashes above the rain. This is a visual effect and does not play thunder audio.
 lightningFrequency | false | number | 9 (15 for `heavy-rain`) | seconds | Average interval between flashes; the first flash appears within about one second.
 lightningFlashDuration | false | number | 450 (300 for `heavy-rain`) | milliseconds | Duration of each flash, clamped to 80–4000 ms.
@@ -53,7 +54,13 @@ lightningColor | false | string | #dfe6ff | CSS color | Color used for the light
 dropStyle | false | string | 'streak' | 'streak', 'pixel', 'soft', 'orb', 'snowflake', 'hailstone' | Change the visual shape of each precipitation particle.
 depth | false | boolean | false (true for `heavy-rain`) | true / false | Vary drop size, speed, opacity, blur, and impact height to create distant and foreground rain layers.
 showWind | false | boolean | false | true / false | Add subtle periodic animated gusts across the rain layer.
-rainFromClouds | false | boolean | false | true / false | Cluster rain beneath the cloud positions. Clouds are shown automatically when this is enabled.
+windProfile | false | string | undefined | 'subtle', 'breezy', 'gusty', 'squall' | Choose a wind intensity preset. Selecting a profile enables its gust overlay; `windVariation` and `gustFrequency` can still customize the motion.
+rainFromClouds | false | boolean | false | true / false | Cluster rain beneath the cloud positions and reduce profile-default drop density; an explicit `numDrops` is respected. Clouds are shown automatically when this is enabled.
+windVariation | false | number | Profile default (8 degrees for subtle wind) | 0 - 30 degrees | Periodically sway the drop angle and add a matching drift to the clouds.
+gustFrequency | false | number | Profile default (8 seconds for subtle wind) | seconds | Set how often the wind gust cycle repeats.
+surface | false | string | 'air' | 'air', 'glass' | Set `glass` to add a fogged pane with animated water runs and refraction-like backdrop blur.
+glassFog | false | number | 0.18 | 0 - 1 | Set the fogged-glass overlay strength.
+glassRefraction | false | number | 2 | 0 - 12 pixels | Adjust the glass backdrop blur and refraction impression.
 
 
 
