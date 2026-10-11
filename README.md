@@ -159,8 +159,3 @@ function StatefulStorm() {
 `pauseWhenHidden` defaults to `false`; set it to `true` to pause while the top-level browser tab is hidden. `respectReducedMotion` defaults to `true`; set it to `false` to force animation even when the operating system requests reduced motion. Storybook scenes set it to `false` so their animation previews remain visible.
 
 
-
-## Planned updates
- - Add more rain profile options, such as storm
- - Add direction change options
- - Add in and out fading for droplets options. 
