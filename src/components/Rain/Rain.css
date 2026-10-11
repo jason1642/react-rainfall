@@ -41,8 +41,46 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .rain-container--passing-shower {
+  .rain-container[data-respect-reduced-motion="true"].rain-container--passing-shower {
     animation: none;
     opacity: 0.6;
   }
+
+  .rain-container[data-respect-reduced-motion="true"] *,
+  .rain-container[data-respect-reduced-motion="true"] *::before,
+  .rain-container[data-respect-reduced-motion="true"] *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+
+  .rain-container[data-respect-reduced-motion="true"] .rain-drop-container {
+    top: var(--reduced-top, 50%) !important;
+    bottom: auto !important;
+    transform: none !important;
+  }
+
+  .rain-container[data-respect-reduced-motion="true"] .rain-drop {
+    opacity: var(--drop-opacity, 0.65) !important;
+  }
+
+  .rain-container[data-respect-reduced-motion="true"] .rain-drop-impact,
+  .rain-container[data-respect-reduced-motion="true"] .storm-lightning-layer {
+    display: none !important;
+  }
+
+  .rain-container[data-respect-reduced-motion="true"] .rain-glass-run {
+    opacity: 0.3;
+  }
+}
+
+.rain-container--paused,
+.rain-container--paused *,
+.rain-container--paused *::before,
+.rain-container--paused *::after,
+.rain-container--stopped,
+.rain-container--stopped *,
+.rain-container--stopped *::before,
+.rain-container--stopped *::after {
+  animation-play-state: paused !important;
 }

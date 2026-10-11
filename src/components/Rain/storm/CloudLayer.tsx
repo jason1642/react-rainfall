@@ -9,8 +9,6 @@ interface CloudLayerProps {
   drift: number;
   blur: number;
   color: string;
-  windVariation: number;
-  gustFrequency: number;
 }
 
 type CloudStyle = CSSProperties & {
@@ -20,12 +18,9 @@ type CloudStyle = CSSProperties & {
   "--cloud-drift": string;
   "--cloud-blur": string;
   "--cloud-color": string;
-  "--wind-drift": string;
-  "--wind-drift-left": string;
-  "--gust-frequency": string;
 };
 
-function CloudLayer({ count, size, speed, opacity, drift, blur, color, windVariation, gustFrequency }: CloudLayerProps) {
+function CloudLayer({ count, size, speed, opacity, drift, blur, color }: CloudLayerProps) {
   const safeCount = Number.isFinite(count)
     ? Math.min(24, Math.max(0, Math.floor(count)))
     : 0;
@@ -36,8 +31,6 @@ function CloudLayer({ count, size, speed, opacity, drift, blur, color, windVaria
     : 0.4;
   const safeDrift = Number.isFinite(drift) ? drift : 0;
   const safeBlur = Number.isFinite(blur) ? Math.max(0, Math.min(40, blur)) : 4;
-  const safeWindVariation = Number.isFinite(windVariation) ? Math.max(0, Math.min(30, windVariation)) : 0;
-  const safeGustFrequency = Number.isFinite(gustFrequency) ? Math.max(1, gustFrequency) : 8;
 
   return (
     <div className="storm-cloud-layer" aria-hidden="true">
@@ -51,13 +44,10 @@ function CloudLayer({ count, size, speed, opacity, drift, blur, color, windVaria
           "--cloud-drift": `${safeDrift}px`,
           "--cloud-blur": `${safeBlur}px`,
           "--cloud-color": color,
-          "--wind-drift": `${Math.min(100, Math.tan((safeWindVariation * Math.PI) / 180) * safeSize)}px`,
-          "--wind-drift-left": `${-Math.min(100, Math.tan((safeWindVariation * Math.PI) / 180) * safeSize) * 0.35}px`,
-          "--gust-frequency": `${safeGustFrequency}s`,
           left: `${((index + 0.5) / safeCount) * 100}%`,
           top: `${-8 + Math.random() * 8}%`,
-          animationDuration: `${safeSpeed * (0.85 + Math.random() * 0.3)}s, ${safeGustFrequency}s`,
-          animationDelay: `${(-index * safeSpeed) / safeCount}s, 0s`,
+          animationDuration: `${safeSpeed * (0.85 + Math.random() * 0.3)}s`,
+          animationDelay: `${(-index * safeSpeed) / safeCount}s`,
         };
 
         return (

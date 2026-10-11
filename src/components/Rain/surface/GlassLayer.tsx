@@ -33,8 +33,8 @@ function GlassLayer({ fog, refraction }: GlassLayerProps) {
             top: `${(index * 23) % 86}%`,
             height: `${5 + ((index * 13) % 19)}%`,
             width: `${index % 6 === 0 ? 3.5 : index % 3 === 0 ? 2.5 : 1.5}px`,
-            animationDelay: `${-index * 1.13}s`,
-            animationDuration: `${7 + (index % 5) * 1.6}s`,
+            animationDelay: `${-index * 0.61}s`,
+            animationDuration: `${3.8 + (index % 5) * 0.72}s`,
           }}
         />
       ))}

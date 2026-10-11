@@ -19,7 +19,7 @@ export type cloudOpacity = number | undefined;
 export type cloudDrift = number | undefined;
 export type cloudBlur = number | undefined;
 export type cloudColor = string | undefined;
-export type cloudProfile = "soft" | "puffy" | "rolling";
+export type cloudProfile = "soft" | "puffy" | "rolling" | "cartoon";
 export type windProfile = "subtle" | "breezy" | "gusty" | "squall";
 export type surface = "air" | "glass";
 export type showLightning = boolean | undefined;
@@ -27,7 +27,7 @@ export type lightningFrequency = number | undefined;
 export type lightningFlashDuration = number | undefined;
 export type lightningColor = string | undefined;
 
-export type rainDropStyle = "streak" | "pixel" | "soft" | "orb" | "snowflake" | "hailstone";
+export type rainDropStyle = "streak" | "pixel" | "soft" | "orb" | "snowflake" | "hailstone" | "cartoon";
 export type impactStyle = "splash" | "spray" | "ripple";
 export type duration = "slow" | "normal" | "fast" | undefined;
 export type rainProfile =
@@ -38,7 +38,8 @@ export type rainProfile =
   | "heavy-rain"
   | "misty-rain"
   | "snow"
-  | "hail";
+  | "hail"
+  | "cartoon";
 export type dropletOpacity = number | undefined;
 
 // rem, em, px, etc
@@ -80,4 +81,16 @@ export interface dropletOptions {
   depth?: boolean;
   showWind?: boolean;
   windProfile?: windProfile;
+  pauseWhenHidden?: boolean;
+  /** Honor the operating system's reduced-motion setting. Defaults to true. */
+  respectReducedMotion?: boolean;
+  playing?: boolean;
+  intensity?: number;
+}
+
+export interface RainHandle {
+  start: () => void;
+  stop: () => void;
+  setIntensity: (intensity: number) => void;
+  triggerLightning: () => void;
 }

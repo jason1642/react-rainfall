@@ -1,6 +1,6 @@
 import React from "react";
 import mapDroplets from "./MapDroplets";
-import type { dropletOptions } from "./rainTypes";
+import type { dropletOptions, RainHandle } from "./rainTypes";
 import {
   getRainProfileClassName,
   getResolvedStormOptions,
@@ -12,7 +12,10 @@ import WindLayer from "./storm/WindLayer";
 import GlassLayer from "./surface/GlassLayer";
 import "./Rain.css";
 
-const Rain: React.FunctionComponent<dropletOptions> = ({
+const clampIntensity = (value: number) =>
+  Number.isFinite(value) ? Math.max(0, Math.min(1, value)) : 1;
+
+const Rain = React.forwardRef<RainHandle, dropletOptions>(({
   numDrops,
   dropletColor,
   size,
@@ -37,6 +40,8 @@ const Rain: React.FunctionComponent<dropletOptions> = ({
   lightningFrequency,
   lightningFlashDuration,
   lightningColor,
+  playing,
+  intensity: intensityProp,
   dropStyle,
   depth,
   rainFromClouds = false,
@@ -44,10 +49,35 @@ const Rain: React.FunctionComponent<dropletOptions> = ({
   windProfile,
   windVariation,
   gustFrequency,
+  pauseWhenHidden = false,
+  respectReducedMotion = true,
   surface = "air",
   glassFog = 0.18,
   glassRefraction = 2,
-}) => {
+}, ref) => {
+  const [isRunning, setIsRunning] = React.useState(playing ?? true);
+  const [intensity, setIntensityState] = React.useState(
+    clampIntensity(intensityProp ?? 1),
+  );
+  const [lightningTrigger, setLightningTrigger] = React.useState(0);
+
+  React.useEffect(() => {
+    if (playing !== undefined) setIsRunning(playing);
+  }, [playing]);
+
+  React.useEffect(() => {
+    if (intensityProp !== undefined) {
+      setIntensityState(clampIntensity(intensityProp));
+    }
+  }, [intensityProp]);
+
+  React.useImperativeHandle(ref, () => ({
+    start: () => setIsRunning(true),
+    stop: () => setIsRunning(false),
+    setIntensity: (value) => setIntensityState(clampIntensity(value)),
+    triggerLightning: () => setLightningTrigger((current) => current + 1),
+  }), []);
+
   const stormOptions = getResolvedStormOptions(profile, {
     showClouds,
     cloudCount,
@@ -90,6 +120,36 @@ const Rain: React.FunctionComponent<dropletOptions> = ({
   React.useEffect(() => {
     const element = rainRef.current;
     if (!element) return;
+    if (!pauseWhenHidden) {
+      element.classList.remove("rain-container--paused");
+      return;
+    }
+
+    let pageDocument: Document;
+    try {
+      pageDocument = window.top?.document ?? document;
+    } catch {
+      pageDocument = document;
+    }
+
+    const syncVisibility = () => {
+      element.classList.toggle(
+        "rain-container--paused",
+        pageDocument.visibilityState === "hidden",
+      );
+    };
+
+    syncVisibility();
+    pageDocument.addEventListener("visibilitychange", syncVisibility);
+    return () => {
+      pageDocument.removeEventListener("visibilitychange", syncVisibility);
+      element.classList.remove("rain-container--paused");
+    };
+  }, [pauseWhenHidden]);
+
+  React.useEffect(() => {
+    const element = rainRef.current;
+    if (!element) return;
 
     const updateDroplets = () => {
       const maxWidth = element.clientWidth;
@@ -123,6 +183,7 @@ const Rain: React.FunctionComponent<dropletOptions> = ({
             showWind: effectiveShowWind,
             windVariation: safeWindVariation,
             gustFrequency: safeGustFrequency,
+            intensity,
           },
         ),
       );
@@ -156,6 +217,7 @@ const Rain: React.FunctionComponent<dropletOptions> = ({
     windProfile,
     safeWindVariation,
     safeGustFrequency,
+    intensity,
     effectiveCloudCount,
     stormOptions.cloudSize,
   ]);
@@ -163,9 +225,11 @@ const Rain: React.FunctionComponent<dropletOptions> = ({
   return (
     <div
       ref={rainRef}
+      data-respect-reduced-motion={respectReducedMotion}
       className={[
         "rain-container",
         getRainProfileClassName(profile),
+        !isRunning && "rain-container--stopped",
       ]
         .filter(Boolean)
         .join(" ")}
@@ -179,8 +243,6 @@ const Rain: React.FunctionComponent<dropletOptions> = ({
           drift={effectiveCloudDrift}
           blur={stormOptions.cloudBlur}
           color={stormOptions.cloudColor}
-          windVariation={effectiveShowWind ? safeWindVariation : 0}
-          gustFrequency={safeGustFrequency}
         />
       )}
       {dropletArray}
@@ -190,15 +252,19 @@ const Rain: React.FunctionComponent<dropletOptions> = ({
       {effectiveShowWind && (
         <WindLayer gustFrequency={safeGustFrequency} windVariation={safeWindVariation} strength={windOptions.windStrength} />
       )}
-      {stormOptions.showLightning && (
+      {((stormOptions.showLightning && isRunning) || lightningTrigger > 0) && (
         <LightningLayer
           frequency={stormOptions.lightningFrequency}
           flashDuration={stormOptions.lightningFlashDuration}
           color={stormOptions.lightningColor}
+          auto={stormOptions.showLightning && isRunning}
+          triggerId={lightningTrigger}
         />
       )}
     </div>
   );
-};
+});
+
+Rain.displayName = "Rain";
 
 export default Rain;

@@ -28,11 +28,8 @@
 .rain-drop--snowflake {
   border-radius: 0;
   background-color: transparent !important;
-  background-image:
-    linear-gradient(currentColor, currentColor),
-    linear-gradient(60deg, currentColor, currentColor),
-    linear-gradient(-60deg, currentColor, currentColor) !important;
-  background-size: 1px 100%, 1px 100%, 1px 100%;
+  background-image: linear-gradient(currentColor, currentColor) !important;
+  background-size: 100% 1px;
   background-position: center;
   background-repeat: no-repeat;
   filter: drop-shadow(0 0 2px currentColor);
@@ -46,16 +43,33 @@
 .rain-drop--snowflake::before,
 .rain-drop--snowflake::after {
   position: absolute;
-  top: 25%;
-  left: 10%;
-  width: 80%;
+  top: calc(50% - 0.5px);
+  left: 0;
+  width: 100%;
   height: 1px;
   content: "";
   background: currentColor;
 }
 
-.rain-drop--snowflake::before { transform: rotate(30deg); }
-.rain-drop--snowflake::after { transform: rotate(-30deg); }
+.rain-drop--snowflake::before { transform: rotate(60deg); }
+.rain-drop--snowflake::after { transform: rotate(-60deg); }
+
+.rain-drop--cartoon {
+  border-radius: 55% 55% 62% 62% / 42% 42% 72% 72%;
+  clip-path: polygon(50% 0, 62% 18%, 79% 42%, 91% 62%, 96% 77%, 91% 89%, 78% 97%, 50% 100%, 22% 97%, 9% 89%, 4% 77%, 9% 62%, 21% 42%, 38% 18%);
+  filter: drop-shadow(0 1px 1px rgba(8, 49, 94, .3));
+}
+
+.rain-drop--cartoon::before {
+  position: absolute;
+  top: 32%;
+  left: 24%;
+  width: 22%;
+  height: 30%;
+  border-radius: 50%;
+  content: "";
+  background: rgba(255, 255, 255, .7);
+}
 
 .rain-drop--hailstone {
   border-radius: 50%;
@@ -76,12 +90,6 @@
   100% {
     opacity: 0;
   }
-}
-
-@keyframes rain-drop-angle-sway {
-  0%, 100% { rotate: 0deg; }
-  25%, 75% { rotate: var(--wind-angle); }
-  50% { rotate: var(--wind-angle-reverse); }
 }
 
 @keyframes rain-snow-tumble {

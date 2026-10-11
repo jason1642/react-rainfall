@@ -6,6 +6,8 @@ interface LightningLayerProps {
   frequency: number;
   flashDuration: number;
   color: string;
+  auto: boolean;
+  triggerId: number;
 }
 
 type LightningStyle = CSSProperties & {
@@ -31,10 +33,17 @@ function LightningLayer({
   frequency,
   flashDuration,
   color,
+  auto,
+  triggerId,
 }: LightningLayerProps) {
   const [isFlashing, setIsFlashing] = React.useState(false);
+  const [flashKey, setFlashKey] = React.useState(0);
   const [boltPosition, setBoltPosition] = React.useState(50);
   const [boltPoints, setBoltPoints] = React.useState(createBoltPoints);
+  const lastTriggerId = React.useRef(0);
+  const flashEndTimer = React.useRef<ReturnType<typeof setTimeout> | undefined>(
+    undefined,
+  );
   const safeFrequency = Number.isFinite(frequency)
     ? Math.max(0.75, frequency)
     : 9;
@@ -42,31 +51,47 @@ function LightningLayer({
     ? Math.max(80, Math.min(4000, flashDuration))
     : 450;
 
+  const flash = React.useCallback(() => {
+    setBoltPosition(16 + Math.random() * 68);
+    setBoltPoints(createBoltPoints());
+    setFlashKey((current) => current + 1);
+    setIsFlashing(true);
+    if (flashEndTimer.current) clearTimeout(flashEndTimer.current);
+    flashEndTimer.current = setTimeout(() => setIsFlashing(false), safeDuration);
+  }, [safeDuration]);
+
   React.useEffect(() => {
+    if (triggerId <= lastTriggerId.current) return;
+    lastTriggerId.current = triggerId;
+    flash();
+  }, [triggerId, flash]);
+
+  React.useEffect(() => {
+    if (!auto) return;
     let nextFlashTimer: ReturnType<typeof setTimeout>;
-    let flashEndTimer: ReturnType<typeof setTimeout>;
 
     const scheduleFlash = (initial = false) => {
       const interval = initial
         ? Math.min(1, Math.max(0.35, safeFrequency * 0.2))
         : safeFrequency * (0.7 + Math.random() * 0.6);
       nextFlashTimer = setTimeout(() => {
-        setBoltPosition(16 + Math.random() * 68);
-        setBoltPoints(createBoltPoints());
-        setIsFlashing(true);
-        flashEndTimer = setTimeout(() => {
-          setIsFlashing(false);
-          scheduleFlash();
-        }, safeDuration);
+        flash();
+        scheduleFlash();
       }, interval * 1000);
     };
 
     scheduleFlash(true);
     return () => {
       clearTimeout(nextFlashTimer);
-      clearTimeout(flashEndTimer);
     };
-  }, [safeDuration, safeFrequency]);
+  }, [auto, safeFrequency, flash]);
+
+  React.useEffect(
+    () => () => {
+      if (flashEndTimer.current) clearTimeout(flashEndTimer.current);
+    },
+    [],
+  );
 
   const style: LightningStyle = {
     "--lightning-color": color,
@@ -79,8 +104,9 @@ function LightningLayer({
       style={style}
       aria-hidden="true"
     >
-      <div className="storm-lightning-flash" />
+      <div className="storm-lightning-flash" key={`flash-${flashKey}`} />
       <svg
+        key={`bolt-${flashKey}`}
         className="storm-lightning-bolt"
         style={{ left: `${boltPosition}%` }}
         viewBox="0 0 100 100"

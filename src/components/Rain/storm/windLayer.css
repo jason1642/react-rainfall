@@ -33,5 +33,5 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .rain-wind-layer span { animation: none; }
+  .rain-container[data-respect-reduced-motion="true"] .rain-wind-layer span { animation: none; }
 }

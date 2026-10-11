@@ -1,2 +1,4 @@
 export * from './components';
-export type { cloudProfile, rainProfile, windProfile } from './components/Rain/rainTypes';
+export { default as useRainfall } from './hooks/useRainfall';
+export type { RainfallController } from './hooks/useRainfall';
+export type { RainHandle, cloudProfile, dropletOptions, rainProfile, windProfile } from './components/Rain/rainTypes';

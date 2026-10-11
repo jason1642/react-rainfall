@@ -84,12 +84,12 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .storm-lightning-layer.is-flashing .storm-lightning-flash {
+  .rain-container[data-respect-reduced-motion="true"] .storm-lightning-layer.is-flashing .storm-lightning-flash {
     animation: none;
     opacity: 0.12;
   }
 
-  .storm-lightning-layer.is-flashing .storm-lightning-bolt {
+  .rain-container[data-respect-reduced-motion="true"] .storm-lightning-layer.is-flashing .storm-lightning-bolt {
     animation: none;
     opacity: 0.42;
   }

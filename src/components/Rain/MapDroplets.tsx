@@ -31,6 +31,7 @@ const mapDroplets = (
     showWind,
     windVariation,
     gustFrequency,
+    intensity = 1,
   } = options;
 
   const { maxWidth, maxHeight } = rainRef;
@@ -70,13 +71,16 @@ const mapDroplets = (
   const speedMultiplier =
     effectiveDuration === "fast" ? 1.3 : effectiveDuration === "slow" ? 0.7 : 1;
   const effectiveNumDrops = numDrops ?? profileDefaults.numDrops;
+  const safeIntensity = Number.isFinite(intensity)
+    ? Math.max(0, Math.min(1, intensity))
+    : 1;
   const angleRadians = (effectiveAngle * Math.PI) / 180;
   const horizontalDriftPerPixel = Math.tan(angleRadians);
   const requestedDrops =
     effectiveNumDrops === undefined
       ? Math.floor(maxWidth / profileDefaults.dropsPerWidth)
       : Math.floor(effectiveNumDrops);
-  const requestedDropsCount = Math.max(0, requestedDrops);
+  const requestedDropsCount = Math.max(0, Math.floor(requestedDrops * safeIntensity));
   const totalFallDistance = maxHeight;
   const totalHorizontalDrift = horizontalDriftPerPixel * totalFallDistance;
   const rotatedDropHalfWidth =
@@ -108,6 +112,7 @@ const mapDroplets = (
     orb: { width: 7, height: { short: 7, default: 9, long: 12 } },
     snowflake: { width: 10, height: { short: 10, default: 13, long: 16 } },
     hailstone: { width: 8, height: { short: 9, default: 12, long: 16 } },
+    cartoon: { width: 11, height: { short: 16, default: 22, long: 28 } },
   }[effectiveDropStyle];
   const baseDropHeight = dropDimensions.height[effectiveSize];
 
@@ -150,30 +155,24 @@ const mapDroplets = (
     const containerAnimationStyle = showWind
       ? ({
           ...animationStyle,
-          animationName: "rain-drop-fall, rain-drop-wind-sway",
-          animationDuration: `${durationSeconds.toFixed(2)}s, ${safeGustFrequency}s`,
-          animationDelay: `${randomDelaySeconds.toFixed(2)}s, 0s`,
+          animationName: "rain-drop-fall, rain-drop-wind-drift",
+          animationDuration: `${durationSeconds.toFixed(2)}s, ${safeGustFrequency * 2.5}s`,
+          animationDelay: `${randomDelaySeconds.toFixed(2)}s, ${-((i % 7) / 7) * safeGustFrequency * 2.5}s`,
           animationTimingFunction: "linear, ease-in-out",
           animationIterationCount: "infinite, infinite",
           animationFillMode: "both, none",
-          "--wind-sway": `${Math.min(80, Math.tan((safeWindVariation * Math.PI) / 180) * maxHeight)}px`,
-          "--wind-sway-left": `${-Math.min(80, Math.tan((safeWindVariation * Math.PI) / 180) * maxHeight) * 0.35}px`,
+          "--wind-push": `${(Math.sign(effectiveAngle) || 1) * Math.min(24, Math.tan((safeWindVariation * 0.35 * Math.PI) / 180) * maxHeight * 0.12)}px`,
         } as CSSProperties)
       : animationStyle;
-    const dropletAnimationStyle = showWind
-      ? {
-          ...animationStyle,
-          animationName: "rain-drop-fade, rain-drop-angle-sway",
-          animationDuration: `${durationSeconds.toFixed(2)}s, ${safeGustFrequency}s`,
-          animationDelay: `${randomDelaySeconds.toFixed(2)}s, 0s`,
-          animationTimingFunction: "linear, ease-in-out",
-          animationIterationCount: "infinite, infinite",
-          animationFillMode: "both, none",
-          rotate: "0deg",
-          "--wind-angle": `${safeWindVariation}deg`,
-          "--wind-angle-reverse": `${-safeWindVariation}deg`,
-        } as CSSProperties
-      : effectiveDropStyle === "snowflake"
+    const windAngle = Math.min(11, safeWindVariation * 0.35);
+    const windAngleStyle = showWind
+      ? ({
+          animation: `rain-drop-wind-angle ${safeGustFrequency * 2.5}s ease-in-out infinite`,
+          animationDelay: `${-((i % 7) / 7) * safeGustFrequency * 2.5}s`,
+          "--wind-angle": `${-(Math.sign(effectiveAngle) || 1) * windAngle}deg`,
+        } as CSSProperties)
+      : undefined;
+    const dropletAnimationStyle = effectiveDropStyle === "snowflake"
         ? {
             ...animationStyle,
             animationName: "rain-drop-fade, rain-snow-tumble",
@@ -197,12 +196,14 @@ const mapDroplets = (
           ...(rainFromClouds
             ? { top: `${sourceTop - dropletSizes(effectiveSize)}px`, bottom: "auto" }
             : { bottom: "100%" }),
+          ...({ "--reduced-top": `${Math.random() * 84}%` } as CSSProperties),
           zIndex: effectiveDepth ? Math.ceil(depthPosition * 9) + 1 : 1,
         }}
       >
-        <Droplet
-          variant={effectiveDropStyle}
-          style={{
+        <div className="rain-drop-angle" style={windAngleStyle}>
+          <Droplet
+            variant={effectiveDropStyle}
+            style={{
             ...dropletAnimationStyle,
             transform: `translateX(-50%) rotate(${-effectiveAngle}deg)`,
             color: dropColor,
@@ -227,8 +228,9 @@ const mapDroplets = (
                   ? `radial-gradient(circle at 30% 25%, rgba(255,255,255,.95), rgba(${rgb}, ${effectiveOpacity * depthOpacity}) 55%, rgba(${rgb}, ${effectiveOpacity * depthOpacity}))`
                   : `linear-gradient(to bottom, rgba(${rgb}, 0), rgba(${rgb}, ${effectiveOpacity * depthOpacity}))`,
             backgroundColor: undefined,
-          }}
-        />
+            }}
+          />
+        </div>
 
         {effectiveShowImpact && (
           <DropImpact

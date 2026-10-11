@@ -14,11 +14,11 @@
   height: calc(var(--cloud-size) * 0.42);
   opacity: var(--cloud-opacity);
   filter: blur(var(--cloud-blur));
-  animation-name: storm-cloud-drift, storm-cloud-gust;
-  animation-timing-function: ease-in-out, ease-in-out;
-  animation-iteration-count: infinite, infinite;
-  animation-direction: alternate, normal;
-  will-change: transform, translate;
+  animation-name: storm-cloud-drift;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  will-change: transform;
 }
 
 .storm-cloud i {
@@ -51,12 +51,6 @@
   to { transform: translateX(var(--cloud-drift)); }
 }
 
-@keyframes storm-cloud-gust {
-  0%, 100% { translate: 0 0; }
-  25%, 75% { translate: var(--wind-drift-left) 0; }
-  50% { translate: var(--wind-drift) 0; }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .storm-cloud { animation: none; }
+  .rain-container[data-respect-reduced-motion="true"] .storm-cloud { animation: none; }
 }
