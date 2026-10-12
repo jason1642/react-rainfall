@@ -126,17 +126,55 @@ const Rain = React.forwardRef<RainHandle, dropletOptions>(
 
     const canvasOptions = React.useMemo<dropletOptions>(
       () => ({
-        numDrops, dropletColor, size, showImpact, impactStyle, impactThickness,
-        impactOpacity, impactDensity, profile, dropletOpacity, duration, angle,
-        dropStyle, depth, rainFromClouds, cloudCount: effectiveCloudCount,
-        cloudSize: stormOptions.cloudSize, showWind: effectiveShowWind,
-        windVariation: safeWindVariation, gustFrequency: safeGustFrequency,
-        intensity, quality, maxDrops,
+        numDrops,
+        dropletColor,
+        size,
+        showImpact,
+        impactStyle,
+        impactThickness,
+        impactOpacity,
+        impactDensity,
+        profile,
+        dropletOpacity,
+        duration,
+        angle,
+        dropStyle,
+        depth,
+        rainFromClouds,
+        cloudCount: effectiveCloudCount,
+        cloudSize: stormOptions.cloudSize,
+        showWind: effectiveShowWind,
+        windVariation: safeWindVariation,
+        gustFrequency: safeGustFrequency,
+        intensity,
+        quality,
+        maxDrops,
       }),
-      [numDrops, dropletColor, size, showImpact, impactStyle, impactThickness,
-       impactOpacity, impactDensity, profile, dropletOpacity, duration, angle,
-       dropStyle, depth, rainFromClouds, effectiveCloudCount, stormOptions.cloudSize,
-       effectiveShowWind, safeWindVariation, safeGustFrequency, intensity, quality, maxDrops],
+      [
+        numDrops,
+        dropletColor,
+        size,
+        showImpact,
+        impactStyle,
+        impactThickness,
+        impactOpacity,
+        impactDensity,
+        profile,
+        dropletOpacity,
+        duration,
+        angle,
+        dropStyle,
+        depth,
+        rainFromClouds,
+        effectiveCloudCount,
+        stormOptions.cloudSize,
+        effectiveShowWind,
+        safeWindVariation,
+        safeGustFrequency,
+        intensity,
+        quality,
+        maxDrops,
+      ],
     );
 
     const rainRef = React.useRef<HTMLDivElement>(null);
@@ -290,7 +328,9 @@ const Rain = React.forwardRef<RainHandle, dropletOptions>(
             pauseWhenHidden={pauseWhenHidden}
             respectReducedMotion={respectReducedMotion}
           />
-        ) : dropletArray}
+        ) : (
+          dropletArray
+        )}
         {surface === "glass" && (
           <GlassLayer fog={glassFog} refraction={glassRefraction} />
         )}

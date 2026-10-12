@@ -1,182 +1,96 @@
- # React Rainfall
-  A simple to use React package that provides a rainfall animation effect to the background to a parent element.
-  npm - https://www.npmjs.com/package/react-rainfall
-  
-  
- ## Installation 
- ```
-    npm i react-rainfall
- ```
- 
- 
- ## Usage 
- ```jsx
-    import Rain from 'react-rainfall'
-    import 'react-rainfall/dist/style.css'
-   // IMPORTANT - Parent element must have position relative or else rain will be positioned based on viewport 
-    <div style={{
-       position: 'relative',
-       height: '600px',
-       width: '1000px'
-     }}> 
-       <Rain />
+# React Rainfall
+
+React Rainfall adds animated precipitation and optional weather layers to a positioned element.
+
+## Installation
+
+```sh
+npm install react-rainfall
+```
+
+## Basic usage
+
+```tsx
+import { Rain } from "react-rainfall";
+import "react-rainfall/dist/style.css";
+
+function WeatherPanel() {
+  return (
+    <div style={{ position: "relative", width: "100%", height: 600 }}>
+      <Rain />
     </div>
- ```
+  );
+}
+```
 
- ## API
- 
- Name | Is Required? | type | Default | options | Description 
---- | -- | --- | --- | --- | ----
-numDrops | false | number | parentWidth / 25 (profile dependent) | number | Target number of drops before quality scaling and the `maxDrops` cap. Angled rain adds offscreen edge-buffer drops to keep coverage full.
-dropletColor | false | color in rbg() format | white | 'rgb(200, 200, 200) | Color of droplets, which will use a linear gradient effect. Must be in rgb format.
-size | false | string | Profile/style default | 'short', 'default', 'long' | Change particle size. When you explicitly choose `dropStyle` without `size`, that style uses its own canonical size so its shape stays recognizable across rain profiles.
-showImpact | false | boolean | true| boolean | Show the impact animation when the rain drop reachs the bottom.
-impactStyle | false | string | 'splash' (profile default may vary) | 'splash', 'spray', 'ripple' | Choose upward splash particles, a spray burst, or expanding puddle rings.
-impactThickness | false | number | 2.5 | 0.5 - 8 pixels | Set the diameter of the impact particles.
-impactOpacity | false | number | 0.65 | 0 - 1 | Set the overall impact visibility.
-impactDensity | false | number | Profile default (0.18–0.3) | 0 - 1 | Set the fraction of drops that produce impacts. Selection is stable by drop index; `0` disables impacts and `1` adds one to every eligible drop.
-angle | false | number | 0 | -75 to 75 | Tilt the rain from vertical in degrees. Positive values drift right; negative values drift left. Values outside this range are clamped.
-profile | false | string | undefined | 'light-drizzle', 'steady-rain', 'passing-shower', 'heavy-rain', 'misty-rain', 'snow', 'hail', 'cartoon', 'rainbow' | Select a precipitation preset. Explicit props such as `numDrops` and `size` override preset defaults.
-dropletOpacity | false | number | .5 | 0 - 1 | Change the opacity of the droplet itself. Use a decimal number between 0 and 1.
-duration | false | string | Profile default | 'slow', 'normal', 'fast' | Adjust the fall rate. An explicit value overrides the selected profile's speed.
-showClouds | false | boolean | false (true for `heavy-rain`) | true / false | Enable the animated cloud layer behind the rain.
-cloudCount | false | number | 3 (5 for `heavy-rain`) | 0 - 24 | Number of clouds when `showClouds` is enabled.
-cloudSize | false | number | 320 (420 for `heavy-rain`) | pixels | Approximate width of each cloud.
-cloudSpeed | false | number | 36 | seconds | Time for clouds to drift in one direction; they ease back and repeat.
-cloudOpacity | false | number | 0.4 (0.48 for `heavy-rain`) | 0 - 1 | Opacity of the clouds.
-cloudDrift | false | number | 120 (360 for `heavy-rain`) | pixels | Horizontal cloud drift per direction. Positive moves right; negative moves left.
-cloudBlur | false | number | 4px | 0 - 40 pixels | Adjust cloud softness. Use a low value for distinct cloud edges.
-cloudColor | false | string | #43527f | CSS color | Set the color of the cloud shapes.
-cloudProfile | false | string | 'puffy' | 'soft', 'puffy', 'rolling', 'cartoon' | Choose diffuse clouds, clearly shaped clouds, faster rolling clouds, or bright rounded cartoon clouds. Explicit cloud props override the preset values.
-showLightning | false | boolean | false (true for `heavy-rain`) | true / false | Enable lightning flashes above the rain. This is a visual effect and does not play thunder audio.
-lightningFrequency | false | number | 9 (15 for `heavy-rain`) | seconds | Average interval between flashes; the first flash appears within about one second.
-lightningFlashDuration | false | number | 450 (300 for `heavy-rain`) | milliseconds | Duration of each flash, clamped to 80–4000 ms.
-lightningColor | false | string | #dfe6ff | CSS color | Color used for the lightning bolt and flash.
-dropStyle | false | string | 'streak' (profile default may vary) | 'streak', 'pixel', 'soft', 'glow', 'orb', 'snowflake', 'hailstone', 'cartoon' | Change the visual shape of each precipitation particle. Explicitly selecting a style uses its own baseline size and opacity unless you also provide `size` or `dropletOpacity`.
-depth | false | boolean | false (true for `heavy-rain`) | true / false | Vary drop size, speed, opacity, blur, and impact height to create distant and foreground rain layers.
-showWind | false | boolean | false | true / false | Add gradual gusts that bend and gently shift individual drops.
-windProfile | false | string | undefined | 'subtle', 'breezy', 'gusty', 'squall' | Choose a wind intensity preset. Selecting a profile enables animated drop angle and drift; `windVariation` and `gustFrequency` customize it.
-rainFromClouds | false | boolean | false | true / false | Cluster rain beneath the cloud positions and reduce profile-default drop density; an explicit `numDrops` is respected. Clouds are shown automatically when this is enabled.
-windVariation | false | number | Profile default (8 degrees for subtle wind) | 0 - 30 degrees | Set how far drops gradually lean and shift during a gust. Clouds keep their slower `cloudDrift` motion.
-gustFrequency | false | number | Profile default (8 seconds for subtle wind) | seconds | Set the base interval of the gradual drop-angle and drift cycle.
-surface | false | string | 'air' | 'air', 'glass' | Set `glass` to add a fogged pane with animated water runs and refraction-like backdrop blur.
-glassFog | false | number | 0.18 | 0 - 1 | Set the fogged-glass overlay strength.
-glassRefraction | false | number | 2 | 0 - 12 pixels | Adjust the glass backdrop blur and refraction impression.
-pauseWhenHidden | false | boolean | false | true / false | Set true to pause CSS animations while the browser tab is hidden.
-respectReducedMotion | false | boolean | true | true / false | Honor the operating system's `prefers-reduced-motion` setting. Set false to force animations when the system preference requests reduced motion.
-playing | false | boolean | true | true / false | Start or pause the rain layer. Also controlled by the imperative ref and `useRainfall()` hook.
-intensity | false | number | 1 | 0 - 1 | Scale the active drop count from none to the selected profile's full density.
-quality | false | string | 'high' for DOM, 'medium' for canvas | 'low', 'medium', 'high' | Scale drop count to suit device capabilities: low uses 40%, medium 70%, and high 100% of the requested count.
-maxDrops | false | number | 600 for DOM, 400 for canvas | 0 - 5000 | Hard cap on the final drop count, including extra drops added to cover angled rain. Lower this or use a lower `quality` on slower devices.
-renderer | false | string | 'dom' | 'dom', 'canvas' | Select the particle renderer. `canvas` draws precipitation and impacts in a single canvas to reduce particle DOM nodes; clouds, glass, wind, and lightning remain their existing DOM/CSS layers.
+`Rain` fills its parent, so give the parent `position: relative` and a height. The rain layer is decorative and does not intercept pointer events.
 
+## API
 
+All props are optional. A selected `profile` supplies defaults for properties it defines; an explicitly provided prop takes precedence.
 
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `profile` | String union | None | Precipitation preset: `light-drizzle`, `steady-rain`, `passing-shower`, `heavy-rain`, `misty-rain`, `snow`, `hail`, `cartoon`, or `rainbow`. |
+| `numDrops` | `number` | Profile value, otherwise parent width / 25 | Target particle count before quality scaling and the `maxDrops` cap. Angled rain adds edge coverage. |
+| `dropletColor` | `rgb()` color | Profile value, otherwise `rgb(183, 212, 255)` | Particle color. Use RGB syntax, for example `rgb(170, 195, 255)`. |
+| `size` | `"short" \| "default" \| "long"` | Profile/style default | Particle size. When `dropStyle` is explicitly set, its own baseline size is used unless `size` is also provided. |
+| `dropletOpacity` | `number` | Profile/style default, otherwise `0.5` | Particle opacity from `0` to `1`. An explicitly selected `dropStyle` supplies a baseline opacity unless this prop is set. |
+| `duration` | `"slow" \| "normal" \| "fast"` | Profile value, otherwise `"normal"` | Controls fall speed. |
+| `angle` | `number` | Profile value, otherwise `0` | Tilt in degrees from vertical. Positive values drift right; negative values drift left. Values are clamped to `-75` through `75`. |
+| `dropStyle` | String union | Profile value, otherwise `"streak"` | Particle shape: `streak`, `pixel`, `soft`, `glow`, `orb`, `snowflake`, `hailstone`, or `cartoon`. |
+| `depth` | `boolean` | Profile value, otherwise `false` | Varies particle size, speed, opacity, and impact scale to suggest foreground and background layers. |
+| `showImpact` | `boolean` | Profile value, otherwise `true` | Show an impact when a particle reaches the bottom. |
+| `impactStyle` | `"splash" \| "spray" \| "ripple"` | Profile value, otherwise `"splash"` | Choose a small upward splash, a wider spray, or expanding water rings. |
+| `impactThickness` | `number` | Profile value, otherwise `2.5` | Impact thickness from `0.5` to `8` pixels. |
+| `impactOpacity` | `number` | Profile value, otherwise `0.65` | Impact opacity from `0` to `1`. |
+| `impactDensity` | `number` | Profile value, otherwise `0.25` | Fraction of drops that make impacts, from `0` to `1`. Selection is stable per drop. |
+| `showClouds` | `boolean` | Profile value, otherwise `false` | Show animated clouds behind the precipitation. |
+| `cloudProfile` | String union | Profile value, otherwise `"puffy"` | Cloud appearance: `soft`, `puffy`, `rolling`, or `cartoon`. |
+| `cloudCount` | `number` | Profile value, otherwise `3` | Cloud count, clamped to `0`–`24`. |
+| `cloudSize` | `number` | Profile value, otherwise `320` | Approximate cloud width in pixels. |
+| `cloudSpeed` | `number` | Cloud profile/preset value | Time in seconds for a cloud to drift in one direction before easing back. |
+| `cloudOpacity` | `number` | Cloud profile/preset value | Cloud opacity from `0` to `1`. |
+| `cloudDrift` | `number` | Cloud profile/preset value | Horizontal cloud travel in pixels. Negative values drift left. |
+| `cloudBlur` | `number` | Cloud profile/preset value | Cloud blur in pixels, clamped to `0`–`40`. |
+| `cloudColor` | `string` | Cloud profile/preset value | CSS color for the cloud shapes. |
+| `rainFromClouds` | `boolean` | `false` | Cluster drops under the clouds. Clouds are enabled automatically; profile-based drop counts are reduced, while explicit `numDrops` is respected. |
+| `showLightning` | `boolean` | Profile value, otherwise `false` | Enable lightning flashes. Lightning is visual and has no thunder audio. |
+| `lightningFrequency` | `number` | Profile value, otherwise `9` | Average seconds between flashes. |
+| `lightningFlashDuration` | `number` | Profile value, otherwise `450` | Flash duration in milliseconds, clamped to `80`–`4000`. |
+| `lightningColor` | `string` | Profile value, otherwise `#dfe6ff` | CSS color for lightning. |
+| `showWind` | `boolean` | `false` | Enable a directional slant and gradual gust drift. |
+| `windProfile` | String union | None | Wind preset: `subtle`, `breezy`, `gusty`, or `squall`. Selecting one enables wind. |
+| `windVariation` | `number` | Wind profile value, otherwise `8` | Wind strength in degrees, clamped to `0`–`30`. |
+| `gustFrequency` | `number` | Wind profile value, otherwise `8` | Base time in seconds for the gust cycle. |
+| `surface` | `"air" \| "glass"` | `"air"` | Add a fogged pane and animated water runs when set to `"glass"`. |
+| `glassFog` | `number` | `0.18` | Fog overlay strength from `0` to `1`. |
+| `glassRefraction` | `number` | `2` | Backdrop blur in pixels, clamped to `0`–`12`. |
+| `renderer` | `"dom" \| "canvas"` | `"dom"` | Select DOM or canvas particles. Canvas draws precipitation and impacts together; other weather layers remain DOM/CSS. |
+| `quality` | `"low" \| "medium" \| "high"` | DOM: `"high"`; canvas: `"medium"` | Particle-count scale: low uses 40%, medium 70%, and high 100%. |
+| `maxDrops` | `number` | DOM: `600`; canvas: `400` | Maximum particle count, clamped to `0`–`5000`. |
+| `intensity` | `number` | `1` | Scale active particle count from `0` to `1`. Can also be changed through the ref or hook. |
+| `playing` | `boolean` | `true` | Start or pause the animation. Can also be controlled through the ref or hook. |
+| `pauseWhenHidden` | `boolean` | `false` | Pause animation while the browser tab is hidden. |
+| `respectReducedMotion` | `boolean` | `false` | Respect the system `prefers-reduced-motion` setting. Set to `false` to force animation. |
 
+## Storm example
 
-
-
-![](https://github.com/jason1642/react-rainfall/blob/main/thunderRain.gif)
-
-
-
-
-
-### Storm example
-
-```jsx
+```tsx
 <Rain
   profile="heavy-rain"
   angle={18}
   showClouds
   cloudCount={5}
-  cloudSize={420}
-  cloudSpeed={32}
-  cloudOpacity={0.55}
-  cloudDrift={360}
   showLightning
   lightningFrequency={15}
-  lightningFlashDuration={300}
-  lightningColor="#dfe6ff"
   dropStyle="pixel"
   depth
 />
 ```
 
-## Canvas renderer (experimental)
+## Canvas renderer
 
-The default renderer remains DOM-based. Set `renderer="canvas"` to try the canvas particle layer while retaining the same profile and rain options. Canvas defaults to medium particle density and a 400-drop cap to keep large storm scenes responsive; set `quality="high"` and `maxDrops` explicitly to raise them:
-
-```tsx
-<Rain
-  renderer="canvas"
-  profile="heavy-rain"
-  showClouds
-  showLightning
-  impactStyle="ripple"
-  maxDrops={600}
-/>
-```
-
-The canvas path currently draws the precipitation styles and splash, spray, and ripple impacts. Cloud, lightning, wind visuals, and glass effects continue using their current overlay components. The canvas renderer is an initial experimental foundation; compare it with the DOM renderer in your target browsers before using it in production.
-
-
-## Imperative and state controls
-
-`Rain` accepts a ref with `start()`, `stop()`, `setIntensity(0–1)`, and `triggerLightning()` methods:
+The DOM renderer is the default. Canvas is an optional renderer that can reduce particle DOM nodes. It defaults to medium quality and a 400-drop cap; choose higher quality or a different cap when appropriate for the target device.
 
 ```tsx
-import { useRef } from "react";
-import { Rain, type RainHandle } from "react-rainfall";
-
-function StormControls() {
-  const rainRef = useRef<RainHandle>(null);
-
-  return (
-    <>
-      <Rain ref={rainRef} profile="heavy-rain" />
-      <button onClick={() => rainRef.current?.stop()}>Stop</button>
-      <button onClick={() => rainRef.current?.start()}>Start</button>
-      <button onClick={() => rainRef.current?.setIntensity(0.35)}>
-        Lighten the rain
-      </button>
-      <button onClick={() => rainRef.current?.triggerLightning()}>
-        Flash lightning
-      </button>
-    </>
-  );
-}
-```
-
-For state-driven controls, `useRainfall()` returns a ref, `props` to spread onto `Rain`, and matching control methods:
-
-```tsx
-import { Rain, useRainfall } from "react-rainfall";
-
-function StatefulStorm() {
-  const rain = useRainfall();
-
-  return (
-    <>
-      <Rain ref={rain.ref} {...rain.props} profile="heavy-rain" />
-      <button onClick={rain.playing ? rain.stop : rain.start}>
-        {rain.playing ? "Stop" : "Start"}
-      </button>
-      <input
-        aria-label="Rain intensity"
-        type="range"
-        min={0}
-        max={1}
-        step={0.01}
-        value={rain.intensity}
-        onChange={(event) => rain.setIntensity(Number(event.target.value))}
-      />
-      <button onClick={rain.triggerLightning}>Flash lightning</button>
-    </>
-  );
-}
-```
-
-`pauseWhenHidden` defaults to `false`; set it to `true` to pause while the top-level browser tab is hidden. `respectReducedMotion` defaults to `true`; set it to `false` to force animation even when the operating system requests reduced motion. Storybook scenes set it to `false` so their animation previews remain visible.
-
-
