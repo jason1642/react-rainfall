@@ -25,8 +25,6 @@ function WeatherPanel() {
 
 `Rain` fills its parent, so give the parent `position: relative` and a height. The rain layer is decorative and does not intercept pointer events.
 
-![](https://github.com/jason1642/react-rainfall/blob/main/thunderRain.gif)
-
 ## API
 
 All props are optional. A selected `profile` supplies defaults for properties it defines; an explicitly provided prop takes precedence.
@@ -74,7 +72,7 @@ All props are optional. A selected `profile` supplies defaults for properties it
 | `intensity` | `number` | `1` | Scale active particle count from `0` to `1`. Can also be changed through the ref or hook. |
 | `playing` | `boolean` | `true` | Start or pause the animation. Can also be controlled through the ref or hook. |
 | `pauseWhenHidden` | `boolean` | `false` | Pause animation while the browser tab is hidden. |
-| `respectReducedMotion` | `boolean` | `false` | Respect the system `prefers-reduced-motion` setting. Set to `false` to force animation. |
+| `respectReducedMotion` | `boolean` | `true` | Respect the system `prefers-reduced-motion` setting. Set to `false` to force animation. |
 
 ## Storm example
 
@@ -96,3 +94,72 @@ All props are optional. A selected `profile` supplies defaults for properties it
 The DOM renderer is the default. Canvas is an optional renderer that can reduce particle DOM nodes. It defaults to medium quality and a 400-drop cap; choose higher quality or a different cap when appropriate for the target device.
 
 ```tsx
+<Rain
+  renderer="canvas"
+  profile="heavy-rain"
+  showLightning
+  impactStyle="ripple"
+/>
+```
+
+The canvas renderer draws precipitation and splash, spray, and ripple impacts. Clouds, glass, wind visuals, and lightning continue to use their existing DOM/CSS layers.
+
+## Imperative controls
+
+Use a ref when controls should act directly on `Rain` without needing to mirror animation state in React state. `setIntensity` accepts a value from `0` to `1`; `triggerLightning` can request a flash even when automatic lightning is disabled.
+
+```tsx
+import { useRef } from "react";
+import { Rain, type RainHandle } from "react-rainfall";
+
+function StormControls() {
+  const rainRef = useRef<RainHandle | null>(null);
+
+  return (
+    <>
+      <Rain ref={rainRef} profile="heavy-rain" />
+      <button onClick={() => rainRef.current?.stop()}>Stop</button>
+      <button onClick={() => rainRef.current?.start()}>Start</button>
+      <button onClick={() => rainRef.current?.setIntensity(0.35)}>
+        Set intensity
+      </button>
+      <button onClick={() => rainRef.current?.triggerLightning()}>
+        Flash lightning
+      </button>
+    </>
+  );
+}
+```
+
+## State-driven controls
+
+Use `useRainfall()` when the rest of the UI needs to display or respond to the current play state and intensity. It returns `ref`, `props`, `playing`, `intensity`, and the same control methods.
+
+```tsx
+import { Rain, useRainfall } from "react-rainfall";
+
+function StatefulStorm() {
+  const rain = useRainfall(0.8);
+
+  return (
+    <>
+      <Rain ref={rain.ref} {...rain.props} profile="heavy-rain" />
+      <button onClick={rain.playing ? rain.stop : rain.start}>
+        {rain.playing ? "Stop" : "Start"}
+      </button>
+      <label>
+        Intensity
+        <input
+          type="range"
+          min={0}
+          max={1}
+          step={0.01}
+          value={rain.intensity}
+          onChange={(event) => rain.setIntensity(Number(event.target.value))}
+        />
+      </label>
+      <button onClick={rain.triggerLightning}>Flash lightning</button>
+    </>
+  );
+}
+```
