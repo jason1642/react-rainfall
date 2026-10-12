@@ -25,6 +25,8 @@ function WeatherPanel() {
 
 `Rain` fills its parent, so give the parent `position: relative` and a height. The rain layer is decorative and does not intercept pointer events.
 
+![](https://github.com/jason1642/react-rainfall/blob/main/thunderRain.gif)
+
 ## API
 
 All props are optional. A selected `profile` supplies defaults for properties it defines; an explicitly provided prop takes precedence.
