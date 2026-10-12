@@ -4,7 +4,7 @@ import type { RainHandle } from "../components/Rain/rainTypes";
 
 export interface RainfallController {
   ref: RefCallback<RainHandle>;
-  props: { playing: boolean; intensity: number };
+  props: { playing: boolean; intensity: number; visible: boolean };
   playing: boolean;
   intensity: number;
   visible: boolean;
@@ -61,7 +61,7 @@ export function useRainfall(initialIntensity = 1): RainfallController {
 
   return {
     ref,
-    props: { playing, intensity },
+    props: { playing, intensity, visible },
     playing,
     visible,
     show,

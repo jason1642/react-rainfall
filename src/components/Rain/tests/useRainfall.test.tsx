@@ -72,12 +72,26 @@ describe("useRainfall", () => {
     expect(handle.stop).toHaveBeenCalled();
     expect(handle.setIntensity).toHaveBeenCalledWith(0.5);
     expect(handle.triggerLightning).toHaveBeenCalled();
-    result.current.ref(null);
-    act(() => result.current.stop());
-    expect(handle.stop).not.toHaveBeenCalled();
   });
 });
+it("stops forwarding after the ref is detached", () => {
+  const handle: RainHandle = {
+    start: jest.fn(),
+    stop: jest.fn(),
+    show: jest.fn(),
+    hide: jest.fn(),
+    setIntensity: jest.fn(),
+    triggerLightning: jest.fn(),
+  };
+  const { result } = renderHook(() => useRainfall());
 
+  result.current.ref(handle);
+  result.current.ref(null);
+  act(() => result.current.stop());
+
+  expect(handle.stop).not.toHaveBeenCalled();
+  expect(result.current.playing).toBe(false); // hook state still updates
+});
 describe("useRainfall with <Rain />", () => {
   beforeAll(() => {
     Object.defineProperty(HTMLElement.prototype, "clientWidth", {
@@ -119,8 +133,8 @@ describe("useRainfall with <Rain />", () => {
   it("hide removes the droplets and show restores them", () => {
     const { getByText, getByTestId } = render(<Harness />);
     const scene = getByTestId("scene");
-    const count = () => scene.getElementsByClassName("droplet").length;
-
+    const count = () => scene.getElementsByClassName("rain-drop").length;
+    console.log(scene.innerHTML);
     expect(count()).toBe(20);
     fireEvent.click(getByText("hide"));
     expect(count()).toBe(0);
