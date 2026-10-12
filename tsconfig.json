@@ -12,8 +12,9 @@
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
-    "noEmit": true
+    "noEmit": true,
+    
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.d.ts", ".storybook/**/*.ts"],
-  "exclude": ["node_modules", "dist", "**/*.stories.tsx", "**/*.test.tsx", "**/tests"]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.d.ts", ".storybook/**/*.ts", "src", "jest.setup.ts"],
+  "exclude": ["node_modules", "dist", "**/*.stories.tsx"]
 }
