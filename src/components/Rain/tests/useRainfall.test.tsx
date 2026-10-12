@@ -134,7 +134,6 @@ describe("useRainfall with <Rain />", () => {
     const { getByText, getByTestId } = render(<Harness />);
     const scene = getByTestId("scene");
     const count = () => scene.getElementsByClassName("rain-drop").length;
-    console.log(scene.innerHTML);
     expect(count()).toBe(20);
     fireEvent.click(getByText("hide"));
     expect(count()).toBe(0);
