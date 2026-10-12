@@ -72,7 +72,7 @@ All props are optional. A selected `profile` supplies defaults for properties it
 | `intensity` | `number` | `1` | Scale active particle count from `0` to `1`. Can also be changed through the ref or hook. |
 | `playing` | `boolean` | `true` | Start or pause the animation. Can also be controlled through the ref or hook. |
 | `pauseWhenHidden` | `boolean` | `false` | Pause animation while the browser tab is hidden. |
-| `respectReducedMotion` | `boolean` | `true` | Respect the system `prefers-reduced-motion` setting. Set to `false` to force animation. |
+| `respectReducedMotion` | `boolean` | `false` | Respect the system `prefers-reduced-motion` setting. Set to `false` to force animation. |
 
 ## Storm example
 
