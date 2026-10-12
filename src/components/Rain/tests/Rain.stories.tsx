@@ -439,6 +439,12 @@ export const HeavyRain: Story = {
   parameters: { scene: "heavy" },
 };
 
+export const LowQualityHeavyRain: Story = {
+  name: "Heavy rain on low quality",
+  args: { profile: "heavy-rain", quality: "low", maxDrops: 180 },
+  parameters: { scene: "heavy" },
+};
+
 export const HeavyRainWithSplashImpact: Story = {
   name: "Heavy rain with splash impact",
   args: { profile: "heavy-rain", impactStyle: "splash" },

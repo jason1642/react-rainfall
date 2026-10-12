@@ -1,104 +1,235 @@
 .rain-drop-impact {
   position: absolute;
   left: 50%;
-  bottom: 0;
-  width: 0;
-  height: 0;
-  color: var(--drop-impact-color, currentColor);
+  bottom: -2px;
   pointer-events: none;
+  color: var(--drop-impact-color, currentColor);
+  translate: -50% 50%;
 }
 
-.rain-impact-particle {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 3px;
-  height: 3px;
+/* The center and two radial-gradient particle groups replace five animated spans. */
+.rain-drop-impact--splash,
+.rain-drop-impact--spray {
+  width: var(--impact-size, 2.5px);
+  height: var(--impact-size, 2.5px);
   border-radius: 50%;
   background: currentColor;
   box-shadow: 0 0 4px currentColor;
   opacity: 0;
-  animation: rain-impact-splash 1s linear infinite;
-  will-change: transform, opacity;
+  animation: rain-impact-core var(--impact-duration, 1s) linear
+    var(--impact-delay, 0s) infinite;
 }
 
-@keyframes rain-impact-splash {
-  0%, 76% {
-    opacity: 0;
-    transform: translate3d(0, 0, 0) scale(0.2);
-  }
-
-  81% {
-    opacity: 0.9;
-    transform: translate3d(var(--splash-x-start), -4px, 0) scale(0.8);
-  }
-
-  91% {
-    opacity: 0.75;
-    transform: translate3d(var(--splash-x-end), var(--splash-y), 0) scale(1);
-  }
-
-  100% {
-    opacity: 0;
-    transform: translate3d(var(--splash-x-out), var(--splash-y), 0) scale(0.8);
-  }
-}
-
-.rain-drop-impact--spray .rain-impact-particle {
-  animation-name: rain-impact-spray;
-}
-
-@keyframes rain-impact-spray {
-  0%, 76% {
-    opacity: 0;
-    transform: translate3d(0, 0, 0) scale(0.2);
-  }
-
-  81% {
-    opacity: 0.95;
-    transform: translate3d(var(--splash-x-start), -5px, 0) scale(0.9);
-  }
-
-  90% {
-    opacity: 0.9;
-    transform: translate3d(var(--splash-x-end), var(--splash-y), 0) scale(1);
-  }
-
-  100% {
-    opacity: 0;
-    transform: translate3d(var(--splash-x-out), var(--splash-y), 0) scale(0.65);
-  }
-}
-
-.rain-drop-impact--ripple {
-  display: block;
-}
-
-.rain-impact-ripple {
+.rain-drop-impact--splash::before,
+.rain-drop-impact--splash::after,
+.rain-drop-impact--spray::before,
+.rain-drop-impact--spray::after {
   position: absolute;
-  left: 50%;
-  bottom: 0;
-  border: 1px solid currentColor;
-  border-radius: 50%;
-  transform: translate(-50%, 50%) scale(0.12, 0.2);
+  bottom: -1px;
+  width: 25px;
+  height: 20px;
+  content: "";
   opacity: 0;
-  animation: rain-impact-ripple 1s ease-out infinite;
-  will-change: transform, opacity;
+  background-repeat: no-repeat;
+  filter: drop-shadow(0 0 2px currentColor);
+  animation-duration: var(--impact-duration, 1s);
+  animation-delay: var(--impact-delay, 0s);
+  animation-timing-function: ease-out;
+  animation-iteration-count: infinite;
 }
 
-.rain-impact-ripple:nth-child(2) {
-  animation-name: rain-impact-ripple-late;
+.rain-drop-impact--splash::before,
+.rain-drop-impact--spray::before {
+  left: -21px;
+  background-image:
+    radial-gradient(circle, currentColor 0 1.1px, transparent 1.4px),
+    radial-gradient(circle, currentColor 0 0.9px, transparent 1.2px),
+    radial-gradient(circle, currentColor 0 1.2px, transparent 1.5px),
+    radial-gradient(circle, currentColor 0 0.8px, transparent 1.1px);
+  background-position:
+    3px 15px,
+    10px 7px,
+    17px 12px,
+    23px 4px;
+}
+
+.rain-drop-impact--splash::after,
+.rain-drop-impact--spray::after {
+  right: -21px;
+  background-image:
+    radial-gradient(circle, currentColor 0 0.9px, transparent 1.2px),
+    radial-gradient(circle, currentColor 0 1.3px, transparent 1.6px),
+    radial-gradient(circle, currentColor 0 0.8px, transparent 1.1px),
+    radial-gradient(circle, currentColor 0 1px, transparent 1.3px);
+  background-position:
+    2px 6px,
+    8px 14px,
+    16px 4px,
+    22px 11px;
+}
+
+.rain-drop-impact--splash::before {
+  animation-name: rain-impact-splash-left;
+}
+.rain-drop-impact--splash::after {
+  animation-name: rain-impact-splash-right;
+}
+.rain-drop-impact--spray::before {
+  animation-name: rain-impact-spray-left;
+}
+.rain-drop-impact--spray::after {
+  animation-name: rain-impact-spray-right;
+}
+
+@keyframes rain-impact-core {
+  0%,
+  76% {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+  82% {
+    opacity: var(--impact-opacity, 1);
+    transform: scale(0.9);
+  }
+  91% {
+    opacity: var(--impact-opacity, 1);
+    transform: scale(1.35);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.65);
+  }
+}
+
+@keyframes rain-impact-splash-left {
+  0%,
+  76% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0.3);
+  }
+  82% {
+    opacity: var(--impact-opacity, 1);
+  }
+  92% {
+    opacity: var(--impact-opacity, 1);
+    transform: translate3d(-4px, -10px, 0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(-7px, -13px, 0) scale(0.78);
+  }
+}
+
+@keyframes rain-impact-splash-right {
+  0%,
+  76% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0.3);
+  }
+  83% {
+    opacity: var(--impact-opacity, 1);
+  }
+  93% {
+    opacity: var(--impact-opacity, 1);
+    transform: translate3d(4px, -9px, 0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(7px, -12px, 0) scale(0.78);
+  }
+}
+
+@keyframes rain-impact-spray-left {
+  0%,
+  72% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0.2);
+  }
+  79% {
+    opacity: var(--impact-opacity, 1);
+  }
+  90% {
+    opacity: var(--impact-opacity, 1);
+    transform: translate3d(-8px, -17px, 0) scale(1.1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(-13px, -20px, 0) scale(0.72);
+  }
+}
+
+@keyframes rain-impact-spray-right {
+  0%,
+  72% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0.2);
+  }
+  80% {
+    opacity: var(--impact-opacity, 1);
+  }
+  91% {
+    opacity: var(--impact-opacity, 1);
+    transform: translate3d(8px, -16px, 0) scale(1.08);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(13px, -19px, 0) scale(0.7);
+  }
+}
+
+/* One real element and its ::after pseudo-element draw the two water rings. */
+.rain-drop-impact--ripple {
+  width: 25px;
+  height: 9px;
+  border: var(--impact-stroke, 1px) solid currentColor;
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(0.12, 0.2);
+  transform-origin: center;
+  translate: -50% 50%;
+  animation: rain-impact-ripple var(--impact-duration, 1s) ease-out
+    var(--impact-delay, 0s) infinite;
+}
+
+.rain-drop-impact--ripple::after {
+  position: absolute;
+  inset: -3px;
+  content: "";
+  border: var(--impact-secondary-stroke, 1px) solid currentColor;
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(0.12, 0.2);
+  animation: rain-impact-ripple-late var(--impact-duration, 1s) ease-out
+    var(--impact-delay, 0s) infinite;
 }
 
 @keyframes rain-impact-ripple {
-  0%, 77% { opacity: 0; transform: translate(-50%, 50%) scale(0.12, 0.2); }
-  81% { opacity: 0.8; }
-  98% { opacity: 0; transform: translate(-50%, 50%) scale(1.8, 1.35); }
-  100% { opacity: 0; }
+  0%,
+  77% {
+    opacity: 0;
+    transform: scale(0.12, 0.2);
+  }
+  81% {
+    opacity: var(--impact-opacity, 1);
+  }
+  98%,
+  100% {
+    opacity: 0;
+    transform: scale(1.8, 1.35);
+  }
 }
 
 @keyframes rain-impact-ripple-late {
-  0%, 82% { opacity: 0; transform: translate(-50%, 50%) scale(0.12, 0.2); }
-  86% { opacity: 0.55; }
-  100% { opacity: 0; transform: translate(-50%, 50%) scale(1.8, 1.35); }
+  0%,
+  82% {
+    opacity: 0;
+    transform: scale(0.12, 0.2);
+  }
+  86% {
+    opacity: var(--impact-opacity, 1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.8, 1.35);
+  }
 }

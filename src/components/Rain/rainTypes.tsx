@@ -29,6 +29,7 @@ export type lightningColor = string | undefined;
 
 export type rainDropStyle = "streak" | "pixel" | "soft" | "orb" | "snowflake" | "hailstone" | "cartoon";
 export type impactStyle = "splash" | "spray" | "ripple";
+export type quality = "low" | "medium" | "high";
 export type duration = "slow" | "normal" | "fast" | undefined;
 export type rainProfile =
   | "light-drizzle"
@@ -55,6 +56,8 @@ export interface dropletOptions {
   impactStyle?: impactStyle;
   impactThickness?: number;
   impactOpacity?: number;
+  /** Fraction of drops that create impacts. Stable per drop index; defaults vary by profile. */
+  impactDensity?: number;
   rainEffect?: rainEffect;
   dropletOpacity?: dropletOpacity;
   duration?: duration;
@@ -86,6 +89,10 @@ export interface dropletOptions {
   respectReducedMotion?: boolean;
   playing?: boolean;
   intensity?: number;
+  /** Scale total drop count for device capabilities. Defaults to `high`. */
+  quality?: quality;
+  /** Hard maximum number of drops after angled-rain coverage is applied. Defaults to 600. */
+  maxDrops?: number;
 }
 
 export interface RainHandle {

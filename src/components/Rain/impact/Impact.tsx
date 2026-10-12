@@ -8,56 +8,45 @@ interface DropImpactProps {
   style?: CSSProperties;
 }
 
-type SplashParticleStyle = CSSProperties & {
-  "--splash-x-start": string;
-  "--splash-x-end": string;
-  "--splash-x-out": string;
-  "--splash-y": string;
+type ImpactStyle = CSSProperties & {
+  "--impact-duration": string;
+  "--impact-delay": string;
+  "--impact-opacity": string;
+  "--impact-size": string;
+  "--impact-stroke": string;
+  "--impact-secondary-stroke": string;
 };
 
-function DropImpact({ variant = "splash", thickness = 2.5, style }: DropImpactProps) {
-  const animationDuration = style?.animationDuration ?? "1s";
-  const animationDelay = style?.animationDelay ?? "0s";
-  if (variant === "ripple") {
-    return (
-      <div className="rain-drop-impact rain-drop-impact--ripple" style={style}>
-        {[0, 1].map((ring) => (
-          <span
-            className="rain-impact-ripple"
-            key={ring}
-            style={{
-              width: `${Math.max(12, 20 * (1 + ring * 0.45))}px`,
-              height: `${Math.max(4, 6 * (1 + ring * 0.35))}px`,
-              borderWidth: `${Math.max(0.5, thickness * 0.55)}px`,
-              animationDuration,
-              animationDelay,
-            }}
-          />
-        ))}
-      </div>
-    );
-  }
-  const directions = variant === "spray" ? [-1, 0, 1] : [-2, -1, 0, 1, 2];
+function DropImpact({
+  variant = "splash",
+  thickness = 2.5,
+  style,
+}: DropImpactProps) {
+  const safeThickness = Number.isFinite(thickness)
+    ? Math.max(0.5, Math.min(8, thickness))
+    : 2.5;
+  const opacity = Number(style?.opacity ?? 1);
+  const impactStyle: ImpactStyle = {
+    ...style,
+    opacity: undefined,
+    transform: undefined,
+    transformOrigin: undefined,
+    animationDuration: undefined,
+    animationDelay: undefined,
+    "--impact-duration": style?.animationDuration ?? "1s",
+    "--impact-delay": style?.animationDelay ?? "0s",
+    "--impact-opacity": `${Number.isFinite(opacity) ? Math.max(0, Math.min(1, opacity)) : 1}`,
+    "--impact-size": `${safeThickness}px`,
+    "--impact-stroke": `${Math.max(0.5, safeThickness * 0.55)}px`,
+    "--impact-secondary-stroke": `${Math.max(0.5, safeThickness * 0.4)}px`,
+  };
 
   return (
-    <div className={`rain-drop-impact rain-drop-impact--${variant}`} style={style}>
-      {directions.map((direction) => (
-        <span
-          className="rain-impact-particle"
-          key={direction}
-          style={{
-            width: `${thickness}px`,
-            height: `${thickness}px`,
-            animationDuration,
-            animationDelay,
-            "--splash-x-start": `${direction * 3}px`,
-            "--splash-x-end": `${direction * 9 + (variant === "spray" ? (Math.random() - 0.5) * 8 : 0)}px`,
-            "--splash-x-out": `${(direction * 9 + (variant === "spray" ? (Math.random() - 0.5) * 8 : 0)) * (variant === "spray" ? 1.2 : 1.25)}px`,
-            "--splash-y": `${variant === "spray" ? -16 - Math.random() * 13 : -12 - (1 - Math.abs(direction) / 2) * 6}px`,
-          } as SplashParticleStyle}
-        />
-      ))}
-    </div>
+    <div
+      className={`rain-drop-impact rain-drop-impact--${variant}`}
+      style={impactStyle}
+      aria-hidden="true"
+    />
   );
 }
 

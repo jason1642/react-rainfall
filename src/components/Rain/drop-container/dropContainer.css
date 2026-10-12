@@ -12,7 +12,6 @@
   position: absolute;
   inset: 0;
   transform-origin: center;
-  will-change: rotate;
 }
 
 @keyframes rain-drop-fall {

@@ -35,7 +35,6 @@
   opacity: 0.23;
   animation: rain-glass-run 6s cubic-bezier(0.38, 0.04, 0.54, 0.98) infinite;
   transform-origin: center top;
-  will-change: transform, opacity;
 }
 
 .rain-glass-run::before {

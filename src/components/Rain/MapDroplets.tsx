@@ -18,6 +18,7 @@ const mapDroplets = (
     impactStyle,
     impactThickness,
     impactOpacity,
+    impactDensity,
     size,
     profile,
     dropletOpacity,
@@ -32,6 +33,8 @@ const mapDroplets = (
     windVariation,
     gustFrequency,
     intensity = 1,
+    quality = "high",
+    maxDrops = 600,
   } = options;
 
   const { maxWidth, maxHeight } = rainRef;
@@ -59,6 +62,10 @@ const mapDroplets = (
     0,
     Math.min(1, impactOpacity ?? profileDefaults.impactOpacity ?? 0.65),
   );
+  const requestedImpactDensity = impactDensity ?? profileDefaults.impactDensity ?? 0.25;
+  const effectiveImpactDensity = Number.isFinite(requestedImpactDensity)
+    ? Math.max(0, Math.min(1, requestedImpactDensity))
+    : 0.25;
   const effectiveOpacity =
     dropletOpacity ?? profileDefaults.dropletOpacity ?? 0.5;
   const effectiveAngleValue = angle ?? profileDefaults.angle ?? 0;
@@ -74,13 +81,20 @@ const mapDroplets = (
   const safeIntensity = Number.isFinite(intensity)
     ? Math.max(0, Math.min(1, intensity))
     : 1;
+  const qualityScale = quality === "low" ? 0.4 : quality === "medium" ? 0.7 : 1;
+  const safeMaxDrops = Number.isFinite(maxDrops)
+    ? Math.max(0, Math.min(5000, Math.floor(maxDrops ?? 600)))
+    : 600;
   const angleRadians = (effectiveAngle * Math.PI) / 180;
   const horizontalDriftPerPixel = Math.tan(angleRadians);
   const requestedDrops =
     effectiveNumDrops === undefined
       ? Math.floor(maxWidth / profileDefaults.dropsPerWidth)
       : Math.floor(effectiveNumDrops);
-  const requestedDropsCount = Math.max(0, Math.floor(requestedDrops * safeIntensity));
+  const requestedDropsCount = Math.max(
+    0,
+    Math.floor(requestedDrops * safeIntensity * qualityScale),
+  );
   const totalFallDistance = maxHeight;
   const totalHorizontalDrift = horizontalDriftPerPixel * totalFallDistance;
   const rotatedDropHalfWidth =
@@ -94,7 +108,7 @@ const mapDroplets = (
     Math.max(maxWidth, maxWidth + totalHorizontalDrift) + rotatedDropHalfWidth;
   const coverageWidth = Math.max(0, coverageEnd - coverageStart);
   const coverageMultiplier = maxWidth > 0 ? coverageWidth / maxWidth : 0;
-  const numDropsCount = rainFromClouds
+  const calculatedDropCount = rainFromClouds
     ? numDrops === undefined
       ? Math.min(
           requestedDropsCount,
@@ -102,6 +116,7 @@ const mapDroplets = (
         )
       : requestedDropsCount
     : Math.ceil(requestedDropsCount * coverageMultiplier);
+  const numDropsCount = Math.min(safeMaxDrops, calculatedDropCount);
   const columnWidth = numDropsCount > 0 ? coverageWidth / numDropsCount : 0;
 
   const drops: ReactElement[] = [];
@@ -117,6 +132,9 @@ const mapDroplets = (
   const baseDropHeight = dropDimensions.height[effectiveSize];
 
   for (let i = 0; i < numDropsCount; i++) {
+    const stableImpactSample = (((i + 1) * 2654435761) >>> 0) / 4294967296;
+    const shouldShowImpact =
+      effectiveShowImpact && stableImpactSample < effectiveImpactDensity;
     const depthPosition = effectiveDepth ? Math.random() : 1;
     const depthScale = effectiveDepth ? 0.55 + depthPosition * 0.9 : 1;
     const depthOpacity = effectiveDepth ? 0.35 + depthPosition * 0.65 : 1;
@@ -232,7 +250,7 @@ const mapDroplets = (
           />
         </div>
 
-        {effectiveShowImpact && (
+        {shouldShowImpact && (
           <DropImpact
             variant={effectiveImpactStyle}
             thickness={effectiveImpactThickness * depthScale}
@@ -241,8 +259,6 @@ const mapDroplets = (
               ...animationStyle,
               color: dropColor,
               opacity: depthOpacity * effectiveImpactOpacity,
-              transform: `translateY(-2px) scale(${depthScale})`,
-              transformOrigin: "center bottom",
               filter: depthBlur ? `blur(${depthBlur}px)` : undefined,
             }}
           />

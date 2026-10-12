@@ -27,13 +27,14 @@
  
  Name | Is Required? | type | Default | options | Description 
 --- | -- | --- | --- | --- | ----
-numDrops | false | number | parentWidth / 25 | number | Target number of visible drops. Angled rain adds offscreen edge-buffer drops to keep coverage full.
+numDrops | false | number | parentWidth / 25 (profile dependent) | number | Target number of drops before quality scaling and the `maxDrops` cap. Angled rain adds offscreen edge-buffer drops to keep coverage full.
 dropletColor | false | color in rbg() format | white | 'rgb(200, 200, 200) | Color of droplets, which will use a linear gradient effect. Must be in rgb format.
 size | false | string | 'default' | 'short' (10px) <br /> 'default' (19px) <br /> 'long' (34px) for streaks | Change the visible length of rain streaks.
 showImpact | false | boolean | true| boolean | Show the impact animation when the rain drop reachs the bottom.
 impactStyle | false | string | 'splash' (profile default may vary) | 'splash', 'spray', 'ripple' | Choose upward splash particles, a spray burst, or expanding puddle rings.
 impactThickness | false | number | 2.5 | 0.5 - 8 pixels | Set the diameter of the impact particles.
 impactOpacity | false | number | 0.65 | 0 - 1 | Set the overall impact visibility.
+impactDensity | false | number | Profile default (0.18–0.3) | 0 - 1 | Set the fraction of drops that produce impacts. Selection is stable by drop index; `0` disables impacts and `1` adds one to every eligible drop.
 angle | false | number | 0 | -75 to 75 | Tilt the rain from vertical in degrees. Positive values drift right; negative values drift left. Values outside this range are clamped.
 profile | false | string | undefined | 'light-drizzle', 'steady-rain', 'passing-shower', 'heavy-rain', 'misty-rain', 'snow', 'hail', 'cartoon', 'rainbow' | Select a precipitation preset. Explicit props such as `numDrops` and `size` override preset defaults.
 dropletOpacity | false | number | .5 | 0 - 1 | Change the opacity of the droplet itself. Use a decimal number between 0 and 1.
@@ -65,6 +66,8 @@ pauseWhenHidden | false | boolean | false | true / false | Set true to pause CSS
 respectReducedMotion | false | boolean | true | true / false | Honor the operating system's `prefers-reduced-motion` setting. Set false to force animations when the system preference requests reduced motion.
 playing | false | boolean | true | true / false | Start or pause the rain layer. Also controlled by the imperative ref and `useRainfall()` hook.
 intensity | false | number | 1 | 0 - 1 | Scale the active drop count from none to the selected profile's full density.
+quality | false | string | 'high' | 'low', 'medium', 'high' | Scale drop count to suit device capabilities: low uses 40%, medium 70%, and high 100% of the requested count.
+maxDrops | false | number | 600 | 0 - 5000 | Hard cap on the final drop count, including extra drops added to cover angled rain. Lower this or use a lower `quality` on slower devices.
 
 
 
