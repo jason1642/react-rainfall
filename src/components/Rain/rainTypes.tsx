@@ -27,7 +27,15 @@ export type lightningFrequency = number | undefined;
 export type lightningFlashDuration = number | undefined;
 export type lightningColor = string | undefined;
 
-export type rainDropStyle = "streak" | "pixel" | "soft" | "orb" | "snowflake" | "hailstone" | "cartoon" | "glow";
+export type rainDropStyle =
+  | "streak"
+  | "pixel"
+  | "soft"
+  | "orb"
+  | "snowflake"
+  | "hailstone"
+  | "cartoon"
+  | "glow";
 export type impactStyle = "splash" | "spray" | "ripple";
 export type quality = "low" | "medium" | "high";
 export type renderer = "dom" | "canvas";
@@ -50,6 +58,7 @@ export type dropDistance = number | undefined;
 export interface dropletOptions {
   numDrops?: numDrops;
   profile?: rainProfile;
+  visible?: boolean;
   angle?: angle;
   dropletColor?: dropletColor;
   size?: size;
@@ -101,6 +110,8 @@ export interface dropletOptions {
 export interface RainHandle {
   start: () => void;
   stop: () => void;
+  show: () => void;
+  hide: () => void;
   setIntensity: (intensity: number) => void;
   triggerLightning: () => void;
 }

@@ -45,6 +45,7 @@ const Rain = React.forwardRef<RainHandle, dropletOptions>(
       lightningFlashDuration,
       lightningColor,
       playing,
+      visible,
       intensity: intensityProp,
       quality,
       maxDrops,
@@ -65,6 +66,7 @@ const Rain = React.forwardRef<RainHandle, dropletOptions>(
     ref,
   ) => {
     const [isRunning, setIsRunning] = React.useState(playing ?? true);
+    const [isVisible, setIsVisible] = React.useState(visible ?? true);
     const [intensity, setIntensityState] = React.useState(
       clampIntensity(intensityProp ?? 1),
     );
@@ -73,6 +75,15 @@ const Rain = React.forwardRef<RainHandle, dropletOptions>(
     React.useEffect(() => {
       if (playing !== undefined) setIsRunning(playing);
     }, [playing]);
+
+    React.useEffect(() => {
+      if (visible !== undefined) setIsVisible(visible);
+    }, [visible]);
+
+    // a flash requested before hiding shouldn't replay when the rain comes back
+    React.useEffect(() => {
+      if (!isVisible) setLightningTrigger(0);
+    }, [isVisible]);
 
     React.useEffect(() => {
       if (intensityProp !== undefined) {
@@ -85,10 +96,14 @@ const Rain = React.forwardRef<RainHandle, dropletOptions>(
       () => ({
         start: () => setIsRunning(true),
         stop: () => setIsRunning(false),
+        show: () => setIsVisible(true),
+        hide: () => setIsVisible(false),
         setIntensity: (value) => setIntensityState(clampIntensity(value)),
-        triggerLightning: () => setLightningTrigger((current) => current + 1),
+        triggerLightning: () => {
+          if (isVisible) setLightningTrigger((current) => current + 1);
+        },
       }),
-      [],
+      [isVisible],
     );
 
     const stormOptions = getResolvedStormOptions(profile, {
@@ -185,10 +200,7 @@ const Rain = React.forwardRef<RainHandle, dropletOptions>(
     React.useEffect(() => {
       const element = rainRef.current;
       if (!element) return;
-      if (renderer === "canvas") {
-        setDropletArray([]);
-        return;
-      }
+
       if (!pauseWhenHidden) {
         element.classList.remove("rain-container--paused");
         return;
@@ -219,6 +231,12 @@ const Rain = React.forwardRef<RainHandle, dropletOptions>(
     React.useEffect(() => {
       const element = rainRef.current;
       if (!element) return;
+
+      // canvas draws its own particles, and a hidden scene has none
+      if (renderer === "canvas" || !isVisible) {
+        setDropletArray([]);
+        return;
+      }
 
       const updateDroplets = () => {
         const maxWidth = element.clientWidth;
@@ -294,6 +312,7 @@ const Rain = React.forwardRef<RainHandle, dropletOptions>(
       quality,
       maxDrops,
       renderer,
+      isVisible,
       effectiveCloudCount,
       stormOptions.cloudSize,
     ]);
@@ -310,46 +329,50 @@ const Rain = React.forwardRef<RainHandle, dropletOptions>(
           .filter(Boolean)
           .join(" ")}
       >
-        {(stormOptions.showClouds || rainFromClouds) && (
-          <CloudLayer
-            count={effectiveCloudCount}
-            size={stormOptions.cloudSize}
-            speed={stormOptions.cloudSpeed}
-            opacity={stormOptions.cloudOpacity}
-            drift={effectiveCloudDrift}
-            blur={stormOptions.cloudBlur}
-            color={stormOptions.cloudColor}
-          />
-        )}
-        {renderer === "canvas" ? (
-          <CanvasRainLayer
-            options={canvasOptions}
-            running={isRunning}
-            pauseWhenHidden={pauseWhenHidden}
-            respectReducedMotion={respectReducedMotion}
-          />
-        ) : (
-          dropletArray
-        )}
-        {surface === "glass" && (
-          <GlassLayer fog={glassFog} refraction={glassRefraction} />
-        )}
-        {effectiveShowWind && (
-          <WindLayer
-            gustFrequency={safeGustFrequency}
-            windVariation={safeWindVariation}
-            strength={windOptions.windStrength}
-          />
-        )}
-        {((stormOptions.showLightning && isRunning) ||
-          lightningTrigger > 0) && (
-          <LightningLayer
-            frequency={stormOptions.lightningFrequency}
-            flashDuration={stormOptions.lightningFlashDuration}
-            color={stormOptions.lightningColor}
-            auto={stormOptions.showLightning && isRunning}
-            triggerId={lightningTrigger}
-          />
+        {isVisible && (
+          <>
+            {(stormOptions.showClouds || rainFromClouds) && (
+              <CloudLayer
+                count={effectiveCloudCount}
+                size={stormOptions.cloudSize}
+                speed={stormOptions.cloudSpeed}
+                opacity={stormOptions.cloudOpacity}
+                drift={effectiveCloudDrift}
+                blur={stormOptions.cloudBlur}
+                color={stormOptions.cloudColor}
+              />
+            )}
+            {renderer === "canvas" ? (
+              <CanvasRainLayer
+                options={canvasOptions}
+                running={isRunning}
+                pauseWhenHidden={pauseWhenHidden}
+                respectReducedMotion={respectReducedMotion}
+              />
+            ) : (
+              dropletArray
+            )}
+            {surface === "glass" && (
+              <GlassLayer fog={glassFog} refraction={glassRefraction} />
+            )}
+            {effectiveShowWind && (
+              <WindLayer
+                gustFrequency={safeGustFrequency}
+                windVariation={safeWindVariation}
+                strength={windOptions.windStrength}
+              />
+            )}
+            {((stormOptions.showLightning && isRunning) ||
+              lightningTrigger > 0) && (
+              <LightningLayer
+                frequency={stormOptions.lightningFrequency}
+                flashDuration={stormOptions.lightningFlashDuration}
+                color={stormOptions.lightningColor}
+                auto={stormOptions.showLightning && isRunning}
+                triggerId={lightningTrigger}
+              />
+            )}
+          </>
         )}
       </div>
     );

@@ -1,14 +1,17 @@
 import { useCallback, useRef, useState } from "react";
-import type { RefObject } from "react";
+import type { RefCallback } from "react";
 import type { RainHandle } from "../components/Rain/rainTypes";
 
 export interface RainfallController {
-  ref: RefObject<RainHandle | null>;
+  ref: RefCallback<RainHandle>;
   props: { playing: boolean; intensity: number };
   playing: boolean;
   intensity: number;
+  visible: boolean;
   start: () => void;
   stop: () => void;
+  show: () => void;
+  hide: () => void;
   setIntensity: (intensity: number) => void;
   triggerLightning: () => void;
 }
@@ -18,7 +21,11 @@ const clampIntensity = (value: number) =>
 
 /** State-backed controls for the Rain component. Pass `ref` and `props` to `<Rain />`. */
 export function useRainfall(initialIntensity = 1): RainfallController {
-  const ref = useRef<RainHandle | null>(null);
+  const handleRef = useRef<RainHandle | null>(null);
+  const [visible, setVisible] = useState(true);
+  const ref = useCallback((handle: RainHandle | null) => {
+    handleRef.current = handle;
+  }, []);
   const [playing, setPlaying] = useState(true);
   const [intensity, setIntensityState] = useState(() =>
     clampIntensity(initialIntensity),
@@ -26,28 +33,39 @@ export function useRainfall(initialIntensity = 1): RainfallController {
 
   const start = useCallback(() => {
     setPlaying(true);
-    ref.current?.start();
+    handleRef.current?.start();
   }, []);
 
   const stop = useCallback(() => {
     setPlaying(false);
-    ref.current?.stop();
+    handleRef.current?.stop();
+  }, []);
+  const show = useCallback(() => {
+    setVisible(true);
+    handleRef.current?.show();
   }, []);
 
+  const hide = useCallback(() => {
+    setVisible(false);
+    handleRef.current?.hide();
+  }, []);
   const setIntensity = useCallback((value: number) => {
     const nextIntensity = clampIntensity(value);
     setIntensityState(nextIntensity);
-    ref.current?.setIntensity(nextIntensity);
+    handleRef.current?.setIntensity(nextIntensity);
   }, []);
 
   const triggerLightning = useCallback(() => {
-    ref.current?.triggerLightning();
+    handleRef.current?.triggerLightning();
   }, []);
 
   return {
     ref,
     props: { playing, intensity },
     playing,
+    visible,
+    show,
+    hide,
     intensity,
     start,
     stop,
