@@ -33,9 +33,3 @@
   51%, 74% { translate: var(--wind-push) 0; }
   100% { translate: 0 0; }
 }
-
-@keyframes rain-drop-wind-angle {
-  0%, 28% { rotate: 0deg; }
-  51%, 74% { rotate: var(--wind-angle); }
-  100% { rotate: 0deg; }
-}

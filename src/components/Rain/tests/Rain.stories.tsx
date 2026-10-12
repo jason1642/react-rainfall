@@ -445,6 +445,12 @@ export const LowQualityHeavyRain: Story = {
   parameters: { scene: "heavy" },
 };
 
+export const CanvasHeavyRain: Story = {
+  name: "Canvas renderer · heavy rain",
+  args: { profile: "heavy-rain", renderer: "canvas", maxDrops: 600 },
+  parameters: { scene: "heavy" },
+};
+
 export const HeavyRainWithSplashImpact: Story = {
   name: "Heavy rain with splash impact",
   args: { profile: "heavy-rain", impactStyle: "splash" },
@@ -480,6 +486,12 @@ export const PixelRain: Story = {
   name: "Pixel rain",
   args: { profile: "steady-rain", dropStyle: "pixel", angle: 18 },
   parameters: { scene: "pixel" },
+};
+
+export const GlowingDroplets: Story = {
+  name: "Soft glowing droplets",
+  args: { profile: "misty-rain", dropStyle: "glow" },
+  parameters: { scene: "mist" },
 };
 
 export const RainWithDepth: Story = {

@@ -24,15 +24,17 @@
   border-radius: 50% 48% 42% 44%;
   background: linear-gradient(
     90deg,
-    rgba(207, 230, 255, 0.1),
-    rgba(245, 250, 255, 0.38) 38%,
-    rgba(196, 222, 255, 0.16) 66%,
-    rgba(255, 255, 255, 0.34)
+    transparent,
+    rgba(200, 225, 255, 0.18) 28%,
+    rgba(238, 247, 255, 0.22) 48%,
+    rgba(176, 207, 245, 0.14) 72%,
+    transparent
   );
+  border-inline: 1px solid rgba(224, 240, 255, 0.12);
   box-shadow:
-    -1px 0 2px rgba(180, 213, 255, 0.14),
-    1px 0 4px rgba(220, 239, 255, 0.2);
-  opacity: 0.23;
+    -1px 0 2px rgba(180, 213, 255, 0.08),
+    1px 0 4px rgba(220, 239, 255, 0.1);
+  opacity: 0.2;
   animation: rain-glass-run 6s cubic-bezier(0.38, 0.04, 0.54, 0.98) infinite;
   transform-origin: center top;
 }
@@ -66,14 +68,13 @@
 .rain-glass-run::after {
   position: absolute;
   z-index: 2;
-  bottom: -1px;
-  left: calc(50% - 2px);
-  width: 2px;
-  height: 6px;
+  bottom: 4px;
+  left: calc(50% - 3px);
+  width: 3px;
+  height: 3px;
   content: "";
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.9);
-  filter: blur(0.25px);
+  background: rgba(255, 255, 255, 0.72);
 }
 
 .rain-glass-run:nth-child(3n) {

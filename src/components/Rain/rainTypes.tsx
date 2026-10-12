@@ -27,9 +27,10 @@ export type lightningFrequency = number | undefined;
 export type lightningFlashDuration = number | undefined;
 export type lightningColor = string | undefined;
 
-export type rainDropStyle = "streak" | "pixel" | "soft" | "orb" | "snowflake" | "hailstone" | "cartoon";
+export type rainDropStyle = "streak" | "pixel" | "soft" | "orb" | "snowflake" | "hailstone" | "cartoon" | "glow";
 export type impactStyle = "splash" | "spray" | "ripple";
 export type quality = "low" | "medium" | "high";
+export type renderer = "dom" | "canvas";
 export type duration = "slow" | "normal" | "fast" | undefined;
 export type rainProfile =
   | "light-drizzle"
@@ -93,6 +94,8 @@ export interface dropletOptions {
   quality?: quality;
   /** Hard maximum number of drops after angled-rain coverage is applied. Defaults to 600. */
   maxDrops?: number;
+  /** Select the particle renderer. DOM remains the default. */
+  renderer?: renderer;
 }
 
 export interface RainHandle {

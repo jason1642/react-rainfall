@@ -10,14 +10,37 @@
 
 .rain-drop--pixel {
   border-radius: 0;
-  clip-path: polygon(35% 0,65% 0,65% 12%,78% 12%,78% 25%,90% 25%,90% 50%,100% 50%,100% 75%,85% 75%,85% 88%,70% 88%,70% 100%,30% 100%,30% 88%,15% 88%,15% 75%,0 75%,0 50%,10% 50%,10% 25%,22% 25%,22% 12%,35% 12%);
+  clip-path: polygon(
+    37.5% 0, 62.5% 0, 62.5% 12.5%, 75% 12.5%, 75% 25%,
+    87.5% 25%, 87.5% 50%, 100% 50%, 100% 75%, 87.5% 75%,
+    87.5% 87.5%, 75% 87.5%, 75% 100%, 25% 100%, 25% 87.5%,
+    12.5% 87.5%, 12.5% 75%, 0 75%, 0 50%, 12.5% 50%,
+    12.5% 25%, 25% 25%, 25% 12.5%, 37.5% 12.5%
+  );
   image-rendering: pixelated;
-  box-shadow: 0 0 3px currentColor;
-  image-rendering: pixelated;
+  box-shadow: 0 0 2px currentColor;
+}
+
+.rain-drop--pixel::before {
+  position: absolute;
+  top: 27%;
+  left: 25%;
+  width: 12.5%;
+  height: 25%;
+  content: "";
+  background: rgba(255, 255, 255, 0.55);
 }
 
 .rain-drop--soft {
-  filter: blur(1px);
+  border-radius: 48% 52% 44% 46% / 18% 18% 70% 70%;
+  clip-path: ellipse(44% 50% at 50% 50%);
+  filter: blur(0.7px);
+}
+
+.rain-drop--glow {
+  border-radius: 999px;
+  filter: blur(0.8px);
+  box-shadow: 0 0 5px currentColor;
 }
 
 .rain-drop--orb {

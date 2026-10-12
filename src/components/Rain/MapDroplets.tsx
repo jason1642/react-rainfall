@@ -6,6 +6,7 @@ import dropletSizes from "./droplet-sizes";
 import type { dropletOptions } from "./rainTypes";
 import { getRainProfileDefaults } from "./rain-profiles";
 import selectDropletColor from "./select-droplet-color";
+import { dropStylePresets, getDropStyleDefaultSize } from "./drop-style-presets";
 
 const mapDroplets = (
   rainRef: { maxWidth: number; maxHeight: number },
@@ -50,7 +51,9 @@ const mapDroplets = (
   const safeGustFrequency = Number.isFinite(gustFrequency)
     ? Math.max(1, gustFrequency ?? 8)
     : 8;
-  const effectiveSize = size ?? profileDefaults.size ?? "default";
+  const effectiveDropStyle = dropStyle ?? profileDefaults.dropStyle ?? "streak";
+  const effectiveSize =
+    size ?? (dropStyle ? getDropStyleDefaultSize(dropStyle) : profileDefaults.size ?? "default");
   const effectiveShowImpact = showImpact ?? profileDefaults.showImpact ?? true;
   const effectiveImpactStyle =
     impactStyle ?? profileDefaults.impactStyle ?? "splash";
@@ -67,12 +70,21 @@ const mapDroplets = (
     ? Math.max(0, Math.min(1, requestedImpactDensity))
     : 0.25;
   const effectiveOpacity =
-    dropletOpacity ?? profileDefaults.dropletOpacity ?? 0.5;
-  const effectiveAngleValue = angle ?? profileDefaults.angle ?? 0;
-  const effectiveAngle = Number.isFinite(effectiveAngleValue)
-    ? Math.max(-75, Math.min(75, effectiveAngleValue))
+    dropletOpacity ??
+    (dropStyle
+      ? dropStylePresets[dropStyle].defaultOpacity
+      : profileDefaults.dropletOpacity) ??
+    0.5;
+  const requestedAngle = angle ?? profileDefaults.angle ?? 0;
+  const baseAngle = Number.isFinite(requestedAngle)
+    ? Math.max(-75, Math.min(75, requestedAngle))
     : 0;
-  const effectiveDropStyle = dropStyle ?? profileDefaults.dropStyle ?? "streak";
+  // Wind adds a stable lean in its prevailing direction. Gust animation adds
+  // only a small path drift, so the drops do not rapidly reverse their tilt.
+  const windLean = showWind
+    ? (Math.sign(baseAngle) || 1) * Math.min(14, safeWindVariation * 0.4)
+    : 0;
+  const effectiveAngle = Math.max(-75, Math.min(75, baseAngle + windLean));
   const effectiveDepth = depth ?? profileDefaults.depth ?? false;
   const effectiveDuration = duration ?? profileDefaults.duration ?? "normal";
   const speedMultiplier =
@@ -120,16 +132,8 @@ const mapDroplets = (
   const columnWidth = numDropsCount > 0 ? coverageWidth / numDropsCount : 0;
 
   const drops: ReactElement[] = [];
-  const dropDimensions = {
-    streak: { width: 2, height: { short: 10, default: 19, long: 34 } },
-    pixel: { width: 8, height: { short: 12, default: 22, long: 34 } },
-    soft: { width: 4, height: { short: 14, default: 24, long: 36 } },
-    orb: { width: 7, height: { short: 7, default: 9, long: 12 } },
-    snowflake: { width: 10, height: { short: 10, default: 13, long: 16 } },
-    hailstone: { width: 8, height: { short: 9, default: 12, long: 16 } },
-    cartoon: { width: 11, height: { short: 16, default: 22, long: 28 } },
-  }[effectiveDropStyle];
-  const baseDropHeight = dropDimensions.height[effectiveSize];
+  const dropDimensions = dropStylePresets[effectiveDropStyle].dimensions[effectiveSize];
+  const baseDropHeight = dropDimensions.height;
 
   for (let i = 0; i < numDropsCount; i++) {
     const stableImpactSample = (((i + 1) * 2654435761) >>> 0) / 4294967296;
@@ -174,22 +178,14 @@ const mapDroplets = (
       ? ({
           ...animationStyle,
           animationName: "rain-drop-fall, rain-drop-wind-drift",
-          animationDuration: `${durationSeconds.toFixed(2)}s, ${safeGustFrequency * 2.5}s`,
-          animationDelay: `${randomDelaySeconds.toFixed(2)}s, ${-((i % 7) / 7) * safeGustFrequency * 2.5}s`,
+          animationDuration: `${durationSeconds.toFixed(2)}s, ${safeGustFrequency * 3.5}s`,
+          animationDelay: `${randomDelaySeconds.toFixed(2)}s, ${-((i % 7) / 7) * safeGustFrequency * 3.5}s`,
           animationTimingFunction: "linear, ease-in-out",
           animationIterationCount: "infinite, infinite",
           animationFillMode: "both, none",
-          "--wind-push": `${(Math.sign(effectiveAngle) || 1) * Math.min(24, Math.tan((safeWindVariation * 0.35 * Math.PI) / 180) * maxHeight * 0.12)}px`,
+          "--wind-push": `${(Math.sign(effectiveAngle) || 1) * Math.min(24, Math.tan((safeWindVariation * 0.5 * Math.PI) / 180) * maxHeight * 0.12)}px`,
         } as CSSProperties)
       : animationStyle;
-    const windAngle = Math.min(11, safeWindVariation * 0.35);
-    const windAngleStyle = showWind
-      ? ({
-          animation: `rain-drop-wind-angle ${safeGustFrequency * 2.5}s ease-in-out infinite`,
-          animationDelay: `${-((i % 7) / 7) * safeGustFrequency * 2.5}s`,
-          "--wind-angle": `${-(Math.sign(effectiveAngle) || 1) * windAngle}deg`,
-        } as CSSProperties)
-      : undefined;
     const dropletAnimationStyle = effectiveDropStyle === "snowflake"
         ? {
             ...animationStyle,
@@ -218,7 +214,7 @@ const mapDroplets = (
           zIndex: effectiveDepth ? Math.ceil(depthPosition * 9) + 1 : 1,
         }}
       >
-        <div className="rain-drop-angle" style={windAngleStyle}>
+        <div className="rain-drop-angle">
           <Droplet
             variant={effectiveDropStyle}
             style={{
@@ -244,6 +240,10 @@ const mapDroplets = (
                 ? undefined
                 : effectiveDropStyle === "hailstone"
                   ? `radial-gradient(circle at 30% 25%, rgba(255,255,255,.95), rgba(${rgb}, ${effectiveOpacity * depthOpacity}) 55%, rgba(${rgb}, ${effectiveOpacity * depthOpacity}))`
+                  : effectiveDropStyle === "soft"
+                    ? `radial-gradient(ellipse at 50% 40%, rgba(${rgb}, ${effectiveOpacity * depthOpacity}) 0%, rgba(${rgb}, ${effectiveOpacity * depthOpacity * 0.55}) 52%, rgba(${rgb}, 0) 100%)`
+                    : effectiveDropStyle === "glow"
+                      ? `radial-gradient(ellipse at 50% 45%, rgba(${rgb}, ${effectiveOpacity * depthOpacity * 0.8}) 0%, rgba(${rgb}, ${effectiveOpacity * depthOpacity * 0.32}) 58%, rgba(${rgb}, 0) 100%)`
                   : `linear-gradient(to bottom, rgba(${rgb}, 0), rgba(${rgb}, ${effectiveOpacity * depthOpacity}))`,
             backgroundColor: undefined,
             }}

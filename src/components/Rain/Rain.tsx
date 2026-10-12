@@ -10,6 +10,7 @@ import CloudLayer from "./storm/CloudLayer";
 import LightningLayer from "./storm/LightningLayer";
 import WindLayer from "./storm/WindLayer";
 import GlassLayer from "./surface/GlassLayer";
+import CanvasRainLayer from "./CanvasRainLayer";
 import "./Rain.css";
 
 const clampIntensity = (value: number) =>
@@ -45,8 +46,8 @@ const Rain = React.forwardRef<RainHandle, dropletOptions>(
       lightningColor,
       playing,
       intensity: intensityProp,
-      quality = "high",
-      maxDrops = 600,
+      quality,
+      maxDrops,
       dropStyle,
       depth,
       rainFromClouds = false,
@@ -59,6 +60,7 @@ const Rain = React.forwardRef<RainHandle, dropletOptions>(
       surface = "air",
       glassFog = 0.18,
       glassRefraction = 2,
+      renderer = "dom",
     },
     ref,
   ) => {
@@ -122,6 +124,21 @@ const Rain = React.forwardRef<RainHandle, dropletOptions>(
       ? Math.max(1, Math.min(120, windOptions.gustFrequency))
       : 8;
 
+    const canvasOptions = React.useMemo<dropletOptions>(
+      () => ({
+        numDrops, dropletColor, size, showImpact, impactStyle, impactThickness,
+        impactOpacity, impactDensity, profile, dropletOpacity, duration, angle,
+        dropStyle, depth, rainFromClouds, cloudCount: effectiveCloudCount,
+        cloudSize: stormOptions.cloudSize, showWind: effectiveShowWind,
+        windVariation: safeWindVariation, gustFrequency: safeGustFrequency,
+        intensity, quality, maxDrops,
+      }),
+      [numDrops, dropletColor, size, showImpact, impactStyle, impactThickness,
+       impactOpacity, impactDensity, profile, dropletOpacity, duration, angle,
+       dropStyle, depth, rainFromClouds, effectiveCloudCount, stormOptions.cloudSize,
+       effectiveShowWind, safeWindVariation, safeGustFrequency, intensity, quality, maxDrops],
+    );
+
     const rainRef = React.useRef<HTMLDivElement>(null);
     const [dropletArray, setDropletArray] = React.useState<
       React.ReactElement[]
@@ -130,6 +147,10 @@ const Rain = React.forwardRef<RainHandle, dropletOptions>(
     React.useEffect(() => {
       const element = rainRef.current;
       if (!element) return;
+      if (renderer === "canvas") {
+        setDropletArray([]);
+        return;
+      }
       if (!pauseWhenHidden) {
         element.classList.remove("rain-container--paused");
         return;
@@ -234,6 +255,7 @@ const Rain = React.forwardRef<RainHandle, dropletOptions>(
       intensity,
       quality,
       maxDrops,
+      renderer,
       effectiveCloudCount,
       stormOptions.cloudSize,
     ]);
@@ -261,7 +283,14 @@ const Rain = React.forwardRef<RainHandle, dropletOptions>(
             color={stormOptions.cloudColor}
           />
         )}
-        {dropletArray}
+        {renderer === "canvas" ? (
+          <CanvasRainLayer
+            options={canvasOptions}
+            running={isRunning}
+            pauseWhenHidden={pauseWhenHidden}
+            respectReducedMotion={respectReducedMotion}
+          />
+        ) : dropletArray}
         {surface === "glass" && (
           <GlassLayer fog={glassFog} refraction={glassRefraction} />
         )}

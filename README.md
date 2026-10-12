@@ -29,7 +29,7 @@
 --- | -- | --- | --- | --- | ----
 numDrops | false | number | parentWidth / 25 (profile dependent) | number | Target number of drops before quality scaling and the `maxDrops` cap. Angled rain adds offscreen edge-buffer drops to keep coverage full.
 dropletColor | false | color in rbg() format | white | 'rgb(200, 200, 200) | Color of droplets, which will use a linear gradient effect. Must be in rgb format.
-size | false | string | 'default' | 'short' (10px) <br /> 'default' (19px) <br /> 'long' (34px) for streaks | Change the visible length of rain streaks.
+size | false | string | Profile/style default | 'short', 'default', 'long' | Change particle size. When you explicitly choose `dropStyle` without `size`, that style uses its own canonical size so its shape stays recognizable across rain profiles.
 showImpact | false | boolean | true| boolean | Show the impact animation when the rain drop reachs the bottom.
 impactStyle | false | string | 'splash' (profile default may vary) | 'splash', 'spray', 'ripple' | Choose upward splash particles, a spray burst, or expanding puddle rings.
 impactThickness | false | number | 2.5 | 0.5 - 8 pixels | Set the diameter of the impact particles.
@@ -52,7 +52,7 @@ showLightning | false | boolean | false (true for `heavy-rain`) | true / false |
 lightningFrequency | false | number | 9 (15 for `heavy-rain`) | seconds | Average interval between flashes; the first flash appears within about one second.
 lightningFlashDuration | false | number | 450 (300 for `heavy-rain`) | milliseconds | Duration of each flash, clamped to 80–4000 ms.
 lightningColor | false | string | #dfe6ff | CSS color | Color used for the lightning bolt and flash.
-dropStyle | false | string | 'streak' | 'streak', 'pixel', 'soft', 'orb', 'snowflake', 'hailstone', 'cartoon' | Change the visual shape of each precipitation particle.
+dropStyle | false | string | 'streak' (profile default may vary) | 'streak', 'pixel', 'soft', 'glow', 'orb', 'snowflake', 'hailstone', 'cartoon' | Change the visual shape of each precipitation particle. Explicitly selecting a style uses its own baseline size and opacity unless you also provide `size` or `dropletOpacity`.
 depth | false | boolean | false (true for `heavy-rain`) | true / false | Vary drop size, speed, opacity, blur, and impact height to create distant and foreground rain layers.
 showWind | false | boolean | false | true / false | Add gradual gusts that bend and gently shift individual drops.
 windProfile | false | string | undefined | 'subtle', 'breezy', 'gusty', 'squall' | Choose a wind intensity preset. Selecting a profile enables animated drop angle and drift; `windVariation` and `gustFrequency` customize it.
@@ -66,8 +66,9 @@ pauseWhenHidden | false | boolean | false | true / false | Set true to pause CSS
 respectReducedMotion | false | boolean | true | true / false | Honor the operating system's `prefers-reduced-motion` setting. Set false to force animations when the system preference requests reduced motion.
 playing | false | boolean | true | true / false | Start or pause the rain layer. Also controlled by the imperative ref and `useRainfall()` hook.
 intensity | false | number | 1 | 0 - 1 | Scale the active drop count from none to the selected profile's full density.
-quality | false | string | 'high' | 'low', 'medium', 'high' | Scale drop count to suit device capabilities: low uses 40%, medium 70%, and high 100% of the requested count.
-maxDrops | false | number | 600 | 0 - 5000 | Hard cap on the final drop count, including extra drops added to cover angled rain. Lower this or use a lower `quality` on slower devices.
+quality | false | string | 'high' for DOM, 'medium' for canvas | 'low', 'medium', 'high' | Scale drop count to suit device capabilities: low uses 40%, medium 70%, and high 100% of the requested count.
+maxDrops | false | number | 600 for DOM, 400 for canvas | 0 - 5000 | Hard cap on the final drop count, including extra drops added to cover angled rain. Lower this or use a lower `quality` on slower devices.
+renderer | false | string | 'dom' | 'dom', 'canvas' | Select the particle renderer. `canvas` draws precipitation and impacts in a single canvas to reduce particle DOM nodes; clouds, glass, wind, and lightning remain their existing DOM/CSS layers.
 
 
 
@@ -101,6 +102,23 @@ maxDrops | false | number | 600 | 0 - 5000 | Hard cap on the final drop count, i
   depth
 />
 ```
+
+## Canvas renderer (experimental)
+
+The default renderer remains DOM-based. Set `renderer="canvas"` to try the canvas particle layer while retaining the same profile and rain options. Canvas defaults to medium particle density and a 400-drop cap to keep large storm scenes responsive; set `quality="high"` and `maxDrops` explicitly to raise them:
+
+```tsx
+<Rain
+  renderer="canvas"
+  profile="heavy-rain"
+  showClouds
+  showLightning
+  impactStyle="ripple"
+  maxDrops={600}
+/>
+```
+
+The canvas path currently draws the precipitation styles and splash, spray, and ripple impacts. Cloud, lightning, wind visuals, and glass effects continue using their current overlay components. The canvas renderer is an initial experimental foundation; compare it with the DOM renderer in your target browsers before using it in production.
 
 
 ## Imperative and state controls
