@@ -274,7 +274,7 @@ function CanvasRainLayer({
     const sprites = new Map<string, Sprite>();
 
     const getSprite = (rgb: string, scale: number): Sprite | null => {
-      const key = `${rgb}|${scale}`;
+      const key = `${o.dropStyle}|${rgb}|${scale}`;
       const cached = sprites.get(key);
       if (cached) return cached;
 

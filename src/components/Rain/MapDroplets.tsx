@@ -34,16 +34,6 @@ const dropBackground = (variant: string, rgb: string, alpha: number) => {
   }
 };
 
-const CH = {
-  depth: 0,
-  cloudTop: 1,
-  duration: 2,
-  delay: 3,
-  cloud: 4,
-  cloudOffset: 5,
-  reducedTop: 6,
-  impact: 7,
-} as const;
 const mapDroplets = (
   rainRef: { maxWidth: number; maxHeight: number },
   options: dropletOptions,
