@@ -9,13 +9,8 @@ import {
   dropStylePresets,
   getDropStyleDefaultSize,
 } from "./drop-style-presets";
-const hash01 = (i: number, channel: number) => {
-  let h =
-    (Math.imul(i + 1, 0x9e3779b1) ^ Math.imul(channel + 1, 0x85ebca6b)) >>> 0;
-  h = Math.imul(h ^ (h >>> 16), 0x7feb352d) >>> 0;
-  h = Math.imul(h ^ (h >>> 15), 0x846ca68b) >>> 0;
-  return ((h ^ (h >>> 16)) >>> 0) / 4294967296;
-};
+import { toRgbChannels } from "../../helpers/color-utils";
+import { hash01 } from "../../helpers/seededRandom";
 const has = (obj: object, key: string) =>
   Object.prototype.hasOwnProperty.call(obj, key);
 const round3 = (n: number) => Math.round(n * 1000) / 1000;
@@ -38,18 +33,7 @@ const dropBackground = (variant: string, rgb: string, alpha: number) => {
       return `linear-gradient(to bottom, ${c(0)}, ${c(1)})`;
   }
 };
-const toRgbChannels = (color: string): string => {
-  const hex = color.trim().match(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i);
-  if (hex) {
-    const h =
-      hex[1].length === 3 ? [...hex[1]].map((c) => c + c).join("") : hex[1];
-    return [0, 2, 4].map((o) => parseInt(h.slice(o, o + 2), 16)).join(", ");
-  }
-  const nums = color.match(/[\d.]+/g);
-  return nums && nums.length >= 3
-    ? nums.slice(0, 3).join(", ")
-    : "255, 255, 255";
-};
+
 const CH = {
   depth: 0,
   cloudTop: 1,

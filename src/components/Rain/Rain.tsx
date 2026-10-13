@@ -10,7 +10,7 @@ import CloudLayer from "./storm/CloudLayer";
 import LightningLayer from "./storm/LightningLayer";
 import WindLayer from "./storm/WindLayer";
 import GlassLayer from "./surface/GlassLayer";
-import CanvasRainLayer from "./CanvasRainLayer";
+import CanvasRainLayer from "./Canvas/CanvasRainLayer";
 import "./Rain.css";
 
 const clampIntensity = (value: number) =>
