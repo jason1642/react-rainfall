@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import type { CSSProperties } from "react";
 import "./lightningLayer.css";
 
@@ -14,7 +14,7 @@ type LightningStyle = CSSProperties & {
   "--lightning-color": string;
   "--lightning-duration": string;
 };
-
+const INITIAL_BOLT = "50,0 50,100";
 function createBoltPoints() {
   const points = ["50,0"];
   let x = 50;
@@ -36,12 +36,12 @@ function LightningLayer({
   auto,
   triggerId,
 }: LightningLayerProps) {
-  const [isFlashing, setIsFlashing] = React.useState(false);
-  const [flashKey, setFlashKey] = React.useState(0);
-  const [boltPosition, setBoltPosition] = React.useState(50);
-  const [boltPoints, setBoltPoints] = React.useState(createBoltPoints);
-  const lastTriggerId = React.useRef(0);
-  const flashEndTimer = React.useRef<ReturnType<typeof setTimeout> | undefined>(
+  const [isFlashing, setIsFlashing] = useState(false);
+  const [flashKey, setFlashKey] = useState(0);
+  const [boltPosition, setBoltPosition] = useState(50);
+  const [boltPoints, setBoltPoints] = useState(INITIAL_BOLT);
+  const lastTriggerId = useRef(0);
+  const flashEndTimer = useRef<ReturnType<typeof setTimeout> | undefined>(
     undefined,
   );
   const safeFrequency = Number.isFinite(frequency)
@@ -51,22 +51,25 @@ function LightningLayer({
     ? Math.max(80, Math.min(4000, flashDuration))
     : 450;
 
-  const flash = React.useCallback(() => {
+  const flash = useCallback(() => {
     setBoltPosition(16 + Math.random() * 68);
     setBoltPoints(createBoltPoints());
     setFlashKey((current) => current + 1);
     setIsFlashing(true);
     if (flashEndTimer.current) clearTimeout(flashEndTimer.current);
-    flashEndTimer.current = setTimeout(() => setIsFlashing(false), safeDuration);
+    flashEndTimer.current = setTimeout(
+      () => setIsFlashing(false),
+      safeDuration,
+    );
   }, [safeDuration]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (triggerId <= lastTriggerId.current) return;
     lastTriggerId.current = triggerId;
     flash();
   }, [triggerId, flash]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!auto) return;
     let nextFlashTimer: ReturnType<typeof setTimeout>;
 
@@ -86,7 +89,7 @@ function LightningLayer({
     };
   }, [auto, safeFrequency, flash]);
 
-  React.useEffect(
+  useEffect(
     () => () => {
       if (flashEndTimer.current) clearTimeout(flashEndTimer.current);
     },

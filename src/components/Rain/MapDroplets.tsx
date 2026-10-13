@@ -2,12 +2,64 @@ import type { CSSProperties, ReactElement } from "react";
 import Droplet from "./Droplet/Droplet";
 import DropImpact from "./impact/Impact";
 import DropletContainer from "./drop-container/DropContainer";
-import dropletSizes from "./droplet-sizes";
 import type { dropletOptions } from "./rainTypes";
 import { getRainProfileDefaults } from "./rain-profiles";
 import selectDropletColor from "./select-droplet-color";
-import { dropStylePresets, getDropStyleDefaultSize } from "./drop-style-presets";
+import {
+  dropStylePresets,
+  getDropStyleDefaultSize,
+} from "./drop-style-presets";
+const hash01 = (i: number, channel: number) => {
+  let h =
+    (Math.imul(i + 1, 0x9e3779b1) ^ Math.imul(channel + 1, 0x85ebca6b)) >>> 0;
+  h = Math.imul(h ^ (h >>> 16), 0x7feb352d) >>> 0;
+  h = Math.imul(h ^ (h >>> 15), 0x846ca68b) >>> 0;
+  return ((h ^ (h >>> 16)) >>> 0) / 4294967296;
+};
+const has = (obj: object, key: string) =>
+  Object.prototype.hasOwnProperty.call(obj, key);
+const round3 = (n: number) => Math.round(n * 1000) / 1000;
 
+const GOLDEN = 0.6180339887498949;
+const dropBackground = (variant: string, rgb: string, alpha: number) => {
+  // one color stop: the base alpha scaled by `m`, rounded so style strings stay short
+  const c = (m: number) => `rgba(${rgb}, ${round3(alpha * m)})`;
+
+  switch (variant) {
+    case "snowflake":
+      return undefined;
+    case "hailstone":
+      return `radial-gradient(circle at 30% 25%, rgba(255,255,255,.95), ${c(1)} 55%, ${c(1)})`;
+    case "soft":
+      return `radial-gradient(ellipse at 50% 40%, ${c(1)} 0%, ${c(0.55)} 52%, ${c(0)} 100%)`;
+    case "glow":
+      return `radial-gradient(ellipse at 50% 45%, ${c(0.8)} 0%, ${c(0.32)} 58%, ${c(0)} 100%)`;
+    default:
+      return `linear-gradient(to bottom, ${c(0)}, ${c(1)})`;
+  }
+};
+const toRgbChannels = (color: string): string => {
+  const hex = color.trim().match(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i);
+  if (hex) {
+    const h =
+      hex[1].length === 3 ? [...hex[1]].map((c) => c + c).join("") : hex[1];
+    return [0, 2, 4].map((o) => parseInt(h.slice(o, o + 2), 16)).join(", ");
+  }
+  const nums = color.match(/[\d.]+/g);
+  return nums && nums.length >= 3
+    ? nums.slice(0, 3).join(", ")
+    : "255, 255, 255";
+};
+const CH = {
+  depth: 0,
+  cloudTop: 1,
+  duration: 2,
+  delay: 3,
+  cloud: 4,
+  cloudOffset: 5,
+  reducedTop: 6,
+  impact: 7,
+} as const;
 const mapDroplets = (
   rainRef: { maxWidth: number; maxHeight: number },
   options: dropletOptions,
@@ -44,16 +96,33 @@ const mapDroplets = (
     1,
     Math.min(24, Math.floor(cloudCount ?? profileDefaults.cloudCount ?? 3)),
   );
-  const localCloudSize = Math.max(80, cloudSize ?? profileDefaults.cloudSize ?? 320);
+  const localCloudSize = Math.max(
+    80,
+    cloudSize ?? profileDefaults.cloudSize ?? 320,
+  );
   const safeWindVariation = Number.isFinite(windVariation)
     ? Math.max(0, Math.min(30, windVariation ?? 0))
     : 0;
   const safeGustFrequency = Number.isFinite(gustFrequency)
     ? Math.max(1, gustFrequency ?? 8)
     : 8;
-  const effectiveDropStyle = dropStyle ?? profileDefaults.dropStyle ?? "streak";
-  const effectiveSize =
-    size ?? (dropStyle ? getDropStyleDefaultSize(dropStyle) : profileDefaults.size ?? "default");
+  const requestedDropStyle = dropStyle ?? profileDefaults.dropStyle ?? "streak";
+
+  const effectiveDropStyle = (
+    has(dropStylePresets, requestedDropStyle) ? requestedDropStyle : "streak"
+  ) as NonNullable<dropletOptions["dropStyle"]>;
+  const preset = dropStylePresets[effectiveDropStyle];
+
+  const requestedSize =
+    size ??
+    (dropStyle
+      ? getDropStyleDefaultSize(effectiveDropStyle)
+      : profileDefaults.size) ??
+    "default";
+  const effectiveSize = (
+    has(preset.dimensions, requestedSize) ? requestedSize : "default"
+  ) as NonNullable<dropletOptions["size"]>;
+  const dropDimensions = preset.dimensions[effectiveSize];
   const effectiveShowImpact = showImpact ?? profileDefaults.showImpact ?? true;
   const effectiveImpactStyle =
     impactStyle ?? profileDefaults.impactStyle ?? "splash";
@@ -65,15 +134,15 @@ const mapDroplets = (
     0,
     Math.min(1, impactOpacity ?? profileDefaults.impactOpacity ?? 0.65),
   );
-  const requestedImpactDensity = impactDensity ?? profileDefaults.impactDensity ?? 0.25;
+  const requestedImpactDensity =
+    impactDensity ?? profileDefaults.impactDensity ?? 0.25;
   const effectiveImpactDensity = Number.isFinite(requestedImpactDensity)
     ? Math.max(0, Math.min(1, requestedImpactDensity))
     : 0.25;
   const effectiveOpacity =
     dropletOpacity ??
-    (dropStyle
-      ? dropStylePresets[dropStyle].defaultOpacity
-      : profileDefaults.dropletOpacity) ??
+    (dropStyle ? preset.defaultOpacity : profileDefaults.dropletOpacity) ??
+    preset.defaultOpacity ??
     0.5;
   const requestedAngle = angle ?? profileDefaults.angle ?? 0;
   const baseAngle = Number.isFinite(requestedAngle)
@@ -89,7 +158,10 @@ const mapDroplets = (
   const effectiveDuration = duration ?? profileDefaults.duration ?? "normal";
   const speedMultiplier =
     effectiveDuration === "fast" ? 1.3 : effectiveDuration === "slow" ? 0.7 : 1;
-  const effectiveNumDrops = numDrops ?? profileDefaults.numDrops;
+  const requestedNumDrops = numDrops ?? profileDefaults.numDrops;
+  const effectiveNumDrops = Number.isFinite(requestedNumDrops)
+    ? requestedNumDrops
+    : undefined; // falls back to the width-based count
   const safeIntensity = Number.isFinite(intensity)
     ? Math.max(0, Math.min(1, intensity))
     : 1;
@@ -110,7 +182,7 @@ const mapDroplets = (
   const totalFallDistance = maxHeight;
   const totalHorizontalDrift = horizontalDriftPerPixel * totalFallDistance;
   const rotatedDropHalfWidth =
-    (dropletSizes(effectiveSize) *
+    (dropDimensions.height *
       (effectiveDepth ? 1.45 : 1) *
       Math.abs(Math.sin(angleRadians))) /
     2;
@@ -129,45 +201,53 @@ const mapDroplets = (
       : requestedDropsCount
     : Math.ceil(requestedDropsCount * coverageMultiplier);
   const numDropsCount = Math.min(safeMaxDrops, calculatedDropCount);
-  const columnWidth = numDropsCount > 0 ? coverageWidth / numDropsCount : 0;
 
   const drops: ReactElement[] = [];
-  const dropDimensions = dropStylePresets[effectiveDropStyle].dimensions[effectiveSize];
   const baseDropHeight = dropDimensions.height;
+  const baseColor = dropletColor ?? profileDefaults.dropletColor;
+  const colorVariesPerDrop = profile === "rainbow" && baseColor === undefined;
+
+  const fixedColor = colorVariesPerDrop
+    ? null
+    : selectDropletColor(baseColor, profile);
+
+  const fixedRgb = fixedColor ? toRgbChannels(fixedColor) : "";
 
   for (let i = 0; i < numDropsCount; i++) {
+    const r = (channel: number) => hash01(i, channel);
     const stableImpactSample = (((i + 1) * 2654435761) >>> 0) / 4294967296;
     const shouldShowImpact =
       effectiveShowImpact && stableImpactSample < effectiveImpactDensity;
-    const depthPosition = effectiveDepth ? Math.random() : 1;
+    const depthPosition = effectiveDepth ? r(0) : 1;
     const depthScale = effectiveDepth ? 0.55 + depthPosition * 0.9 : 1;
     const depthOpacity = effectiveDepth ? 0.35 + depthPosition * 0.65 : 1;
     const depthBlur = effectiveDepth ? (1 - depthPosition) * 1.2 : 0;
     const sourceTop = rainFromClouds
-      ? Math.max(0, Math.min(maxHeight * 0.4, localCloudSize * (0.29 + Math.random() * 0.06)))
+      ? Math.max(
+          0,
+          Math.min(maxHeight * 0.4, localCloudSize * (0.29 + r(1) * 0.06)),
+        )
       : 0;
+
     const fallDistance = maxHeight - sourceTop;
     const dropHorizontalDrift = horizontalDriftPerPixel * fallDistance;
     const depthSpeed = effectiveDepth ? 0.75 + depthPosition * 0.5 : 1;
-    const durationSeconds =
-      (0.9 + Math.random() * 0.8) / (speedMultiplier * depthSpeed);
+    const durationSeconds = (0.9 + r(2) * 0.8) / (speedMultiplier * depthSpeed);
+
     // Positive delays stagger launches from the top. Negative delays start
     // some drops partway through their cycle, which can show a splash before
     // that drop has visibly fallen.
-    const randomDelaySeconds = Math.random() * durationSeconds;
-    const horizontalJitter = (Math.random() - 0.5) * columnWidth * 0.7;
+    const randomDelaySeconds = r(3) * durationSeconds;
     const landingLeft = rainFromClouds
-      ? ((Math.floor(Math.random() * localCloudCount) + 0.5) /
-          localCloudCount) *
+      ? ((Math.floor(r(4) * localCloudCount) + 0.5) / localCloudCount) *
           maxWidth +
-        (Math.random() - 0.5) * localCloudSize * 0.34
-      : coverageStart + i * columnWidth + horizontalJitter;
+        (r(5) - 0.5) * localCloudSize * 0.34
+      : coverageStart + ((i * GOLDEN) % 1) * coverageWidth;
     const left = landingLeft - dropHorizontalDrift;
-    const dropColor = selectDropletColor(
-      dropletColor ?? profileDefaults.dropletColor,
-      profile,
-    );
-    const rgb = dropColor.match(/\(([^)]+)\)/)?.[1] ?? "255, 255, 255";
+    const dropColor =
+      fixedColor ?? selectDropletColor(baseColor, profile, r(8));
+
+    const rgb = fixedColor ? fixedRgb : toRgbChannels(dropColor);
 
     const animationStyle: CSSProperties = {
       animationDuration: `${durationSeconds.toFixed(2)}s`,
@@ -186,8 +266,9 @@ const mapDroplets = (
           "--wind-push": `${(Math.sign(effectiveAngle) || 1) * Math.min(24, Math.tan((safeWindVariation * 0.5 * Math.PI) / 180) * maxHeight * 0.12)}px`,
         } as CSSProperties)
       : animationStyle;
-    const dropletAnimationStyle = effectiveDropStyle === "snowflake"
-        ? {
+    const dropletAnimationStyle =
+      effectiveDropStyle === "snowflake"
+        ? ({
             ...animationStyle,
             animationName: "rain-drop-fade, rain-snow-tumble",
             animationDuration: `${durationSeconds.toFixed(2)}s, ${Math.max(2, durationSeconds * 2.8).toFixed(2)}s`,
@@ -195,8 +276,8 @@ const mapDroplets = (
             animationTimingFunction: "linear, ease-in-out",
             animationIterationCount: "infinite, infinite",
             animationFillMode: "both, none",
-          } as CSSProperties
-      : animationStyle;
+          } as CSSProperties)
+        : animationStyle;
 
     drops.push(
       <DropletContainer
@@ -208,9 +289,11 @@ const mapDroplets = (
         style={{
           ...containerAnimationStyle,
           ...(rainFromClouds
-            ? { top: `${sourceTop - dropletSizes(effectiveSize)}px`, bottom: "auto" }
+            ? { top: `${sourceTop - dropDimensions.height}px`, bottom: "auto" }
             : { bottom: "100%" }),
-          ...({ "--reduced-top": `${Math.random() * 84}%` } as CSSProperties),
+          ...({
+            "--reduced-top": `${Math.round(r(6) * 840) / 10}%`,
+          } as CSSProperties),
           zIndex: effectiveDepth ? Math.ceil(depthPosition * 9) + 1 : 1,
         }}
       >
@@ -218,34 +301,30 @@ const mapDroplets = (
           <Droplet
             variant={effectiveDropStyle}
             style={{
-            ...dropletAnimationStyle,
-            transform: `translateX(-50%) rotate(${-effectiveAngle}deg)`,
-            color: dropColor,
-            width: `${dropDimensions.width * depthScale}px`,
-            height: `${baseDropHeight * depthScale}px`,
-            opacity:
-              effectiveDropStyle === "snowflake"
-                ? effectiveOpacity * depthOpacity
-                : undefined,
-            ...(effectiveDropStyle === "snowflake"
-              ? ({ "--drop-opacity": `${effectiveOpacity * depthOpacity}` } as CSSProperties)
-              : {}),
-            bottom: 0,
-            filter:
-              depthBlur || effectiveDropStyle === "soft"
-                ? `blur(${depthBlur + (effectiveDropStyle === "soft" ? 1 : 0)}px)`
-                : undefined,
-            backgroundImage:
-              effectiveDropStyle === "snowflake"
-                ? undefined
-                : effectiveDropStyle === "hailstone"
-                  ? `radial-gradient(circle at 30% 25%, rgba(255,255,255,.95), rgba(${rgb}, ${effectiveOpacity * depthOpacity}) 55%, rgba(${rgb}, ${effectiveOpacity * depthOpacity}))`
-                  : effectiveDropStyle === "soft"
-                    ? `radial-gradient(ellipse at 50% 40%, rgba(${rgb}, ${effectiveOpacity * depthOpacity}) 0%, rgba(${rgb}, ${effectiveOpacity * depthOpacity * 0.55}) 52%, rgba(${rgb}, 0) 100%)`
-                    : effectiveDropStyle === "glow"
-                      ? `radial-gradient(ellipse at 50% 45%, rgba(${rgb}, ${effectiveOpacity * depthOpacity * 0.8}) 0%, rgba(${rgb}, ${effectiveOpacity * depthOpacity * 0.32}) 58%, rgba(${rgb}, 0) 100%)`
-                  : `linear-gradient(to bottom, rgba(${rgb}, 0), rgba(${rgb}, ${effectiveOpacity * depthOpacity}))`,
-            backgroundColor: undefined,
+              ...dropletAnimationStyle,
+              transform: `translateX(-50%) rotate(${-effectiveAngle}deg)`,
+              color: dropColor,
+              width: `${dropDimensions.width * depthScale}px`,
+              height: `${baseDropHeight * depthScale}px`,
+              opacity:
+                effectiveDropStyle === "snowflake"
+                  ? effectiveOpacity * depthOpacity
+                  : undefined,
+              ...(effectiveDropStyle === "snowflake"
+                ? ({
+                    "--drop-opacity": `${effectiveOpacity * depthOpacity}`,
+                  } as CSSProperties)
+                : {}),
+              bottom: 0,
+              filter:
+                depthBlur || effectiveDropStyle === "soft"
+                  ? `blur(${depthBlur + (effectiveDropStyle === "soft" ? 1 : 0)}px)`
+                  : undefined,
+              backgroundImage: dropBackground(
+                effectiveDropStyle,
+                rgb,
+                effectiveOpacity * depthOpacity,
+              ),
             }}
           />
         </div>

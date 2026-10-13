@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 import "./cloudLayer.css";
+import { seededRandom } from "../../../helpers/seededRandom";
 
 interface CloudLayerProps {
   count: number;
@@ -19,8 +20,19 @@ type CloudStyle = CSSProperties & {
   "--cloud-blur": string;
   "--cloud-color": string;
 };
-
-function CloudLayer({ count, size, speed, opacity, drift, blur, color }: CloudLayerProps) {
+const round = (value: number, places = 2) => {
+  const factor = 10 ** places;
+  return Math.round(value * factor) / factor;
+};
+function CloudLayer({
+  count,
+  size,
+  speed,
+  opacity,
+  drift,
+  blur,
+  color,
+}: CloudLayerProps) {
   const safeCount = Number.isFinite(count)
     ? Math.min(24, Math.max(0, Math.floor(count)))
     : 0;
@@ -35,19 +47,20 @@ function CloudLayer({ count, size, speed, opacity, drift, blur, color }: CloudLa
   return (
     <div className="storm-cloud-layer" aria-hidden="true">
       {Array.from({ length: safeCount }, (_, index) => {
-        const sizeScale = 0.72 + Math.random() * 0.56;
-        const opacityScale = 0.88 + Math.random() * 0.12;
+        const rand = seededRandom(index + 1);
+        const sizeScale = 0.72 + rand() * 0.56;
+        const opacityScale = 0.88 + rand() * 0.12;
         const style: CloudStyle = {
-          "--cloud-size": `${safeSize * sizeScale}px`,
-          "--cloud-speed": `${safeSpeed * (0.85 + Math.random() * 0.3)}s`,
-          "--cloud-opacity": `${safeOpacity * opacityScale}`,
+          "--cloud-size": `${round(safeSize * sizeScale)}px`,
+          "--cloud-speed": `${round(safeSpeed * (0.85 + rand() * 0.3))}s`,
+          "--cloud-opacity": `${round(safeOpacity * opacityScale, 3)}`,
           "--cloud-drift": `${safeDrift}px`,
           "--cloud-blur": `${safeBlur}px`,
           "--cloud-color": color,
-          left: `${((index + 0.5) / safeCount) * 100}%`,
-          top: `${-8 + Math.random() * 8}%`,
-          animationDuration: `${safeSpeed * (0.85 + Math.random() * 0.3)}s`,
-          animationDelay: `${(-index * safeSpeed) / safeCount}s`,
+          left: `${round(((index + 0.5) / safeCount) * 100)}%`,
+          top: `${round(-8 + rand() * 8)}%`,
+          animationDuration: `${round(safeSpeed * (0.85 + rand() * 0.3))}s`,
+          animationDelay: `${round((-index * safeSpeed) / safeCount)}s`,
         };
 
         return (

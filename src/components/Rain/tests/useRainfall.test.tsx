@@ -93,17 +93,6 @@ it("stops forwarding after the ref is detached", () => {
   expect(result.current.playing).toBe(false); // hook state still updates
 });
 describe("useRainfall with <Rain />", () => {
-  beforeAll(() => {
-    Object.defineProperty(HTMLElement.prototype, "clientWidth", {
-      configurable: true,
-      value: 1000,
-    });
-    Object.defineProperty(HTMLElement.prototype, "clientHeight", {
-      configurable: true,
-      value: 600,
-    });
-  });
-
   const Harness = () => {
     const rain = useRainfall();
     return (

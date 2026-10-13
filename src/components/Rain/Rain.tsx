@@ -234,7 +234,7 @@ const Rain = React.forwardRef<RainHandle, dropletOptions>(
 
       // canvas draws its own particles, and a hidden scene has none
       if (renderer === "canvas" || !isVisible) {
-        setDropletArray([]);
+        setDropletArray((prev) => (prev.length ? [] : prev));
         return;
       }
 
@@ -243,7 +243,7 @@ const Rain = React.forwardRef<RainHandle, dropletOptions>(
         const maxHeight = element.clientHeight;
 
         if (maxWidth <= 0 || maxHeight <= 0) {
-          setDropletArray([]);
+          setDropletArray((prev) => (prev.length ? [] : prev));
           return;
         }
 
@@ -278,16 +278,35 @@ const Rain = React.forwardRef<RainHandle, dropletOptions>(
           ),
         );
       };
-
+      let frame = 0;
+      let lastWidth = element.clientWidth;
+      let lastHeight = element.clientHeight;
+      const onResize = () => {
+        if (frame) return;
+        frame = requestAnimationFrame(() => {
+          frame = 0;
+          const { clientWidth, clientHeight } = element;
+          if (clientWidth === lastWidth && clientHeight === lastHeight) return;
+          lastWidth = clientWidth;
+          lastHeight = clientHeight;
+          updateDroplets();
+        });
+      };
       updateDroplets();
       if (typeof ResizeObserver !== "undefined") {
-        const observer = new ResizeObserver(updateDroplets);
+        const observer = new ResizeObserver(onResize);
         observer.observe(element);
-        return () => observer.disconnect();
+        return () => {
+          observer.disconnect();
+          cancelAnimationFrame(frame);
+        };
       }
 
-      window.addEventListener("resize", updateDroplets);
-      return () => window.removeEventListener("resize", updateDroplets);
+      window.addEventListener("resize", onResize);
+      return () => {
+        window.removeEventListener("resize", onResize);
+        cancelAnimationFrame(frame);
+      };
     }, [
       numDrops,
       dropletColor,

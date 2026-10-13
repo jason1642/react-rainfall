@@ -4,9 +4,10 @@ import { rainbowColors } from "./preset-effects";
 const selectDropletColor = (
   dropletColor: dropletColor,
   profile: rainProfile | undefined,
+  sample: number = Math.random(), // 0 to 1, pass a stable value for stable colors
 ): string => {
   if (profile === "rainbow" && dropletColor === undefined) {
-    return rainbowColors[Math.floor(Math.random() * rainbowColors.length)];
+    return rainbowColors[Math.floor(sample * rainbowColors.length)];
   }
 
   return dropletColor ?? "rgb(183, 212, 255)";
