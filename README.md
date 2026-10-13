@@ -135,7 +135,7 @@ function StormControls() {
 
 ## State-driven controls
 
-Use `useRainfall()` when the rest of the UI needs to display or respond to the current play state and intensity. It returns `ref`, `props`, `playing`, `intensity`, and the same control methods.
+Use `useRainfall()` when the rest of the UI needs to read and control the rain from React state. It returns `ref` and `props` for `<Rain>`, state values (`playing`, `visible`, and `intensity`), and methods for changing them. Pass both `ref` and `props` to `<Rain>`: the ref connects the controller to the component, and the props keep its rendered state in sync. The hook starts visible and playing, with an intensity of `1` unless you pass a different initial intensity.
 
 ```tsx
 import { Rain, useRainfall } from "react-rainfall";
@@ -148,6 +148,9 @@ function StatefulStorm() {
       <Rain ref={rain.ref} {...rain.props} profile="heavy-rain" />
       <button onClick={rain.playing ? rain.stop : rain.start}>
         {rain.playing ? "Stop" : "Start"}
+      </button>
+      <button onClick={rain.visible ? rain.hide : rain.show}>
+        {rain.visible ? "Hide rain" : "Show rain"}
       </button>
       <label>
         Intensity
@@ -165,3 +168,7 @@ function StatefulStorm() {
   );
 }
 ```
+
+`hide()` makes the rain layer invisible; `show()` makes it visible again. The `visible` value updates immediately, so it can drive a toggle label or other UI. These methods do not change `playing`: hiding the rain and pausing its animation are separate controls. The hook also exposes `setIntensity(value)` (clamped to `0`–`1`) and `triggerLightning()`.
+
+The returned `props` object contains `playing`, `intensity`, and `visible`. You can override any of these by passing an explicit prop after the spread, but doing so means that prop is controlled by your explicit value rather than the hook. For example, `<Rain ref={rain.ref} {...rain.props} visible={someOtherValue} />` will not follow `rain.show()` / `rain.hide()` while `someOtherValue` stays fixed. If you only need to show or hide the layer, you can also use the `visible` prop directly; use the hook when you want that state and its controls available to the rest of your component.
