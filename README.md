@@ -2,6 +2,8 @@
 
 React Rainfall adds animated precipitation and optional weather layers to a positioned element.
 
+
+[Official Documentation](https://jasoncruz.vercel.app/npm/react-rainfall/documentation)
 ## Installation
 
 ```sh
